@@ -1,13 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-	Home: {
+	Profile: {
+		borderColor: "red",
+		borderWidth: 1,
+
 		width: "100%",
-		height: "100%",
 
 		display: "flex",
 		flexDirection: "column",
-		justifyContent: "flex-start",
 		alignItems: "center",
 	},
 });

@@ -1,4 +1,4 @@
-function padding(a, b, c, d) {
+function padding(a: any, b?: any, c?: any, d?: any) {
 	return {
 		paddingTop: a,
 		paddingRight: b ? b : a,

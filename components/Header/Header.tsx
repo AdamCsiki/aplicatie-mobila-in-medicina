@@ -1,7 +1,7 @@
 import { View, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import Logo from "../Logo/Logo";
-import styles from "./Header.style";
+import style from "./Header.style";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "../../constants/Colors";
@@ -13,7 +13,7 @@ function Header() {
 	return (
 		<LinearGradient
 			colors={[Colors.mainColor, Colors.secondColor]}
-			style={styles.Header}
+			style={style.Header}
 			start={{ x: 0, y: 0 }}
 			end={{ x: 1, y: 1 }}
 		>
@@ -23,7 +23,7 @@ function Header() {
 				onPress={(e) => {
 					setMenuShown(!menuShown);
 				}}
-				style={styles.ProfileContainer}
+				style={style.ProfileContainer}
 			>
 				<Icon
 					name="user-circle-o"
@@ -31,8 +31,6 @@ function Header() {
 					color={"#fff"}
 				/>
 			</TouchableOpacity>
-
-			<Menu shown={menuShown} />
 		</LinearGradient>
 	);
 }

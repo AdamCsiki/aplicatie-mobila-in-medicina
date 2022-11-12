@@ -2,6 +2,8 @@ import { StyleSheet, StatusBar, Platform } from "react-native";
 import Colors from "../../constants/Colors";
 import padding from "../../misc/padding";
 
+let statusBarHeight = StatusBar.currentHeight ?? 16;
+
 export default StyleSheet.create({
 	Header: {
 		shadowColor: "black",
@@ -16,8 +18,7 @@ export default StyleSheet.create({
 
 		...padding(16, 0),
 
-		paddingTop:
-			Platform.OS === "android" ? StatusBar.currentHeight + 16 : 16,
+		paddingTop: Platform.OS === "android" ? statusBarHeight : 16,
 
 		display: "flex",
 		flexDirection: "row",

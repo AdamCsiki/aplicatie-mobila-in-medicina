@@ -1,7 +1,7 @@
 import style from "./Menu.style";
 import { Text, View } from "react-native";
 
-function Menu({ shown }) {
+function Menu({ shown }: { shown: boolean }) {
 	return (
 		<View
 			style={[

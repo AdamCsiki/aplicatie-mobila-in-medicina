@@ -1,4 +1,4 @@
-function margin(a, b, c, d) {
+function margin(a: any, b?: any, c?: any, d?: any) {
 	return {
 		marginTop: a,
 		marginRight: b ? b : a,
