@@ -6,10 +6,19 @@ function Home() {
 	return (
 		<View style={styles.Home}>
 			<View>
-				<Text>News</Text>
+				<Text style={{ color: "#000000" }}>
+					I AM THE HOME COMPONENT
+				</Text>
 			</View>
 
-			<Button />
+			<Button
+				style={{ backgroundColor: "#cbcbcb" }}
+				onPress={() => {
+					console.log("Hello");
+				}}
+			>
+				<Text>Hello</Text>
+			</Button>
 		</View>
 	);
 }

@@ -4,8 +4,6 @@ import padding from "../../misc/padding";
 
 export default StyleSheet.create({
 	Header: {
-		zIndex: 1,
-
 		shadowColor: "black",
 		shadowOffset: { width: -2, height: 4 },
 		shadowOpacity: 1,

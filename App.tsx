@@ -1,17 +1,17 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, SafeAreaView } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 
 import styles from "./App.style";
 import Header from "./components/Header/Header";
-import Home from "./screens/Home/Home";
+import HomeNavigator from "./routes/homeStack";
 
 export default function App() {
-	console.log("miau");
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style="auto" />
 			<Header />
-			<Home />
+			<HomeNavigator />
 		</SafeAreaView>
 	);
 }
