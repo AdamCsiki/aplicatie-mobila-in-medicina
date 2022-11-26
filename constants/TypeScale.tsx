@@ -1,11 +1,11 @@
 import { Text } from "react-native";
 import Colors from "./Colors";
 
-const headerFont = "Bauhaus";
+const headerFont = "DMSans";
 const textFont = "DMSans";
 const baseSize = 16;
 const ratio = 1.414;
-const color = Colors.black;
+const color = Colors.white;
 
 const scales = {
 	h1: baseSize * Math.pow(ratio, 5),
@@ -17,7 +17,19 @@ const scales = {
 	baseText: baseSize,
 };
 
-function H1({ children, style }: { children: any; style?: any }) {
+function H1({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -34,7 +46,19 @@ function H1({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function H2({ children, style }: { children: any; style?: any }) {
+function H2({
+	children,
+	style,
+	left = true,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -51,7 +75,19 @@ function H2({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function H3({ children, style }: { children: any; style?: any }) {
+function H3({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -68,7 +104,19 @@ function H3({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function H4({ children, style }: { children: any; style?: any }) {
+function H4({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -85,7 +133,19 @@ function H4({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function H5({ children, style }: { children: any; style?: any }) {
+function H5({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -102,7 +162,19 @@ function H5({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function H6({ children, style }: { children: any; style?: any }) {
+function H6({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[
@@ -119,7 +191,19 @@ function H6({ children, style }: { children: any; style?: any }) {
 	);
 }
 
-function Span({ children, style }: { children: any; style?: any }) {
+function Span({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
 	return (
 		<Text
 			style={[

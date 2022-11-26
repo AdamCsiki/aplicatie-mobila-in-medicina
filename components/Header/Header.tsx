@@ -1,37 +1,30 @@
+import style from "./Header.style";
 import { View, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import Logo from "../Logo/Logo";
-import style from "./Header.style";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { LinearGradient } from "expo-linear-gradient";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../../constants/Colors";
-import Menu from "../../screens/Menu/Menu";
+import SearchInput from "../SearchInput/SearchInput";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
 function Header() {
-	const [menuShown, setMenuShown] = useState(false);
+	const navigation = useNavigation();
 
 	return (
-		<LinearGradient
-			colors={[Colors.mainColor, Colors.secondColor]}
-			style={style.Header}
-			start={{ x: 0, y: 0 }}
-			end={{ x: 1, y: 1 }}
-		>
-			<Logo />
-
+		<View style={style.Header}>
+			<SearchInput />
 			<TouchableOpacity
 				onPress={(e) => {
-					setMenuShown(!menuShown);
+					navigation.dispatch(DrawerActions.openDrawer);
 				}}
-				style={style.ProfileContainer}
 			>
 				<Icon
-					name="user-circle-o"
+					name="bars"
 					size={40}
-					color={"#fff"}
+					color={Colors.black}
 				/>
 			</TouchableOpacity>
-		</LinearGradient>
+		</View>
 	);
 }
 

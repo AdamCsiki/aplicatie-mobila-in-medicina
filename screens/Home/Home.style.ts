@@ -5,6 +5,7 @@ import padding from "../../misc/padding";
 
 export default StyleSheet.create({
 	Home: {
+		backgroundColor: Colors.black,
 		width: "100%",
 		height: "100%",
 
@@ -27,21 +28,5 @@ export default StyleSheet.create({
 
 		...padding(10),
 		display: "flex",
-	},
-	homeNewsContainer: {
-		height: 100,
-	},
-	homeNews: {
-		backgroundColor: "#ababab",
-
-		...padding(10),
-
-		display: "flex",
-		flexDirection: "row",
-	},
-	homeNewsContent: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
 	},
 });

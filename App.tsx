@@ -1,33 +1,36 @@
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { RDrawer } from "./components/Drawer/Drawer";
+import { RDrawer } from "./routes/Drawer/Drawer";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
 import { useFonts } from "expo-font";
+import style from "./App.style";
 
 import styles from "./App.style";
 import Header from "./components/Header/Header";
-import HomeNavigator from "./routes/homeStack";
 
 export default function App() {
-	const [fontsLoaded] = useFonts({
-		Bauhaus: require("./assets/fonts/BauhausRegular.ttf"),
+	const [loaded] = useFonts({
 		DMSans: require("./assets/fonts/DMSans-Regular.ttf"),
 	});
 
-	if (!fontsLoaded) {
+	if (!loaded) {
 		return (
-			<View>
-				<Text>Loading fonts...</Text>
+			<View style={style.App}>
+				<Text>Loading fonts :D</Text>
 			</View>
 		);
 	}
 
 	return (
-		<NavigationContainer>
-			<SafeAreaView style={styles.container}>
+		<View style={style.App}>
+			<NavigationContainer>
+				<Header />
 				<StatusBar style="auto" />
 				<RDrawer />
-			</SafeAreaView>
-		</NavigationContainer>
+			</NavigationContainer>
+		</View>
 	);
 }

@@ -6,24 +6,30 @@ let statusBarHeight = StatusBar.currentHeight ?? 16;
 
 export default StyleSheet.create({
 	Header: {
-		shadowColor: "black",
-		shadowOffset: { width: -2, height: 4 },
-		shadowOpacity: 1,
-		shadowRadius: 3,
-
-		borderBottomLeftRadius: 25,
-		borderBottomRightRadius: 25,
+		backgroundColor: Colors.mainColor,
 
 		width: "100%",
+		height: "auto",
 
-		...padding(16, 0),
+		...padding(16, 8),
 
-		paddingTop: Platform.OS === "android" ? statusBarHeight : 16,
+		paddingTop: Platform.OS === "android" ? statusBarHeight + 8 : 16,
 
 		display: "flex",
 		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "flex-start",
+		justifyContent: "flex-end",
+		alignItems: "center",
+
+		position: "relative", // may need to make it absolute
+
+		zIndex: 100,
+
+		top: 0,
+		left: 0,
+		right: 0,
 	},
-	ProfileContainer: {},
+
+	HeaderIcon: {
+		color: Colors.black,
+	},
 });

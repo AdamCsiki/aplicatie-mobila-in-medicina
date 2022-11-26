@@ -2,10 +2,10 @@ import { StyleSheet } from "react-native";
 import Colors from "./constants/Colors";
 
 export default StyleSheet.create({
-	container: {
-		backgroundColor: Colors.light.background,
-
-		flex: 1,
+	App: {
+		zIndex: 1,
+		height: "100%",
+		width: "100%",
 
 		justifyContent: "flex-start",
 

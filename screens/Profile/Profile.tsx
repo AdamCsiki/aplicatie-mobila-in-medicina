@@ -5,11 +5,9 @@ import Header from "../../components/Header/Header";
 
 function Profile({ navigation }: { navigation: any }) {
 	return (
-		<ScrollView contentContainerStyle={styles.Profile}>
-			<Button>
-				<Text>Button</Text>
-			</Button>
-		</ScrollView>
+		<View>
+			<ScrollView contentContainerStyle={styles.Profile}></ScrollView>
+		</View>
 	);
 }
 
