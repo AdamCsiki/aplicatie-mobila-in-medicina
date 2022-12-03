@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		width: "100%",
 		height: "auto",
 
-		...padding(16, 8),
+		...padding(8, 8),
 
 		paddingTop: Platform.OS === "android" ? statusBarHeight + 8 : 16,
 

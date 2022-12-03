@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, Touchable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { H5, H6 } from "../../constants/TypeScale";
+import { H5, H6, Span } from "../../constants/TypeScale";
 import style from "./UserContainer.style";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Colors from "../../constants/Colors";
@@ -8,12 +8,14 @@ import Chat from "../../screens/Chat/Chat";
 
 function UserContainer({
 	name,
+	description,
 	profilePicture,
 	backgroundColor,
 	color,
 	navigation,
 }: {
 	name: string;
+	description?: string;
 	profilePicture?: any;
 	backgroundColor?: string;
 	color?: string;
@@ -47,9 +49,8 @@ function UserContainer({
 				/>
 			</TouchableOpacity>
 
-			<H5 style={{ flexGrow: 1, color: color ?? Colors.white }}>
-				{name}
-			</H5>
+			<H5>{name}</H5>
+			<Span style={{ flexGrow: 1, marginLeft: 25 }}>{description}</Span>
 			<TouchableOpacity
 				style={{
 					backgroundColor: Colors.white10,

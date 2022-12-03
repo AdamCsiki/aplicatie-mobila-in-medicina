@@ -1,8 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useEffect, useState } from "react";
+import { View } from "react-native";
 import Colors from "../../constants/Colors";
 import ChatList from "../../screens/ChatList/ChatList";
 import Chat from "../../screens/Chat/Chat";
+import SearchInput from "../../components/SearchInput/SearchInput";
 
 const Stack = createStackNavigator();
 
@@ -16,6 +18,7 @@ function ChatNavigation() {
 				headerTitleStyle: {
 					color: Colors.black,
 				},
+				headerRight: () => <SearchInput />,
 			}}
 		>
 			<Stack.Screen

@@ -12,10 +12,10 @@ function Header() {
 
 	return (
 		<View style={style.Header}>
-			<SearchInput />
+			{/* <SearchInput /> */}
 			<TouchableOpacity
 				onPress={(e) => {
-					navigation.dispatch(DrawerActions.openDrawer);
+					navigation.dispatch(DrawerActions.toggleDrawer);
 				}}
 			>
 				<Icon

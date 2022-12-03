@@ -25,10 +25,14 @@ export default {
 		text: black,
 		background: white,
 		tint: mainColor,
+		tabIconDefault: white + "50",
+		tabIconSelected: mainColor,
 	},
 	dark: {
 		text: white,
 		background: black,
 		tint: mainColor,
+		tabIconDefault: black + "50",
+		tabIconSelected: mainColor,
 	},
 };

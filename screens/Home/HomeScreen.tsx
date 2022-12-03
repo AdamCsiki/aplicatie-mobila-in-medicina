@@ -1,4 +1,4 @@
-import style from "./Home.style";
+import style from "./HomeScreen.style";
 import {
 	View,
 	ScrollView,
@@ -7,10 +7,7 @@ import {
 	Image,
 	KeyboardAvoidingView,
 } from "react-native";
-import Button from "../../components/Button/Button";
 import { H1, H2, H3, H4, H5, H6, Span } from "../../constants/TypeScale";
-import SearchInput from "../../components/SearchInput/SearchInput";
-import Header from "../../components/Header/Header";
 import Colors from "../../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 

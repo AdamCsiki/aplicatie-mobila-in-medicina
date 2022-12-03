@@ -9,7 +9,7 @@ export default StyleSheet.create({
 		flexGrow: 1,
 	},
 	ChatListScroll: {
-		backgroundColor: Colors.white10,
+		// backgroundColor: Colors.white10,
 
 		padding: 5,
 

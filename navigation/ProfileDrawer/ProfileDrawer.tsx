@@ -3,15 +3,11 @@ import {
 	DrawerContentScrollView,
 	DrawerItemList,
 } from "@react-navigation/drawer";
-import { useEffect } from "react";
 import Colors from "../../constants/Colors";
 import style from "./Drawer.style";
-import Home from "../../screens/Home/Home";
 import Profile from "../../screens/Profile/Profile";
 import { Image, Text, View } from "react-native";
-import Sizes from "../../constants/Sizes";
-import ChatList from "../../screens/ChatList/ChatList";
-import ChatNavigation from "../ChatNavigation/ChatNavigation";
+import HomeTab from "../HomeTab/HomeTab";
 
 const Drawer = createDrawerNavigator();
 
@@ -19,6 +15,9 @@ const CustomDrawer = (props: any) => {
 	return (
 		<DrawerContentScrollView
 			style={style.Drawer}
+			contentContainerStyle={{
+				paddingTop: 0,
+			}}
 			{...props}
 		>
 			<View style={style.DrawerHeader}>
@@ -57,7 +56,7 @@ const CustomDrawer = (props: any) => {
 	);
 };
 
-function RDrawer() {
+function ProfileDrawer() {
 	return (
 		<Drawer.Navigator
 			drawerContent={(props) => <CustomDrawer {...props} />}
@@ -67,6 +66,7 @@ function RDrawer() {
 				drawerItemStyle: {
 					width: "100%",
 				},
+
 				drawerLabelStyle: { padding: 0 },
 
 				drawerActiveTintColor: Colors.mainColor,
@@ -76,19 +76,15 @@ function RDrawer() {
 			detachInactiveScreens={true}
 		>
 			<Drawer.Screen
-				name="Home"
-				component={Home}
+				name="MainPage"
+				component={HomeTab}
 			/>
 			<Drawer.Screen
 				name="Profile"
 				component={Profile}
 			/>
-			<Drawer.Screen
-				name="Chats"
-				component={ChatNavigation}
-			/>
 		</Drawer.Navigator>
 	);
 }
 
-export { RDrawer };
+export { ProfileDrawer };

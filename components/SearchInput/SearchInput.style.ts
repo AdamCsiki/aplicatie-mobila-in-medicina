@@ -6,19 +6,16 @@ export default StyleSheet.create({
 	SearchInput: {
 		backgroundColor: Colors.white50,
 
-		height: 50,
-
-		paddingLeft: 16,
-		paddingRight: 16,
+		height: "auto",
 
 		marginRight: 15,
+
+		paddingRight: 16,
 
 		display: "flex",
 		flexDirection: "row",
 		justifyContent: "flex-start",
 		alignItems: "center",
-
-		flexGrow: 1,
 
 		borderRadius: 100,
 
@@ -26,6 +23,8 @@ export default StyleSheet.create({
 	},
 	TextInput: {
 		fontSize: 16,
+
+		...padding(8, 16),
 
 		flexGrow: 1,
 	},

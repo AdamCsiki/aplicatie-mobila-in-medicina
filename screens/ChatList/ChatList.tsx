@@ -6,8 +6,23 @@ import UserContainer from "../../components/UserContainer/UserContainer";
 import style from "./ChatList.style";
 
 function ChatList({ navigation }: { navigation: any }) {
+	let botDescriptionList = [
+		"Ask me anything...",
+		"Need anything?",
+		"How are you?",
+		"Need help?",
+		"Please talk with me...",
+	];
+	let description;
 	let userList: any = [];
 	let currentUser = {};
+
+	useEffect(() => {
+		description =
+			botDescriptionList[
+				Math.floor(Math.random() * botDescriptionList.length)
+			];
+	});
 
 	return (
 		<View style={style.ChatList}>
@@ -20,6 +35,7 @@ function ChatList({ navigation }: { navigation: any }) {
 					profilePicture={
 						"https://i.ytimg.com/vi/YWcrfp_dXKM/maxresdefault.jpg"
 					}
+					description={"Ask me anything"}
 					navigation={navigation}
 				/>
 				{userList ?? undefined}
