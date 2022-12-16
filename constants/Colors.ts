@@ -1,38 +1,34 @@
-const mainColor = "#b2dbfa";
-const secondColor = "#1f2159";
-const black = "#141421";
-const white = "#EAF0F4";
-const highlight = "#41D975";
+export const colors = {
+	mainColor: "#b2dbfa",
+	secondColor: "#1f2159",
+	highlight: "#41D975",
+	black: "#141421",
+	black75: "#141421BF",
+	black50: "#14142180",
+	black25: "#14142140",
+	black10: "#1414211A",
+	white: "#EAF0F4",
+	white75: "#EAF0F4BF",
+	white50: "#EAF0F480",
+	white25: "#EAF0F440",
+	white10: "#EAF0F41A",
+};
 
 export default {
-	// Main Color Palette
-	mainColor: mainColor,
-	secondColor: secondColor,
-	black: black,
-	black75: black + "75",
-	black50: black + "50",
-	black25: black + "25",
-	black10: black + "10",
-	white: white,
-	white75: white + "75",
-	white50: white + "50",
-	white25: white + "25",
-	white10: white + "10",
-	highlight: highlight,
-
-	// Custom palette for light/dark
 	light: {
-		text: black,
-		background: white,
-		tint: mainColor,
-		tabIconDefault: white + "50",
-		tabIconSelected: mainColor,
+		primary: colors.mainColor,
+		text: colors.black,
+		background: colors.white,
+		tint: colors.mainColor,
+		tabIconDefault: colors.black,
+		tabIconSelected: colors.mainColor,
 	},
 	dark: {
-		text: white,
-		background: black,
-		tint: mainColor,
-		tabIconDefault: black + "50",
-		tabIconSelected: mainColor,
+		primary: colors.mainColor,
+		text: colors.white,
+		background: colors.black,
+		tint: colors.mainColor,
+		tabIconDefault: colors.black,
+		tabIconSelected: colors.mainColor,
 	},
 };

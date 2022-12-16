@@ -22,7 +22,7 @@ function ChatList({ navigation }: { navigation: any }) {
 			botDescriptionList[
 				Math.floor(Math.random() * botDescriptionList.length)
 			];
-	});
+	}, []);
 
 	return (
 		<View style={style.ChatList}>

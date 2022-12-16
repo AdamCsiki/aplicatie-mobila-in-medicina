@@ -1,11 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
+import { themeColors } from "../../misc/ThemeProvider";
 
 export default StyleSheet.create({
 	Profile: {
-		borderColor: "red",
-		borderWidth: 1,
-
 		width: "100%",
+		height: "1000%",
 
 		display: "flex",
 		flexDirection: "column",

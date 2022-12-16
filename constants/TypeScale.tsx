@@ -1,11 +1,11 @@
 import { Text } from "react-native";
 import Colors from "./Colors";
+import { themeColors } from "../misc/ThemeProvider";
 
 const headerFont = "DMSans";
 const textFont = "DMSans";
 const baseSize = 16;
 const ratio = 1.414;
-const color = Colors.white;
 
 const scales = {
 	h1: baseSize * Math.pow(ratio, 5),
@@ -36,7 +36,7 @@ function H1({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h1,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -65,7 +65,7 @@ function H2({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h2,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -94,7 +94,7 @@ function H3({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h3,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -123,7 +123,7 @@ function H4({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h4,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -152,7 +152,7 @@ function H5({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h5,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -181,7 +181,7 @@ function H6({
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h6,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}
@@ -210,7 +210,7 @@ function Span({
 				{
 					fontFamily: textFont,
 					fontSize: scales.baseText,
-					color: color,
+					color: themeColors().text,
 				},
 				style,
 			]}

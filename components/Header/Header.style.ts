@@ -1,12 +1,12 @@
 import { StyleSheet, StatusBar, Platform } from "react-native";
-import Colors from "../../constants/Colors";
+import Colors, { colors } from "../../constants/Colors";
 import padding from "../../misc/padding";
 
 let statusBarHeight = StatusBar.currentHeight ?? 16;
 
 export default StyleSheet.create({
 	Header: {
-		backgroundColor: Colors.mainColor,
+		backgroundColor: colors.mainColor,
 
 		width: "100%",
 		height: "auto",
@@ -30,6 +30,6 @@ export default StyleSheet.create({
 	},
 
 	HeaderIcon: {
-		color: Colors.black,
+		color: colors.black,
 	},
 });

@@ -29,6 +29,6 @@ export default StyleSheet.create({
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "flex-end",
-		alignItems: "flex-end",
+		alignItems: "center",
 	},
 });

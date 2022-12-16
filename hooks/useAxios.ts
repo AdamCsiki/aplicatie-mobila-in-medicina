@@ -1,28 +1,43 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const useAxios = (url: string) => {
+const useAxios = () => {
 	const [response, setResponse] = useState(null);
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(true);
 
-	const fetchData = () => {
-		axios
-			.get(url)
+	const fetchData = (
+		url: string,
+		method: string,
+		body = {},
+		headers = {}
+	) => {
+		axios({
+			method: method,
+			url: url,
+			data: body,
+			headers: headers,
+		})
 			.then((res) => {
 				setResponse(res.data);
 			})
-			.catch((err) => setError(err))
+			.catch((err) => {
+				if (!err?.response) {
+					setError("No Server Response");
+				} else if (err.response?.status === 400) {
+					setError("Missing Email or Password");
+				} else if (err.response?.status === 401) {
+					setError("Unauthorized");
+				} else {
+					setError("Login Failed");
+				}
+			})
 			.finally(() => {
 				setLoading(false);
 			});
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, []);
-
-	return [response, error, loading];
+	return [response, error, loading, fetchData];
 };
 
 export default useAxios;
