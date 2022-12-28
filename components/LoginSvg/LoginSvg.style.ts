@@ -1,20 +1,22 @@
 import { useTheme } from "./../../misc/ThemeProvider";
+
 import { StyleSheet } from "react-native";
-import padding from "../../misc/padding";
 
 export default () => {
 	const { colors } = useTheme();
 
 	return StyleSheet.create({
-		Button: {
-			backgroundColor: colors.button,
+		LoginSvg: {
+			width: 250,
+			height: 200,
 
-			...padding(12.5, 15),
+			backgroundColor: colors.background,
+			color: colors.text,
 
-			borderRadius: 15,
+			borderWidth: 1,
+			borderColor: colors.text,
 
 			display: "flex",
-			flexDirection: "column",
 			justifyContent: "center",
 			alignItems: "center",
 		},

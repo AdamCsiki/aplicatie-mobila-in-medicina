@@ -5,7 +5,7 @@ import Colors from "../constants/Colors";
 export const ThemeContext = createContext({
 	dark: false,
 	colors: Colors.light,
-	setScheme: () => {},
+	setScheme: (theme: string) => {},
 });
 
 export function ThemeProvider(props: any) {

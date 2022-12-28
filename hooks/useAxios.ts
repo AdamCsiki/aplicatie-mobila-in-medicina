@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../api/base";
 import { useEffect, useState } from "react";
 
 const useAxios = () => {
@@ -12,6 +12,8 @@ const useAxios = () => {
 		body = {},
 		headers = {}
 	) => {
+		setError("");
+
 		axios({
 			method: method,
 			url: url,
@@ -37,7 +39,7 @@ const useAxios = () => {
 			});
 	};
 
-	return [response, error, loading, fetchData];
+	return { response, error, loading, fetchData };
 };
 
 export default useAxios;

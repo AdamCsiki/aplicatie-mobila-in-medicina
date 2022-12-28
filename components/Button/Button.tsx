@@ -1,4 +1,5 @@
 import { TouchableOpacity } from "react-native";
+import { useTheme } from "../../misc/ThemeProvider";
 import styles from "./Button.style";
 
 function Button({
@@ -12,7 +13,7 @@ function Button({
 }) {
 	return (
 		<TouchableOpacity
-			style={[styles.Button, style]}
+			style={[styles().Button, style]}
 			activeOpacity={0.5}
 			onPress={onPress}
 		>

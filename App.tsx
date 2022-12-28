@@ -1,16 +1,13 @@
 import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import { Text, View, SafeAreaView } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
+import { Text, View } from "react-native";
+import { useContext } from "react";
+
 import { useFonts } from "expo-font";
 import style from "./App.style";
 import { ThemeProvider } from "./misc/ThemeProvider";
 
-import styles from "./App.style";
-import Header from "./components/Header/Header";
-import RootStack from "./router/stacks/RootStack/RootStack";
+import AuthProvider, { AuthContext } from "./context/AuthContext";
+import AppNav from "./router/AppNav";
 
 export default function App() {
 	const [loaded] = useFonts({
@@ -27,13 +24,10 @@ export default function App() {
 	}
 
 	return (
-		<ThemeProvider>
-			<View style={style.App}>
-				<NavigationContainer>
-					<StatusBar style="auto" />
-					<RootStack />
-				</NavigationContainer>
-			</View>
-		</ThemeProvider>
+		<AuthProvider>
+			<ThemeProvider>
+				<AppNav />
+			</ThemeProvider>
+		</AuthProvider>
 	);
 }

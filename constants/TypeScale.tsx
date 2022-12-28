@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 import Colors from "./Colors";
-import { themeColors } from "../misc/ThemeProvider";
+import { useTheme } from "../misc/ThemeProvider";
 
 const headerFont = "DMSans";
 const textFont = "DMSans";
@@ -24,19 +24,20 @@ function H1({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h1,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -49,23 +50,24 @@ function H1({
 function H2({
 	children,
 	style,
-	left = true,
+	left,
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h2,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -82,19 +84,20 @@ function H3({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h3,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -111,19 +114,20 @@ function H4({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h4,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -140,19 +144,20 @@ function H5({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h5,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -169,19 +174,20 @@ function H6({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: headerFont,
 					fontSize: scales.h6,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -198,19 +204,20 @@ function Span({
 	center,
 	right,
 }: {
-	children: any;
+	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
 }) {
+	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
 					fontFamily: textFont,
 					fontSize: scales.baseText,
-					color: themeColors().text,
+					color: colors.text,
 				},
 				style,
 			]}
@@ -220,4 +227,34 @@ function Span({
 	);
 }
 
-export { H1, H2, H3, H4, H5, H6, Span, scales };
+function ErrorSpan({
+	children,
+	style,
+	left,
+	center,
+	right,
+}: {
+	children?: any;
+	style?: any;
+	left?: boolean;
+	center?: boolean;
+	right?: boolean;
+}) {
+	const { colors } = useTheme();
+	return (
+		<Text
+			style={[
+				{
+					fontFamily: textFont,
+					fontSize: scales.baseText,
+					color: colors.error,
+				},
+				style,
+			]}
+		>
+			{children}
+		</Text>
+	);
+}
+
+export { H1, H2, H3, H4, H5, H6, Span, ErrorSpan, scales };
