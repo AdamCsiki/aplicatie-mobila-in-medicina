@@ -4,6 +4,7 @@ import { useTheme } from "../misc/ThemeProvider";
 
 const headerFont = "DMSans";
 const textFont = "DMSans";
+const boldFont = "DMSans_bold";
 const baseSize = 16;
 const ratio = 1.414;
 
@@ -23,19 +24,21 @@ function H1({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h1,
 					color: colors.text,
 				},
@@ -53,19 +56,21 @@ function H2({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h2,
 					color: colors.text,
 				},
@@ -83,19 +88,21 @@ function H3({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h3,
 					color: colors.text,
 				},
@@ -113,19 +120,21 @@ function H4({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h4,
 					color: colors.text,
 				},
@@ -143,19 +152,21 @@ function H5({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h5,
 					color: colors.text,
 				},
@@ -173,19 +184,21 @@ function H6({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: headerFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h6,
 					color: colors.text,
 				},
@@ -203,19 +216,21 @@ function Span({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: textFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.baseText,
 					color: colors.text,
 				},
@@ -233,19 +248,21 @@ function ErrorSpan({
 	left,
 	center,
 	right,
+	bold,
 }: {
 	children?: any;
 	style?: any;
 	left?: boolean;
 	center?: boolean;
 	right?: boolean;
+	bold?: boolean;
 }) {
 	const { colors } = useTheme();
 	return (
 		<Text
 			style={[
 				{
-					fontFamily: textFont,
+					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.baseText,
 					color: colors.error,
 				},

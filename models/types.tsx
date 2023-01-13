@@ -4,8 +4,4 @@ export type User = {
 	email: string | null;
 	password: string | null;
 	roles: string[] | null;
-	tokens: {
-		accessToken: string | null;
-		refreshToken: string | null;
-	};
 };

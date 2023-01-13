@@ -1,6 +1,7 @@
 import { themeColors, useTheme } from "./../../misc/ThemeProvider";
 import { StyleSheet } from "react-native";
 import { ThemeProvider } from "../../misc/ThemeProvider";
+import { scales } from "../../constants/TypeScale";
 import padding from "../../misc/padding";
 
 export default () => {
@@ -18,14 +19,15 @@ export default () => {
 			alignItems: "center",
 		},
 		InputField: {
-			borderBottomWidth: 1,
+			color: colors.text,
+
+			borderColor: colors.placeholder,
+			borderBottomWidth: 2,
 
 			marginLeft: 10,
 
-			fontSize: 16,
-
-			color: colors.text,
-			borderColor: colors.placeholder,
+			fontSize: scales.h6,
+			fontWeight: "bold",
 
 			flexGrow: 1,
 		},

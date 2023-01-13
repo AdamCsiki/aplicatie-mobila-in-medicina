@@ -3,14 +3,14 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 
 export const ThemeContext = createContext({
-	dark: false,
+	dark: true,
 	colors: Colors.light,
 	setScheme: (theme: string) => {},
 });
 
 export function ThemeProvider(props: any) {
 	const colorScheme = useColorScheme(); // "light" OR "dark" OR "null"
-	const [isDark, setIsDark] = useState(colorScheme == "dark");
+	const [isDark, setIsDark] = useState(colorScheme === "dark");
 
 	useEffect(() => {
 		setIsDark(colorScheme == "dark");

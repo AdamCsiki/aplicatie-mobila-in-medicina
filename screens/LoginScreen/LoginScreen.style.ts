@@ -10,30 +10,52 @@ export default () => {
 			flexGrow: 1,
 		},
 		LoginContainer: {
+			backgroundColor: colors.background,
+
+			...padding("10%", "10%"),
+
 			display: "flex",
 			flexDirection: "column",
 			justifyContent: "space-around",
 			alignItems: "center",
 
 			flexGrow: 1,
+		},
+		loginHeaderContainer: {
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
 
-			...padding("5%", "10%"),
+			flexGrow: 1,
+		},
+		loginHeader: {
+			color: colors.text,
 		},
 		loginInputContainer: {
-			borderWidth: 1,
-			borderColor: colors.text,
-
 			height: "30%",
 
 			display: "flex",
 			flexDirection: "column",
-			justifyContent: "space-around",
+			justifyContent: "center",
 			alignItems: "center",
+
+			flexGrow: 1,
 		},
 		loginInput: {
+			marginBottom: "5%",
+		},
+		loginButtonContainer: {
 			width: "100%",
-			borderBottomColor: colors.text,
-			borderBottomWidth: 1,
+
+			display: "flex",
+			flexDirection: "row",
+			justifyContent: "space-between",
+			alignItems: "center",
+
+			flexGrow: 1,
+		},
+		loginButton: {
+			width: "25%",
 		},
 	});
 };

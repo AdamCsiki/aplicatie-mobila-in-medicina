@@ -8,7 +8,11 @@ const Auth = createStackNavigator();
 
 function AuthStack() {
 	return (
-		<Auth.Navigator>
+		<Auth.Navigator
+			screenOptions={{
+				headerShown: false,
+			}}
+		>
 			<Auth.Screen
 				name="Login"
 				component={LoginScreen}

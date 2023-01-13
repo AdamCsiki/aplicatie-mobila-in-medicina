@@ -11,7 +11,7 @@ function Header() {
 	const navigation = useNavigation();
 
 	return (
-		<View style={style.Header}>
+		<View style={style().Header}>
 			{/* <SearchInput /> */}
 			<TouchableOpacity
 				onPress={(e) => {
@@ -21,7 +21,6 @@ function Header() {
 				<Icon
 					name="bars"
 					size={40}
-					color={Colors.black}
 				/>
 			</TouchableOpacity>
 		</View>

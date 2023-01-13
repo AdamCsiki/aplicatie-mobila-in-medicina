@@ -9,9 +9,14 @@ export default () => {
 		Button: {
 			backgroundColor: colors.button,
 
-			...padding(12.5, 15),
+			minWidth: 125,
+			minHeight: 60,
 
-			borderRadius: 15,
+			maxWidth: 250,
+
+			...padding(15, 20),
+
+			borderRadius: 25,
 
 			display: "flex",
 			flexDirection: "column",

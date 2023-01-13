@@ -5,14 +5,16 @@ import { H6 } from "../../constants/TypeScale";
 
 function LinkButton({
 	children,
+	buttonStyle,
 	onPress,
 }: {
 	children?: any;
+	buttonStyle?: any;
 	onPress?: () => {};
 }) {
 	return (
 		<TouchableOpacity
-			style={style().LinkButton}
+			style={[style().LinkButton, buttonStyle]}
 			onPress={onPress}
 		>
 			<H6 style={style().linkButtonText}>{children}</H6>

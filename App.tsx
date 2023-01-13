@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { Text, View } from "react-native";
+import { Text, View, SafeAreaView } from "react-native";
 import { useContext } from "react";
 
 import { useFonts } from "expo-font";
@@ -12,6 +12,7 @@ import AppNav from "./router/AppNav";
 export default function App() {
 	const [loaded] = useFonts({
 		DMSans: require("./assets/fonts/DMSans-Regular.ttf"),
+		DMSans_bold: require("./assets/fonts/DMSans-Bold.ttf"),
 		Bauhaus: require("./assets/fonts/BauhausRegular.ttf"),
 	});
 

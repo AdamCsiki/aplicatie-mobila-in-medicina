@@ -5,9 +5,5 @@ export const defaultUser: User = {
 	image: null,
 	email: null,
 	password: null,
-	roles: ["ROLE_USER"],
-	tokens: {
-		accessToken: null,
-		refreshToken: null,
-	},
+	roles: [],
 };

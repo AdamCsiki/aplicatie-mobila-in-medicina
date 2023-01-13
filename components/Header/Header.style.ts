@@ -1,35 +1,38 @@
 import { StyleSheet, StatusBar, Platform } from "react-native";
-import Colors, { colors } from "../../constants/Colors";
+import { useTheme } from "../../misc/ThemeProvider";
 import padding from "../../misc/padding";
 
 let statusBarHeight = StatusBar.currentHeight ?? 16;
 
-export default StyleSheet.create({
-	Header: {
-		backgroundColor: colors.mainColor,
+export default () => {
+	const { colors } = useTheme();
 
-		width: "100%",
-		height: "auto",
+	return StyleSheet.create({
+		Header: {
+			backgroundColor: colors.tint,
 
-		...padding(8, 8),
+			width: "100%",
+			height: "auto",
 
-		paddingTop: Platform.OS === "android" ? statusBarHeight + 8 : 16,
+			...padding(8, 8),
 
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "flex-end",
-		alignItems: "center",
+			paddingTop: Platform.OS === "android" ? statusBarHeight + 8 : 16,
 
-		position: "relative", // may need to make it absolute
+			display: "flex",
+			flexDirection: "row",
+			justifyContent: "flex-end",
+			alignItems: "center",
 
-		zIndex: 100,
+			position: "relative", // may need to make it absolute
 
-		top: 0,
-		left: 0,
-		right: 0,
-	},
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+		},
 
-	HeaderIcon: {
-		color: colors.black,
-	},
-});
+		HeaderIcon: {
+			color: colors.background,
+		},
+	});
+};

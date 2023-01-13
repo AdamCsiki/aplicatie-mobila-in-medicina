@@ -13,6 +13,8 @@ import { useTheme } from "../../misc/ThemeProvider";
 function InputField({
 	label,
 	placeholder,
+	containerStyle,
+	inputStyle,
 	keyboardType,
 	textContentType,
 	autoCapitalize,
@@ -22,6 +24,8 @@ function InputField({
 	onChangeText,
 }: {
 	placeholder?: string;
+	containerStyle?: any;
+	inputStyle?: any;
 	label?: string;
 	keyboardType?: KeyboardTypeOptions;
 	textContentType?: TextInputProps["textContentType"];
@@ -32,7 +36,7 @@ function InputField({
 	onChangeText: (e: any) => void;
 }) {
 	return (
-		<View style={[style().InputFieldContainer]}>
+		<View style={[style().InputFieldContainer, containerStyle]}>
 			{label ? <H6 style={style().inputFieldLabel}>{label}</H6> : null}
 
 			<TextInput
@@ -41,6 +45,7 @@ function InputField({
 					{
 						marginLeft: label ? 5 : 0, // if there is no label then there is no need for a gap
 					},
+					inputStyle,
 				]}
 				placeholder={placeholder ? " " + placeholder : ""}
 				placeholderTextColor={style().inputFieldPlaceHolder.color}

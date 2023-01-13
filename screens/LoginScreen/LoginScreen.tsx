@@ -1,48 +1,27 @@
 import style from "./LoginScreen.style";
-import { useContext, useState } from "react";
-import {
-	KeyboardAvoidingView,
-	ScrollView,
-	Switch,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { useState } from "react";
+import { KeyboardAvoidingView, ScrollView, View } from "react-native";
 import InputField from "../../components/InputField/InputField";
-import { AuthContext, useAuth } from "../../context/AuthContext";
-import { User } from "../../models/types";
-import { useTheme } from "../../misc/ThemeProvider";
+import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/Button/Button";
-import { ErrorSpan, H6 } from "../../constants/TypeScale";
-import LoginSvg from "../../components/LoginSvg/LoginSvg";
+import { ErrorSpan, H2, H5 } from "../../constants/TypeScale";
 import LinkButton from "../../components/LinkButton/LinkButton";
-import useAxios from "../../hooks/useAxios";
 
 function LoginScreen() {
-	const { userToken } = useAuth();
-
-	const { response, error, loading, fetchData } = useAxios();
+	const { login, error, getUser } = useAuth();
+	const [customError, setCustomError] = useState("");
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const submitLogin = () => {
-		fetchData(
-			"auth/authenticate",
-			"POST",
-			{
-				email: email,
-				password: password,
-			},
-			{
-				Accept: "application/json",
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Headers":
-					"Origin, X-Requested-With, Content-Type, Accept",
-				"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH",
-			}
-		);
+		if (email.trim().length == 0 || password.trim().length == 0) {
+			setCustomError("Email or password missing!");
+			return;
+		}
+		login(email.trim(), password.trim());
+		getUser(email.trim(), password.trim());
+		setCustomError(error);
 	};
 
 	return (
@@ -51,10 +30,19 @@ function LoginScreen() {
 			behavior="padding"
 		>
 			<ScrollView contentContainerStyle={style().LoginContainer}>
-				<LoginSvg />
+				<View style={style().loginHeaderContainer}>
+					<H2
+						bold
+						style={style().loginHeader}
+					>
+						Login
+					</H2>
+				</View>
+
 				<View style={style().loginInputContainer}>
 					<InputField
 						placeholder="Email"
+						containerStyle={style().loginInput}
 						textContentType="emailAddress"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -62,23 +50,36 @@ function LoginScreen() {
 					/>
 					<InputField
 						placeholder="Password"
+						containerStyle={style().loginInput}
 						textContentType="password"
 						secureTextEntry={true}
 						autoCorrect={false}
 						autoCapitalize="none"
 						onChangeText={(e) => setPassword(e)}
 					/>
-					<LinkButton>Can't sign in?</LinkButton>
-					<ErrorSpan>{error}</ErrorSpan>
+					<LinkButton buttonStyle={style().loginInput}>
+						Can't sign in?
+					</LinkButton>
+					<ErrorSpan>{customError}</ErrorSpan>
 				</View>
-				<Button
-					onPress={() => {
-						submitLogin();
-						console.log(response);
-					}}
-				>
-					<H6>Login</H6>
-				</Button>
+				<View style={style().loginButtonContainer}>
+					<Button
+						style={style().loginButton}
+						onPress={() => {
+							submitLogin();
+						}}
+					>
+						<H5 bold>Back</H5>
+					</Button>
+					<Button
+						style={style().loginButton}
+						onPress={() => {
+							submitLogin();
+						}}
+					>
+						<H5 bold>Login</H5>
+					</Button>
+				</View>
 			</ScrollView>
 		</KeyboardAvoidingView>
 	);

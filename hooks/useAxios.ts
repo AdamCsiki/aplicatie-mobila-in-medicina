@@ -1,8 +1,9 @@
 import axios from "../api/base";
 import { useEffect, useState } from "react";
+import httpStatus from "../misc/httpStatus";
 
-const useAxios = () => {
-	const [response, setResponse] = useState(null);
+function useAxios() {
+	const [response, setResponse] = useState<any>({});
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(true);
 
@@ -24,22 +25,14 @@ const useAxios = () => {
 				setResponse(res.data);
 			})
 			.catch((err) => {
-				if (!err?.response) {
-					setError("No Server Response");
-				} else if (err.response?.status === 400) {
-					setError("Missing Email or Password");
-				} else if (err.response?.status === 401) {
-					setError("Unauthorized");
-				} else {
-					setError("Login Failed");
-				}
+				setError(httpStatus[err.response.status].message);
 			})
 			.finally(() => {
 				setLoading(false);
 			});
 	};
 
-	return { response, error, loading, fetchData };
-};
+	return { response, error, loading, fetchData, axios };
+}
 
 export default useAxios;
