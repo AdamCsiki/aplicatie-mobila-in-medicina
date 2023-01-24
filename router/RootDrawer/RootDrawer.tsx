@@ -3,11 +3,9 @@ import {
 	DrawerContentScrollView,
 	DrawerItemList,
 } from "@react-navigation/drawer";
-import Colors from "../../constants/Colors";
-import style from "./Drawer.style";
-import Profile from "../../screens/Profile/Profile";
+import style from "./RootDrawer.style";
 import { Image, Text, View } from "react-native";
-import HomeTab from "../HomeTab/HomeTab";
+import RootStack from "../RootStack/RootStack";
 
 const Drawer = createDrawerNavigator();
 
@@ -23,8 +21,6 @@ const CustomDrawer = (props: any) => {
 			<View style={style.DrawerHeader}>
 				<View
 					style={{
-						backgroundColor: Colors.black,
-
 						width: 110,
 						height: 125,
 
@@ -56,7 +52,7 @@ const CustomDrawer = (props: any) => {
 	);
 };
 
-function ProfileDrawer() {
+function RootDrawer() {
 	return (
 		<Drawer.Navigator
 			drawerContent={(props) => <CustomDrawer {...props} />}
@@ -68,23 +64,16 @@ function ProfileDrawer() {
 				},
 
 				drawerLabelStyle: { padding: 0 },
-
-				drawerActiveTintColor: Colors.mainColor,
-				drawerInactiveTintColor: Colors.white,
 				drawerPosition: "right",
 			}}
 			detachInactiveScreens={true}
 		>
 			<Drawer.Screen
-				name="MainPage"
-				component={HomeTab}
-			/>
-			<Drawer.Screen
-				name="Profile"
-				component={Profile}
+				name="Home"
+				component={RootStack}
 			/>
 		</Drawer.Navigator>
 	);
 }
 
-export { ProfileDrawer };
+export { RootDrawer };

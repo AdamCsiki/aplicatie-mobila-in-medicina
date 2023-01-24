@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Text } from "@ui-kitten/components";
 import Colors from "./Colors";
 import { useTheme } from "../misc/ThemeProvider";
 
@@ -40,7 +40,7 @@ function H1({
 				{
 					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h1,
-					color: colors.text,
+					// color: colors.text,
 				},
 				style,
 			]}
@@ -72,7 +72,7 @@ function H2({
 				{
 					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h2,
-					color: colors.text,
+					// color: colors.text,
 				},
 				style,
 			]}
@@ -104,7 +104,7 @@ function H3({
 				{
 					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h3,
-					color: colors.text,
+					// color: colors.text,
 				},
 				style,
 			]}
@@ -136,7 +136,7 @@ function H4({
 				{
 					fontFamily: bold ? boldFont : textFont,
 					fontSize: scales.h4,
-					color: colors.text,
+					// color: colors.text,
 				},
 				style,
 			]}

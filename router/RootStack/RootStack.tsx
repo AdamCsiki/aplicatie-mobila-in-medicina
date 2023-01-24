@@ -1,13 +1,14 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, Text } from "react-native";
-import Header from "../../../components/Header/Header";
-import Profile from "../../../screens/Profile/Profile";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Header from "../../components/Header/Header";
+import Profile from "../../screens/Profile/Profile";
 
 const RootStackNav = createStackNavigator();
+const RootBottomTabNav = createBottomTabNavigator();
 
 function RootStack() {
 	return (
-		<RootStackNav.Navigator
+		<RootBottomTabNav.Navigator
 			screenOptions={{
 				header: () => <Header />,
 			}}
@@ -16,7 +17,7 @@ function RootStack() {
 				name="root"
 				component={Profile}
 			/>
-		</RootStackNav.Navigator>
+		</RootBottomTabNav.Navigator>
 	);
 }
 

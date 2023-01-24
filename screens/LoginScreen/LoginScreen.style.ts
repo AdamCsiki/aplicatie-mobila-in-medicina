@@ -10,7 +10,8 @@ export default () => {
 			flexGrow: 1,
 		},
 		LoginContainer: {
-			backgroundColor: colors.background,
+			height: "100%",
+			width: "100%",
 
 			...padding("10%", "10%"),
 
@@ -18,8 +19,6 @@ export default () => {
 			flexDirection: "column",
 			justifyContent: "space-around",
 			alignItems: "center",
-
-			flexGrow: 1,
 		},
 		loginHeaderContainer: {
 			display: "flex",
@@ -27,9 +26,6 @@ export default () => {
 			alignItems: "center",
 
 			flexGrow: 1,
-		},
-		loginHeader: {
-			color: colors.text,
 		},
 		loginInputContainer: {
 			height: "30%",
@@ -42,15 +38,15 @@ export default () => {
 			flexGrow: 1,
 		},
 		loginInput: {
-			marginBottom: "5%",
+			marginBottom: 32,
 		},
 		loginButtonContainer: {
 			width: "100%",
 
 			display: "flex",
 			flexDirection: "row",
-			justifyContent: "space-between",
-			alignItems: "center",
+			justifyContent: "center",
+			alignItems: "flex-start",
 
 			flexGrow: 1,
 		},

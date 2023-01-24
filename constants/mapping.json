@@ -1,0 +1,57 @@
+{
+	"strict": {
+		"text-font-family": "DMSans",
+
+		"text-heading-1-font-size": 91,
+		"text-heading-1-font-weight": "800",
+		"text-heading-1-font-family": "DMSans",
+
+		"text-heading-2-font-size": 64,
+		"text-heading-2-font-weight": "800",
+		"text-heading-2-font-family": "DMSans",
+
+		"text-heading-3-font-size": 46,
+		"text-heading-3-font-weight": "800",
+		"text-heading-3-font-family": "DMSans",
+
+		"text-heading-4-font-size": 32,
+		"text-heading-4-font-weight": "800",
+		"text-heading-4-font-family": "DMSans",
+
+		"text-heading-5-font-size": 23,
+		"text-heading-5-font-weight": "800",
+		"text-heading-5-font-family": "DMSans",
+
+		"text-heading-6-font-size": 16,
+		"text-heading-6-font-weight": "800",
+		"text-heading-6-font-family": "DMSans",
+
+		"text-subtitle-1-font-size": 16,
+		"text-subtitle-1-font-weight": "600",
+		"text-subtitle-1-font-family": "DMSans",
+
+		"text-subtitle-2-font-size": 12,
+		"text-subtitle-2-font-weight": "600",
+		"text-subtitle-2-font-family": "DMSans",
+
+		"text-paragraph-1-font-size": 16,
+		"text-paragraph-1-font-weight": "400",
+		"text-paragraph-1-font-family": "DMSans",
+
+		"text-paragraph-2-font-size": 16,
+		"text-paragraph-2-font-weight": "400",
+		"text-paragraph-2-font-family": "DMSans",
+
+		"text-caption-1-font-size": 16,
+		"text-caption-1-font-weight": "600",
+		"text-caption-1-font-family": "DMSans",
+
+		"text-caption-2-font-size": 12,
+		"text-caption-2-font-weight": "800",
+		"text-caption-2-font-family": "DMSans",
+
+		"text-label-font-size": 16,
+		"text-label-font-weight": "800",
+		"text-label-font-family": "DMSans"
+	}
+}

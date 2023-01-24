@@ -1,15 +1,15 @@
 import { StyleSheet, StatusBar, Platform } from "react-native";
-import { useTheme } from "../../misc/ThemeProvider";
+import { useTheme } from "@ui-kitten/components";
 import padding from "../../misc/padding";
 
 let statusBarHeight = StatusBar.currentHeight ?? 16;
 
 export default () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
 
 	return StyleSheet.create({
 		Header: {
-			backgroundColor: colors.tint,
+			backgroundColor: theme["background-primary-color-1"],
 
 			width: "100%",
 			height: "auto",
@@ -32,7 +32,7 @@ export default () => {
 		},
 
 		HeaderIcon: {
-			color: colors.background,
+			color: theme["color-primary-100"],
 		},
 	});
 };

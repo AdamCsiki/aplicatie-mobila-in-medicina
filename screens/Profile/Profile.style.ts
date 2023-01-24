@@ -1,13 +1,13 @@
-import { useTheme } from "./../../misc/ThemeProvider";
-import { StyleSheet, useColorScheme } from "react-native";
-import { themeColors } from "../../misc/ThemeProvider";
+import { StyleSheet } from "react-native";
+import { useTheme } from "@ui-kitten/components";
 import padding from "../../misc/padding";
 
 export default () => {
-	const { colors } = useTheme();
+	const theme = useTheme();
+
 	return StyleSheet.create({
 		Profile: {
-			backgroundColor: colors.background,
+			backgroundColor: theme["background-basic-color-1"],
 
 			width: "100%",
 			height: "100%",
@@ -17,7 +17,7 @@ export default () => {
 			alignItems: "flex-start",
 		},
 		profileBackground: {
-			backgroundColor: colors.tint,
+			backgroundColor: theme["background-primary-color-1"],
 
 			width: "100%",
 			height: 220,
@@ -27,8 +27,11 @@ export default () => {
 			position: "relative",
 		},
 		profileUser: {
+			zIndex: 2,
+			backgroundColor: "transparent",
+
 			display: "flex",
-			flexDirection: "column",
+			flexDirection: "row",
 			alignItems: "center",
 			justifyContent: "flex-start",
 
@@ -44,7 +47,17 @@ export default () => {
 			borderRadius: 250,
 		},
 		profileUsername: {
-			width: "100%",
+			backgroundColor: theme["background-basic-color-1"],
+
+			borderTopRightRadius: 16,
+			borderBottomRightRadius: 16,
+
+			...padding(16, 32),
+			paddingLeft: 16,
+
+			top: 5,
+			left: -6,
+
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
@@ -52,28 +65,21 @@ export default () => {
 		profileHeader: {
 			width: "100%",
 
+			...padding(16),
+
 			display: "flex",
+			flexDirection: "row",
 			justifyContent: "space-between",
 			alignItems: "center",
 		},
 		profileMain: {
-			backgroundColor: "#00000090",
-
 			width: "100%",
-			height: "100%",
 
 			display: "flex",
 			justifyContent: "flex-start",
 			alignItems: "center",
 
 			flexGrow: 1,
-		},
-		profileDiv: {
-			backgroundColor: colors.background,
-
-			width: "100%",
-
-			...padding(10),
 		},
 	});
 };

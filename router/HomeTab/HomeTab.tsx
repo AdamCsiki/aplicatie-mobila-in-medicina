@@ -17,21 +17,14 @@ function HomeTab() {
 			screenOptions={{
 				headerShown: false,
 				tabBarStyle: {
-					backgroundColor: Colors.black,
-
 					borderWidth: 0.5,
-					borderColor: Colors.white,
 					borderRadius: 20,
-					shadowColor: Colors.white10,
 
 					margin: 10,
 					padding: 5,
 
 					position: "absolute",
 				},
-
-				tabBarActiveTintColor: Colors.mainColor,
-				tabBarInactiveTintColor: Colors.white,
 			}}
 		>
 			<Tab.Screen
@@ -40,13 +33,7 @@ function HomeTab() {
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<View>
-							<Icon
-								name="home"
-								color={
-									focused ? Colors.mainColor : Colors.white
-								}
-								size={scales.h5}
-							/>
+							<Icon name="home" />
 						</View>
 					),
 				}}
@@ -57,13 +44,7 @@ function HomeTab() {
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<View>
-							<Icon
-								name="comment"
-								color={
-									focused ? Colors.mainColor : Colors.white
-								}
-								size={scales.h5}
-							/>
+							<Icon name="comment" />
 						</View>
 					),
 					tabBarBadge: chatNotificationCount,

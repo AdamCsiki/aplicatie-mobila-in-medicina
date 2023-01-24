@@ -1,89 +1,73 @@
-import {
-	createContext,
-	SetStateAction,
-	useContext,
-	useEffect,
-	useState,
-} from "react";
-import { defaultUser } from "../models/defaults";
-import { User } from "../models/types";
+import { createContext, useContext, useEffect, useState } from "react";
+import defaultUser from "../models/defaultUser";
 import useAxios from "../hooks/useAxios";
 import * as SecureStore from "expo-secure-store";
+import { AuthContextModel } from "../models/AuthContextModel";
 
-export const AuthContext = createContext({
-	login: (email: string, password: string) => {},
-	logout: () => {},
-	userToken: "",
-	setUserToken: (token: string) => {},
-	user: defaultUser,
-	setUser: (user: User) => {},
-	getUser: (email: string, password: string) => {},
-	error: "",
-	setError: (error: string) => {},
-});
+import store from "./store";
+import { SignUpModel } from "../models/SignUpModel";
+import { LoginModel } from "../models/LoginModel";
+import useStore from "./store";
+
+export const AuthContext = createContext<AuthContextModel>(
+	{} as AuthContextModel
+);
 
 export const useAuth = () => useContext(AuthContext);
 
 function AuthProvider({ children }: { children: any }) {
 	const [userToken, setUserToken] = useState("");
-	const [user, setUser] = useState<User>(defaultUser);
+	const [user, setUser] = useState(null);
 	const [error, setError] = useState<string>("");
 	const { axios } = useAxios();
 
-	const login = (email: string, password: string) => {
-		setUser(defaultUser);
+	const login = (loginForm: LoginModel) => {
 		axios({
 			method: "POST",
-			url: "/auth/authenticate",
-			data: { email: email, password: password },
+			url: "/auth/login",
+			data: { email: loginForm.email, password: loginForm.password },
 		})
 			.then((response) => {
-				setUserToken(response.data.token);
 				SecureStore.setItemAsync("token", response.data.token);
-				SecureStore.setItemAsync("email", email);
-				SecureStore.setItemAsync("pass", password);
+				SecureStore.setItemAsync(
+					"refreshToken",
+					response.data.refreshToken
+				);
+				setUserToken(response.data.token);
+				useStore.setState({
+					userToken: response.data.token,
+					refreshToken: response.data.refreshToken,
+				});
 			})
-			.catch((err) => setError(err.message))
-			.then(() => {
-				getUser(email, password);
-			});
+			.catch((err) => setError(err.message));
+	};
+
+	const signUp = (signUpForm: SignUpModel) => {
+		axios({
+			method: "POST",
+			url: "/auth/signup",
+			data: signUpForm,
+		}).then((response) => {});
+	};
+
+	const getUserToken = (refreshToken: string) => {
+		axios({
+			method: "GET",
+			url: "auth/refresh",
+			data: { refreshToken: refreshToken },
+		}).then((response) => {});
 	};
 
 	const logout = () => {
 		SecureStore.deleteItemAsync("token");
-		SecureStore.deleteItemAsync("email");
-		SecureStore.deleteItemAsync("pass");
-		setUser(defaultUser);
+		SecureStore.deleteItemAsync("refreshToken");
 		setUserToken("");
-	};
-
-	const getUser = (email: string, password: string) => {
-		console.log("Current token: ", userToken);
-		if (userToken) {
-			return axios({
-				method: "GET",
-				url: "/users/userpass",
-				data: { email: email, password: password },
-				headers: { Authorization: `Bearer ${userToken}` },
-			})
-				.then((res) => {
-					console.log(res.data);
-					setUser(res.data);
-				})
-				.catch((err) => {
-					console.log(err.message);
-				});
-		} else {
-			console.log("No user token!");
-		}
 	};
 
 	const isLoggedIn = async () => {
 		const tempToken = await SecureStore.getItemAsync("token");
-		let tempEmail = await SecureStore.getItemAsync("email");
-		let tempPassword = await SecureStore.getItemAsync("password");
 
-		if (tempToken && tempEmail && tempPassword) {
+		if (tempToken) {
 			setUserToken(tempToken);
 		}
 	};
@@ -95,15 +79,11 @@ function AuthProvider({ children }: { children: any }) {
 	return (
 		<AuthContext.Provider
 			value={{
-				login,
-				logout,
-				userToken,
-				setUserToken,
 				user,
-				setUser,
-				getUser,
+				login,
+				signUp,
+				logout,
 				error,
-				setError,
 			}}
 		>
 			{children}

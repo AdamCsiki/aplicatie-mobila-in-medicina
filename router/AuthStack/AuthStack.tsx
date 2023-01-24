@@ -1,8 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useContext } from "react";
 import { Text, View } from "react-native";
-import LoginScreen from "../../../screens/LoginScreen/LoginScreen";
-import RegisterScreen from "../../../screens/RegisterScreen/RegisterScreen";
+import LoginScreen from "../../screens/LoginScreen/LoginScreen";
+import RegisterScreen from "../../screens/RegisterScreen/RegisterScreen";
 
 const Auth = createStackNavigator();
 

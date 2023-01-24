@@ -1,14 +1,32 @@
 import { StyleSheet } from "react-native";
-import Colors from "./constants/Colors";
+import { useTheme } from "@ui-kitten/components";
 
-export default StyleSheet.create({
-	App: {
-		zIndex: 1,
-		height: "100%",
-		width: "100%",
+export default () => {
+	const theme = useTheme();
 
-		justifyContent: "flex-start",
+	return StyleSheet.create({
+		App: {
+			zIndex: 1,
 
-		position: "relative",
-	},
-});
+			backgroundColor: theme["background-basic-color-1"],
+
+			height: "100%",
+			width: "100%",
+
+			display: "flex",
+			justifyContent: "flex-start",
+
+			position: "relative",
+		},
+
+		AppLoading: {
+			zIndex: 1,
+			height: "100%",
+			width: "100%",
+
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+		},
+	});
+};

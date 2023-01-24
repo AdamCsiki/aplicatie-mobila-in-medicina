@@ -5,7 +5,6 @@ import padding from "../../misc/padding";
 
 export default StyleSheet.create({
 	Drawer: {
-		backgroundColor: Colors.black,
 		height: "100%",
 
 		padding: 0,
@@ -18,8 +17,6 @@ export default StyleSheet.create({
 		display: "flex",
 	},
 	DrawerHeader: {
-		backgroundColor: Colors.mainColor,
-
 		width: "100%",
 		height: 200,
 

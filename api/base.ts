@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://192.168.1.150:8080/";
+const API = "http://78.96.82.67:8080/";
 const TIMEOUT = 0;
 
 export default axios.create({

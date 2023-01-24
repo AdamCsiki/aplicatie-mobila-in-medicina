@@ -1,23 +1,19 @@
-import { View, ScrollView, TouchableOpacity, Image, Text } from "react-native";
-import { Switch } from "react-native-gesture-handler";
-import { log } from "react-native-reanimated";
-import Button from "../../components/Button/Button";
-import Header from "../../components/Header/Header";
-import { H1, H2, H5, Span } from "../../constants/TypeScale";
-import { useAuth } from "../../context/AuthContext";
-import { useTheme } from "../../misc/ThemeProvider";
+import { ScrollView, TouchableOpacity, Image } from "react-native";
+import { Layout, Text, Button } from "@ui-kitten/components";
 import style from "./Profile.style";
-import { useEffect } from "react";
-import { defaultUser } from "../../models/defaults";
+import PercentageBar from "../../components/PercentageBar/PercentageBar";
+import padding from "../../misc/padding";
+import { LineChart } from "react-native-chart-kit";
+import { chartConfig } from "../../constants/chartConfig";
 
 function Profile() {
-	const { logout, user } = useAuth();
-
 	return (
 		<ScrollView contentContainerStyle={style().Profile}>
-			<View style={style().profileBackground}></View>
-			<View style={style().profileUser}>
-				<View
+			<Layout style={style().profileBackground}>
+				<Image></Image>
+			</Layout>
+			<Layout style={style().profileUser}>
+				<Layout
 					style={{
 						width: 170,
 						height: 170,
@@ -35,18 +31,53 @@ function Profile() {
 							style={style().profileImage}
 						/>
 					</TouchableOpacity>
-				</View>
+				</Layout>
 				<TouchableOpacity style={style().profileUsername}>
-					<H5>{user.username}</H5>
+					<Text category="h6">Csiki Adam Csaba</Text>
 				</TouchableOpacity>
-			</View>
-			<View style={style().profileMain}>
-				<View style={style().profileDiv}>
-					<Button onPress={logout}>
-						<Span bold>Logout</Span>
-					</Button>
-				</View>
-			</View>
+			</Layout>
+			<Layout style={style().profileMain}>
+				<Layout style={style().profileHeader}>
+					<Text category="h5">Overview</Text>
+				</Layout>
+				<ScrollView
+					horizontal={true}
+					contentContainerStyle={{ height: 200 }}
+				>
+					<LineChart
+						data={{
+							labels: [
+								"January",
+								"February",
+								"March",
+								"April",
+								"May",
+								"June",
+							],
+							datasets: [
+								{
+									data: [
+										Math.random() * 100,
+										Math.random() * 100,
+										Math.random() * 100,
+										Math.random() * 100,
+										Math.random() * 100,
+										Math.random() * 100,
+									],
+								},
+							],
+						}}
+						width={1000} // from react-native
+						height={200}
+						xLabelsOffset={10}
+						yAxisSuffix="Kcal"
+						yAxisInterval={1} // optional, defaults to 1
+						chartConfig={chartConfig()}
+						bezier
+						style={{ marginLeft: 16 }}
+					/>
+				</ScrollView>
+			</Layout>
 		</ScrollView>
 	);
 }
