@@ -1,30 +1,28 @@
 import style from "./Header.style";
-import { View, TouchableOpacity } from "react-native";
-import { useState } from "react";
-import Logo from "../Logo/Logo";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import Colors from "../../constants/Colors";
-import SearchInput from "../SearchInput/SearchInput";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import {
+	Icon,
+	TopNavigation,
+	TopNavigationAction,
+} from "@ui-kitten/components";
 
-function Header() {
-	const navigation = useNavigation();
+const BackIcon = (props: any) => (
+	<Icon
+		{...props}
+		name="arrow-back"
+	/>
+);
 
+const BackAction = () => {
+	return <TopNavigationAction icon={BackIcon} />;
+};
+
+const Header = () => {
 	return (
-		<View style={style().Header}>
-			{/* <SearchInput /> */}
-			<TouchableOpacity
-				onPress={(e) => {
-					navigation.dispatch(DrawerActions.toggleDrawer);
-				}}
-			>
-				<Icon
-					name="bars"
-					size={40}
-				/>
-			</TouchableOpacity>
-		</View>
+		<TopNavigation
+			accessoryLeft={BackAction}
+			title="Home"
+		/>
 	);
-}
+};
 
 export default Header;

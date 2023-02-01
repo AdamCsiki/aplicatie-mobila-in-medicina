@@ -1,21 +1,43 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Header from "../../components/Header/Header";
-import Profile from "../../screens/Profile/Profile";
+import Profile from "../../screens/ProfileScreen/Profile";
+import DietScreen from "../../screens/DietScreen/DietScreen";
+import { BottomNavigation, BottomNavigationTab } from "@ui-kitten/components";
 
 const RootStackNav = createStackNavigator();
 const RootBottomTabNav = createBottomTabNavigator();
+
+const BottomTabBar = ({
+	navigation,
+	state,
+}: {
+	navigation: any;
+	state: any;
+}) => (
+	<BottomNavigation
+		selectedIndex={state.index}
+		onSelect={(index) => navigation.navigate(state.routeNames[index])}
+	>
+		<BottomNavigationTab title="Profile" />
+		<BottomNavigationTab title="Diet" />
+	</BottomNavigation>
+);
 
 function RootStack() {
 	return (
 		<RootBottomTabNav.Navigator
 			screenOptions={{
-				header: () => <Header />,
+				headerShown: false,
 			}}
+			tabBar={BottomTabBar}
 		>
 			<RootStackNav.Screen
-				name="root"
+				name="Profile"
 				component={Profile}
+			/>
+			<RootStackNav.Screen
+				name="Diet"
+				component={DietScreen}
 			/>
 		</RootBottomTabNav.Navigator>
 	);

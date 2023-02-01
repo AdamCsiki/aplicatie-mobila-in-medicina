@@ -8,9 +8,6 @@ const headingSize = 250;
 export default StyleSheet.create({
 	Menu: {
 		zIndex: 2,
-
-		backgroundColor: Colors.white,
-		color: Colors.black,
 		fontSize: 16,
 		borderColor: "#121212",
 		borderWidth: 10,

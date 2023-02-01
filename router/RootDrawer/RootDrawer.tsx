@@ -3,77 +3,58 @@ import {
 	DrawerContentScrollView,
 	DrawerItemList,
 } from "@react-navigation/drawer";
-import style from "./RootDrawer.style";
-import { Image, Text, View } from "react-native";
+import {
+	Drawer,
+	DrawerItem,
+	Icon,
+	IndexPath,
+	TopNavigation,
+	TopNavigationAction,
+} from "@ui-kitten/components";
 import RootStack from "../RootStack/RootStack";
+import Header from "../../components/Header/Header";
 
-const Drawer = createDrawerNavigator();
+const { Navigator, Screen } = createDrawerNavigator();
 
-const CustomDrawer = (props: any) => {
+const DrawerContent = ({
+	navigation,
+	state,
+}: {
+	navigation: any;
+	state: any;
+}) => {
 	return (
-		<DrawerContentScrollView
-			style={style.Drawer}
-			contentContainerStyle={{
-				paddingTop: 0,
-			}}
-			{...props}
+		<Drawer
+			selectedIndex={new IndexPath(state.index)}
+			onSelect={(index) =>
+				navigation.navigate(state.routeNames[index.row])
+			}
 		>
-			<View style={style.DrawerHeader}>
-				<View
-					style={{
-						width: 110,
-						height: 125,
-
-						paddingTop: 5,
-
-						borderTopLeftRadius: 150,
-						borderTopRightRadius: 150,
-
-						display: "flex",
-						justifyContent: "flex-start",
-						alignItems: "center",
-
-						overflow: "hidden",
-					}}
-				>
-					<Image
-						source={require("../../assets/horseprofile.jpeg")}
-						style={{
-							height: 100,
-							width: 100,
-
-							borderRadius: 150,
-						}}
-					/>
-				</View>
-			</View>
-			<DrawerItemList {...props} />
-		</DrawerContentScrollView>
+			<DrawerItem title="Home" />
+		</Drawer>
 	);
 };
 
-function RootDrawer() {
+function DrawerNavigator() {
 	return (
-		<Drawer.Navigator
-			drawerContent={(props) => <CustomDrawer {...props} />}
-			screenOptions={{
-				headerShown: false,
-				drawerStyle: style.Drawer,
-				drawerItemStyle: {
-					width: "100%",
-				},
-
-				drawerLabelStyle: { padding: 0 },
-				drawerPosition: "right",
-			}}
+		<Navigator
+			drawerContent={(props) => <DrawerContent {...props} />}
 			detachInactiveScreens={true}
+			screenOptions={{
+				drawerPosition: "right",
+				header: () => <Header />,
+			}}
 		>
-			<Drawer.Screen
+			<Screen
 				name="Home"
 				component={RootStack}
 			/>
-		</Drawer.Navigator>
+		</Navigator>
 	);
+}
+
+function RootDrawer() {
+	return <DrawerNavigator />;
 }
 
 export { RootDrawer };

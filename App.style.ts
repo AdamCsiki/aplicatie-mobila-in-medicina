@@ -8,8 +8,6 @@ export default () => {
 		App: {
 			zIndex: 1,
 
-			backgroundColor: theme["background-basic-color-1"],
-
 			height: "100%",
 			width: "100%",
 
@@ -21,6 +19,7 @@ export default () => {
 
 		AppLoading: {
 			zIndex: 1,
+
 			height: "100%",
 			width: "100%",
 

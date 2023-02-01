@@ -6,8 +6,13 @@ export default () => {
 
 	return StyleSheet.create({
 		PercentageBarContainer: {
-			height: 15,
+			maxHeight: 16,
 			width: "100%",
+			position: "relative",
+
+			borderRadius: 16,
+
+			borderWidth: 1,
 		},
 		PercentageBar: {
 			height: "100%",

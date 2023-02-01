@@ -8,7 +8,11 @@ function AppNav() {
 
 	return (
 		<NavigationContainer>
-			<StatusBar style="auto" />
+			<StatusBar
+				hidden
+				style="auto"
+				animated={true}
+			/>
 			<RootDrawer />
 		</NavigationContainer>
 	);

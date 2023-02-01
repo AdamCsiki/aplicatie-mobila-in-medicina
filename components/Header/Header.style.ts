@@ -9,8 +9,7 @@ export default () => {
 
 	return StyleSheet.create({
 		Header: {
-			backgroundColor: theme["background-primary-color-1"],
-
+			backgroundColor: theme["color-primary-100"],
 			width: "100%",
 			height: "auto",
 
@@ -29,10 +28,6 @@ export default () => {
 			left: 0,
 			right: 0,
 			bottom: 0,
-		},
-
-		HeaderIcon: {
-			color: theme["color-primary-100"],
 		},
 	});
 };
