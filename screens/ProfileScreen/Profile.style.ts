@@ -1,89 +1,124 @@
 import { StyleSheet } from "react-native";
-import { useTheme } from "@ui-kitten/components";
 import padding from "../../misc/padding";
 import margin from "../../misc/margin";
+import { Keyframe } from "react-native-reanimated";
 
-export default () => {
-	const theme = useTheme();
+export const backgroundAnimation = new Keyframe({
+	from: {
+		borderBottomLeftRadius: 100,
+	},
+	to: {
+		borderBottomLeftRadius: 500,
+	},
+}).duration(3000);
 
-	return StyleSheet.create({
-		Profile: {
-			backgroundColor: theme["color-basic-100"],
-			width: "100%",
-			height: "100%",
+export const profileAnimation = new Keyframe({
+	from: {
+		width: 170,
+		height: 170,
+	},
+	to: {
+		width: 150,
+		height: 150,
+	},
+}).duration(3000);
 
-			display: "flex",
-			flexDirection: "column",
-			alignItems: "flex-start",
-		},
-		profileBackground: {
-			backgroundColor: theme["color-primary-100"],
+export default StyleSheet.create({
+	Profile: {
+		width: "100%",
+		height: "100%",
 
-			width: "100%",
-			height: 220,
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "flex-start",
+	},
+	profileBackground: {
+		width: "100%",
+		height: 220,
 
-			marginBottom: 16,
+		marginBottom: 16,
 
-			borderBottomLeftRadius: 500,
+		overflow: "hidden",
 
-			position: "relative",
-		},
-		profileUser: {
-			zIndex: 2,
+		position: "relative",
+	},
+	profileBackgroundButton: {
+		width: "100%",
+		height: "100%",
 
-			backgroundColor: "transparent",
+		position: "relative",
+	},
+	profileBackgroundImage: {
+		flexGrow: 1,
+	},
+	profileUser: {
+		zIndex: 2,
 
-			display: "flex",
-			flexDirection: "row",
-			alignItems: "center",
-			justifyContent: "flex-start",
+		width: 170,
+		height: 170,
 
-			position: "absolute",
+		backgroundColor: "transparent",
 
-			top: 55,
-			left: -5,
-		},
-		profileImage: {
-			width: 150,
-			height: 150,
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flex-start",
 
-			borderRadius: 250,
-		},
-		profileUsername: {
-			textAlign: "right",
+		position: "absolute",
 
-			top: "15%",
-			left: "15%",
+		top: 55,
+		left: -5,
+	},
+	profileUserBackground: {
+		width: 170,
+		height: 170,
 
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-		},
-		profileHeader: {
-			width: "100%",
+		borderRadius: 250,
 
-			...padding(16),
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	profileImage: {
+		height: 150,
+		width: 150,
 
-			display: "flex",
-			flexDirection: "row",
-			justifyContent: "space-between",
-			alignItems: "center",
-		},
-		profileMain: {
-			width: "100%",
+		borderRadius: 250,
+	},
+	profileUsername: {
+		width: 200,
 
-			...padding(0, 16),
+		top: "30%",
+		left: "10%",
 
-			...margin(12, 0),
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	profileHeader: {
+		width: "100%",
 
-			display: "flex",
-			justifyContent: "flex-start",
-			alignItems: "flex-start",
+		...padding(16),
 
-			flexGrow: 1,
-		},
-		profileContainer: {
-			width: "100%",
-		},
-	});
-};
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	profileMain: {
+		width: "100%",
+
+		...padding(0, 16),
+
+		...margin(12, 0),
+
+		display: "flex",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
+
+		flexGrow: 1,
+	},
+	profileContainer: {
+		width: "100%",
+	},
+});

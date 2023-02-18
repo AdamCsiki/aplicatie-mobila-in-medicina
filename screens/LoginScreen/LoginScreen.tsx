@@ -3,49 +3,69 @@ import { useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useAuth } from "../../context/AuthContext";
 import LinkButton from "../../components/LinkButton/LinkButton";
-import { Layout, Button, Text, Input } from "@ui-kitten/components";
+import { Layout, Button, Text, Input, useTheme } from "@ui-kitten/components";
+import { LoginModel } from "../../models/LoginModel";
+import useAxios from "../../hooks/useAxios";
 
-function LoginScreen() {
+function LoginScreen({ navigation }: { navigation: any }) {
+	const theme = useTheme();
+	const { axios } = useAxios();
+
 	const { login, error } = useAuth();
 	const [customError, setCustomError] = useState("");
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [formData, setFormData] = useState<LoginModel>({
+		email: "",
+		password: "",
+	});
 
 	const submitLogin = () => {
 		setCustomError("");
 
-		if (email.trim().length == 0 || password.trim().length == 0) {
+		if (
+			formData.email.trim().length == 0 ||
+			formData.password.trim().length == 0
+		) {
 			setCustomError("Email or password missing!");
 			return;
 		}
-		setCustomError(error);
+
+		login(formData);
 	};
 
 	return (
 		<KeyboardAwareScrollView
-			style={style().Login}
-			contentContainerStyle={style().LoginContainer}
+			style={{
+				...style.Login,
+				backgroundColor: theme["color-basic-100"],
+			}}
+			contentContainerStyle={style.LoginContainer}
 		>
-			<Layout style={style().loginHeaderContainer}>
+			<Layout style={style.loginHeaderContainer}>
 				<Text category="h2">Login</Text>
 			</Layout>
 
-			<Layout style={style().loginInputContainer}>
+			<Layout style={style.loginInputContainer}>
 				<Input
-					style={style().loginInput}
+					style={style.loginInput}
 					placeholder="email"
+					onChangeText={(text) => {
+						setFormData({ ...formData, email: text });
+					}}
 				/>
 				<Input
-					style={style().loginInput}
+					style={style.loginInput}
 					placeholder="password"
+					onChangeText={(text) => {
+						setFormData({ ...formData, password: text });
+					}}
 				/>
-				<LinkButton buttonStyle={style().loginInput}>
+				<LinkButton buttonStyle={style.loginInput}>
 					Can't sign in?
 				</LinkButton>
 				{customError && <Text category="danger">{customError}</Text>}
 			</Layout>
-			<Layout style={style().loginButtonContainer}>
+			<Layout style={style.loginButtonContainer}>
 				<Button
 					onPress={() => {
 						submitLogin();

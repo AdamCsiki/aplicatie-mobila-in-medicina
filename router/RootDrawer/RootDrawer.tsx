@@ -1,18 +1,7 @@
-import {
-	createDrawerNavigator,
-	DrawerContentScrollView,
-	DrawerItemList,
-} from "@react-navigation/drawer";
-import {
-	Drawer,
-	DrawerItem,
-	Icon,
-	IndexPath,
-	TopNavigation,
-	TopNavigationAction,
-} from "@ui-kitten/components";
-import RootStack from "../RootStack/RootStack";
-import Header from "../../components/Header/Header";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Drawer, DrawerItem, IndexPath } from "@ui-kitten/components";
+import RootStack from "../SIgnedInStack/SignedInStack";
+import SettingsScreen from "../../screens/SettingsScreen/SettingsScreen";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -31,30 +20,31 @@ const DrawerContent = ({
 			}
 		>
 			<DrawerItem title="Home" />
+			<DrawerItem title="Settings" />
 		</Drawer>
 	);
 };
 
-function DrawerNavigator() {
+function RootDrawer() {
 	return (
 		<Navigator
 			drawerContent={(props) => <DrawerContent {...props} />}
 			detachInactiveScreens={true}
 			screenOptions={{
 				drawerPosition: "right",
-				header: () => <Header />,
+				headerShown: false,
 			}}
 		>
 			<Screen
 				name="Home"
 				component={RootStack}
 			/>
+			<Screen
+				name="Settings"
+				component={SettingsScreen}
+			/>
 		</Navigator>
 	);
-}
-
-function RootDrawer() {
-	return <DrawerNavigator />;
 }
 
 export { RootDrawer };

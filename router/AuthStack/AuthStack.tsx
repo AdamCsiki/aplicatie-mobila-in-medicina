@@ -1,25 +1,23 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useContext } from "react";
-import { Text, View } from "react-native";
-import LoginScreen from "../../screens/LoginScreen/LoginScreen";
-import RegisterScreen from "../../screens/RegisterScreen/RegisterScreen";
+import SignedInStack from "../SIgnedInStack/SignedInStack";
+import SignedOutStack from "../SignedOutStack/SignedOutStack";
+import {useAuth} from "../../context/AuthContext";
 
 const Auth = createStackNavigator();
 
 function AuthStack() {
+	const {store} = useAuth();
+	
 	return (
 		<Auth.Navigator
 			screenOptions={{
 				headerShown: false,
 			}}
 		>
+			<Auth.Screen name="SignedOut" component={SignedOutStack} />
 			<Auth.Screen
-				name="Login"
-				component={LoginScreen}
-			/>
-			<Auth.Screen
-				name="Register"
-				component={RegisterScreen}
+				name="SignedIn"
+				component={SignedInStack}
 			/>
 		</Auth.Navigator>
 	);

@@ -8,4 +8,5 @@ export type AuthContextModel = {
 	signUp: (signUpForm: SignUpModel) => void;
 	logout: () => void;
 	error?: any;
+	store: any;
 };

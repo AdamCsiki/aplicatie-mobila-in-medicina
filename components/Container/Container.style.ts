@@ -13,7 +13,6 @@ export default () => {
 
 			padding: 16,
 
-			// borderWidth: 1,
 			borderRadius: 16,
 
 			display: "flex",

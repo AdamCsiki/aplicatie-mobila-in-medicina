@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import defaultUser from "../models/defaultUser";
 import useAxios from "../hooks/useAxios";
 import * as SecureStore from "expo-secure-store";
 import { AuthContextModel } from "../models/AuthContextModel";
@@ -17,11 +16,13 @@ export const useAuth = () => useContext(AuthContext);
 
 function AuthProvider({ children }: { children: any }) {
 	const [userToken, setUserToken] = useState("");
+	const [refreshToken, setRefreshToken] = useState("");
 	const [user, setUser] = useState(null);
 	const [error, setError] = useState<string>("");
 	const { axios } = useAxios();
 
 	const login = (loginForm: LoginModel) => {
+		setError("");
 		axios({
 			method: "POST",
 			url: "/auth/login",
@@ -29,11 +30,10 @@ function AuthProvider({ children }: { children: any }) {
 		})
 			.then((response) => {
 				SecureStore.setItemAsync("token", response.data.token);
-				SecureStore.setItemAsync(
-					"refreshToken",
-					response.data.refreshToken
-				);
 				setUserToken(response.data.token);
+
+				console.log(response.headers["set-cookie"]);
+
 				useStore.setState({
 					userToken: response.data.token,
 					refreshToken: response.data.refreshToken,
@@ -59,17 +59,16 @@ function AuthProvider({ children }: { children: any }) {
 	};
 
 	const logout = () => {
-		SecureStore.deleteItemAsync("token");
-		SecureStore.deleteItemAsync("refreshToken");
-		setUserToken("");
+		SecureStore.deleteItemAsync("token").then(() => {
+			setUserToken("");
+		});
+		SecureStore.deleteItemAsync("refreshToken").then(() => {
+			setRefreshToken("");
+		});
 	};
 
 	const isLoggedIn = async () => {
-		const tempToken = await SecureStore.getItemAsync("token");
-
-		if (tempToken) {
-			setUserToken(tempToken);
-		}
+	
 	};
 
 	useEffect(() => {
@@ -84,6 +83,7 @@ function AuthProvider({ children }: { children: any }) {
 				signUp,
 				logout,
 				error,
+				store,
 			}}
 		>
 			{children}

@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions } from "react-native";
-import Colors from "../../constants/Colors";
 import padding from "../../misc/padding";
 import margin from "../../misc/margin";
 

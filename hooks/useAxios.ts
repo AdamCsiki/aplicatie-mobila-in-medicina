@@ -11,7 +11,8 @@ function useAxios() {
 		url: string,
 		method: string,
 		body = {},
-		headers = {}
+		headers = {},
+		callback: () => void
 	) => {
 		setError("");
 
@@ -29,6 +30,7 @@ function useAxios() {
 			})
 			.finally(() => {
 				setLoading(false);
+				callback();
 			});
 	};
 

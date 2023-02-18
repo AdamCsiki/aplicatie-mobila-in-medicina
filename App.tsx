@@ -27,7 +27,7 @@ function App() {
 
 	if (!loaded) {
 		return (
-			<View style={style().AppLoading}>
+			<View style={style.AppLoading}>
 				<Text>Loading fonts :D</Text>
 			</View>
 		);
@@ -43,7 +43,7 @@ function App() {
 			>
 				<AuthProvider>
 					<Layout
-						style={style().App}
+						style={style.App}
 						level="1"
 					>
 						<AppNav />
