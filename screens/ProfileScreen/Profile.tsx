@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { signOut } from '../../redux/actions/authActions'
 import { LOGOUT } from '../../redux/types/types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function Profile({ navigation }: { navigation: any }) {
     const [user, setUser] = useState(defaultUser)
@@ -65,9 +66,13 @@ function Profile({ navigation }: { navigation: any }) {
                 <Container style={style.profileContainer} level="1">
                     <Button
                         onPress={() => {
-                            dispatch({
-                                type: LOGOUT,
-                            })
+                            AsyncStorage.multiRemove(['token', 'refresh']).then(
+                                () => {
+                                    dispatch({
+                                        type: LOGOUT,
+                                    })
+                                }
+                            )
                         }}
                     >
                         <Text>Axios</Text>

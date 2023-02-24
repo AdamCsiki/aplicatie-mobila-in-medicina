@@ -5,14 +5,9 @@ import LinkButton from '../../components/LinkButton/LinkButton'
 import { Layout, Button, Text, Input, useTheme } from '@ui-kitten/components'
 import { LoginModel } from '../../models/LoginModel'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
 import { signIn } from '../../redux/actions/authActions'
-import AuthService from '../../services/AuthService'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { LOGIN_SUCCESS } from '../../redux/types/types'
 
 function LoginScreen({ navigation }: { navigation: any }) {
-    const auth = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch()
 
     const theme = useTheme()
@@ -35,13 +30,12 @@ function LoginScreen({ navigation }: { navigation: any }) {
             return
         }
 
-        AuthService.signIn(formData).then((res) => {
-            AsyncStorage.multiGet(['token', 'refresh']).then((data) => {
-                const token = data[0][1]
-                const refresh = data[1][1]
-
-                dispatch({ type: LOGIN_SUCCESS, payload: { token, refresh } })
-            })
+        signIn(formData).then((res: any) => {
+            if (res.error) {
+                setCustomError(res.error)
+                return
+            }
+            dispatch(res)
         })
     }
 
@@ -55,9 +49,15 @@ function LoginScreen({ navigation }: { navigation: any }) {
                 ...style.LoginContainer,
                 backgroundColor: theme['color-basic-100'],
             }}
+            persistentScrollbar={true}
+            enableOnAndroid={true}
+            scrollEnabled={true}
         >
+            <Layout style={style.loginRegisterContainer}>
+                <Button>Register</Button>
+            </Layout>
             <Layout style={style.loginHeaderContainer}>
-                <Text category="h2">Login</Text>
+                <Text category="h2">SignIn</Text>
             </Layout>
 
             <Layout style={style.loginInputContainer}>
@@ -74,6 +74,7 @@ function LoginScreen({ navigation }: { navigation: any }) {
                     onChangeText={(text) => {
                         setFormData({ ...formData, password: text })
                     }}
+                    onSubmitEditing={submitLogin}
                 />
                 <LinkButton buttonStyle={style.loginInput}>
                     Can't sign in?
@@ -82,7 +83,7 @@ function LoginScreen({ navigation }: { navigation: any }) {
             </Layout>
             <Layout style={style.loginButtonContainer}>
                 <Button onPress={submitLogin}>
-                    <Text>Button</Text>
+                    <Text>SignIn</Text>
                 </Button>
             </Layout>
         </KeyboardAwareScrollView>

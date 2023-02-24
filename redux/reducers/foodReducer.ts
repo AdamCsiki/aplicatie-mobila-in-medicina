@@ -25,5 +25,9 @@ function foodReducer(state = initialState, action: ActionModel) {
                 ...state,
                 error: payload.error,
             }
+        default:
+            return state
     }
 }
+
+export default foodReducer

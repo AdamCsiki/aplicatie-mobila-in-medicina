@@ -1,14 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-async function authHeader() {
-    const response = await AsyncStorage.getItem('token').then((res) => {
-        if (res) {
-            return { Authorization: 'Bearer ' + res }
-        }
-        return {}
-    })
+function AuthHeader() {
+    return AsyncStorage.multiGet(['token', 'refresh']).then(
+        ([[token_key, token], [refresh_key, refresh]]) => {
+            if (!token || !refresh) {
+                return {}
+            }
 
-    return response
+            return {
+                Authorization: 'Bearer ' + token,
+                'Set-Cookie': `refresh=${refresh}; HttpOnly`,
+            }
+        }
+    )
 }
 
-export default authHeader()
+export default AuthHeader()

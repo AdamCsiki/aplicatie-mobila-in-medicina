@@ -1,12 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import SignedOutStack from '../SignedOutStack/SignedOutStack'
 import { useEffect, useState } from 'react'
-import SignedInStack from '../SIgnedInStack/SignedInStack'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LOGIN_SUCCESS } from '../../redux/types/types'
 import SplashScreen from '../../screens/SplashScreen/SplashScreen'
+import { SignedInDrawer } from '../SignedInDrawer/SignedInDrawer'
 
 const Auth = createStackNavigator()
 
@@ -38,7 +38,7 @@ function AuthStack() {
             {loading ? (
                 <Auth.Screen name="SplashScreen" component={SplashScreen} />
             ) : auth.token && auth.refresh ? (
-                <Auth.Screen name="SignedIn" component={SignedInStack} />
+                <Auth.Screen name="SignedIn" component={SignedInDrawer} />
             ) : (
                 <Auth.Screen name="SignedOut" component={SignedOutStack} />
             )}

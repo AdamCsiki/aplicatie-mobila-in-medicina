@@ -1,7 +1,7 @@
-import { View } from "react-native";
+import { View } from 'react-native'
 
-function Spacer() {
-	return <View style={{ height: 16, width: "100%" }}></View>;
+function Spacer({ height = 16 }) {
+    return <View style={{ height: height, width: '100%' }}></View>
 }
 
-export default Spacer;
+export default Spacer

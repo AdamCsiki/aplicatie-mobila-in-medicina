@@ -1,10 +1,13 @@
 import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from '../types/types'
 import { AuthStateModel } from '../../models/AuthStateModel'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState: AuthStateModel = {
     isLoggedIn: false,
     refresh: null,
     token: null,
+    user: null,
+    error: null,
 }
 
 function authReducer(
@@ -20,6 +23,7 @@ function authReducer(
                 isLoggedIn: true,
                 token: payload.token,
                 refresh: payload.refresh,
+                error: null,
             }
         case LOGIN_FAIL:
             return {
@@ -34,6 +38,7 @@ function authReducer(
                 isLoggedIn: false,
                 token: null,
                 refresh: null,
+                error: null,
             }
         }
         default:

@@ -25,6 +25,9 @@ class AuthService {
 
                 return { ...res.data }
             })
+            .catch((err) => {
+                return { error: err }
+            })
     }
 
     signOut() {

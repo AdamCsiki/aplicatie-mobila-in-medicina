@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = 'http://10.0.2.2:8080'
-const TIMEOUT = 0
+const TIMEOUT = 3000
 
 export default axios.create({
     baseURL: API,
