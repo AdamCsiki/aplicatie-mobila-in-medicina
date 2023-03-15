@@ -1,41 +1,35 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    TextInputSubmitEditingEventData,
+} from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import style from './SearchInput.style'
-import Colors from '../../constants/Colors'
 import Icon from 'react-native-vector-icons/Entypo'
 import { useRef } from 'react'
+import { Input, Layout } from '@ui-kitten/components'
+import { NativeEvent } from 'react-native-reanimated/lib/types'
 
 function SearchInput({
     placeholder,
     onChangeText,
+    onSubmitEditing,
 }: {
     placeholder?: string
     onChangeText?: (text: string) => void
+    onSubmitEditing?: (
+        event: NativeEvent<TextInputSubmitEditingEventData>
+    ) => void
 }) {
-    const textInputRef: any = useRef()
-
     return (
-        <View style={style.SearchInput}>
-            <TextInput
-                ref={textInputRef}
-                style={style.TextInput}
-                placeholder={placeholder ?? 'Search'}
-                textAlign={'left'}
-                onChangeText={onChangeText}
-            ></TextInput>
-
-            <TouchableOpacity
-                onPress={() => {
-                    if (textInputRef.current.isFocused()) {
-                        textInputRef.current.blur()
-                    } else {
-                        textInputRef.current.focus()
-                    }
-                }}
-            >
-                <Icon name="magnifying-glass" size={30} />
-            </TouchableOpacity>
-        </View>
+        <Input
+            style={style.TextInput}
+            placeholder={placeholder ?? 'Search'}
+            textAlign={'left'}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
+        ></Input>
     )
 }
 

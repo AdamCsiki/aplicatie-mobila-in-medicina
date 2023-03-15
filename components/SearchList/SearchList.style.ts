@@ -7,6 +7,8 @@ export default StyleSheet.create({
         borderRadius: 16,
     },
     List: {
+        width: '100%',
+
         borderRadius: 16,
 
         overflow: 'hidden',

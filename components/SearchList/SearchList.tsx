@@ -3,7 +3,7 @@ import style from './SearchList.style'
 import Spacer from '../Spacer/Spacer'
 import React from 'react'
 import { SafeAreaView } from 'react-native'
-import SearchItem from '../SearchItem/SearchItem'
+import SearchFoodItem from '../SearchFoodItem/SearchFoodItem'
 
 function ScrollContainer({
     data,
@@ -16,6 +16,7 @@ function ScrollContainer({
     onTouchEnd,
     onScrollBeginDrag,
     onScrollEndDrag,
+    renderItem,
 }: {
     data?: any[]
     itemOnPress?: (item: any) => void
@@ -27,12 +28,13 @@ function ScrollContainer({
     onTouchEnd?: () => void
     onScrollBeginDrag?: () => void
     onScrollEndDrag?: () => void
+    renderItem: ({ item }: { item: any }) => any
 }) {
     const theme = useTheme()
 
     return (
         <List
-            style={style.List}
+            style={{ ...style.List, backgroundColor: theme['color-basic-300'] }}
             contentContainerStyle={style.ContentContainer}
             data={data}
             ItemSeparatorComponent={() => {
@@ -46,9 +48,7 @@ function ScrollContainer({
             onTouchEnd={onTouchEnd}
             onScrollBeginDrag={onScrollBeginDrag}
             onScrollEndDrag={onScrollEndDrag}
-            renderItem={({ item }) => (
-                <SearchItem item={item} onPress={itemOnPress} />
-            )}
+            renderItem={renderItem}
         />
     )
 }

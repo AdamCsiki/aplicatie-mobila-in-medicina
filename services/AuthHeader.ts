@@ -1,18 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import store, { RootState } from '../redux/store'
+import { getItemAsync } from 'expo-secure-store'
 
 function AuthHeader() {
-    return AsyncStorage.multiGet(['token', 'refresh']).then(
-        ([[token_key, token], [refresh_key, refresh]]) => {
-            if (!token || !refresh) {
-                return {}
-            }
-
-            return {
-                Authorization: 'Bearer ' + token,
-                'Set-Cookie': `refresh=${refresh}; HttpOnly`,
-            }
-        }
-    )
+    return getItemAsync('accessToken').then((accessToken) => {
+        console.log(accessToken)
+        return { Authorization: `Bearer ${accessToken}` }
+    })
 }
 
-export default AuthHeader()
+export default AuthHeader

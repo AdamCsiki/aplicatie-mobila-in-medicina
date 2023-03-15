@@ -1,7 +1,6 @@
 {
-	"zustand": "MIT License: https://github.com/pmndrs/zustand/blob/main/LICENSE",
-	"axios": "MIT License: https://github.com/axios/axios/blob/v1.x/LICENSE",
-	"UI-Kitten": "MIT License: https://github.com/akveo/react-native-ui-kitten/blob/master/LICENSE.txt",
-	"eva-icons": "MIT License: https://github.com/akveo/eva-icons/blob/master/LICENSE.txt",
-	"DM-Sans Font": "Open Font License: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+    "axios": "MIT License: https://github.com/axios/axios/blob/v1.x/LICENSE",
+    "UI-Kitten": "MIT License: https://github.com/akveo/react-native-ui-kitten/blob/master/LICENSE.txt",
+    "eva-icons": "MIT License: https://github.com/akveo/eva-icons/blob/master/LICENSE.txt",
+    "DM-Sans Font": "Open Font License: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
 }

@@ -3,11 +3,69 @@ import SignedOutStack from '../SignedOutStack/SignedOutStack'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LOGIN_SUCCESS } from '../../redux/types/types'
 import SplashScreen from '../../screens/SplashScreen/SplashScreen'
 import { SignedInDrawer } from '../SignedInDrawer/SignedInDrawer'
+import * as SecureStore from 'expo-secure-store'
+import axios from '../../api/axios'
+import { refresh } from '../../redux/actions/authActions'
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// ! Interceptor to refresh token
+axios.interceptors.response.use(
+    (res) => {
+        return Promise.resolve(res)
+    },
+    (err) => {
+        const { message, config } = err
+
+        if (!err) {
+            console.log('Backend offline!')
+            return Promise.reject(err)
+        }
+
+        if (err.response.status === 498 && !config._retry) {
+            console.log('Attempting refresh.')
+            config._retry = true
+
+            return axios.get('/auth/refresh').then((res) => {
+                axios.defaults.headers.common['Authorization'] =
+                    'Bearer ' + res.data.token
+
+                SecureStore.setItemAsync('accessToken', res.data.token)
+
+                return axios({
+                    ...config,
+                    headers: { Authorization: 'Bearer ' + res.data.token },
+                })
+            })
+        }
+        return Promise.reject(err)
+    }
+)
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// ! Authorization stack begins here
 const Auth = createStackNavigator()
 
 function AuthStack() {
@@ -17,15 +75,24 @@ function AuthStack() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        AsyncStorage.multiGet(['token', 'refresh']).then((data) => {
-            const token = data[0][1]
-            const refresh = data[1][1]
+        SecureStore.getItemAsync('accessToken').then((accessToken) => {
+            axios.defaults.headers.common['Authorization'] =
+                'Bearer ' + accessToken
+            SecureStore.getItemAsync('refreshToken').then((refreshToken) => {
+                if (accessToken && refreshToken) {
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: { accessToken, refreshToken },
+                    })
+                }
+                if (accessToken) {
+                    refresh().then((res) => {
+                        dispatch(res)
+                    })
+                }
 
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: { token: token, refresh: refresh },
+                setLoading(false)
             })
-            setLoading(false)
         })
     }, [])
 
@@ -37,7 +104,7 @@ function AuthStack() {
         >
             {loading ? (
                 <Auth.Screen name="SplashScreen" component={SplashScreen} />
-            ) : auth.token && auth.refresh ? (
+            ) : auth.accessToken ? (
                 <Auth.Screen name="SignedIn" component={SignedInDrawer} />
             ) : (
                 <Auth.Screen name="SignedOut" component={SignedOutStack} />

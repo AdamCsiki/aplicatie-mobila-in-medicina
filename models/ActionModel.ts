@@ -1,4 +1,4 @@
-export type ActionModel = {
+export type ActionModel<T> = {
     type: string
-    payload: any
+    payload: T
 }

@@ -3,23 +3,21 @@ import { Layout, Text, Button, Divider, useTheme } from '@ui-kitten/components'
 import style, { backgroundAnimation } from './Profile.style'
 import Container from '../../components/Container/Container'
 import Animated from 'react-native-reanimated'
-import useAxios from '../../hooks/useAxios'
 import { useEffect, useState } from 'react'
 import defaultUser from '../../models/defaultUser'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { signOut } from '../../redux/actions/authActions'
+import { refresh, signOut } from '../../redux/actions/authActions'
 import { LOGOUT } from '../../redux/types/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function Profile({ navigation }: { navigation: any }) {
+    const auth = useSelector((state: RootState) => state.auth)
     const [user, setUser] = useState(defaultUser)
 
     const dispatch = useDispatch()
 
     const theme = useTheme()
-
-    const { axios } = useAxios()
 
     return (
         <ScrollView
@@ -75,7 +73,16 @@ function Profile({ navigation }: { navigation: any }) {
                             )
                         }}
                     >
-                        <Text>Axios</Text>
+                        <Text>SignOut</Text>
+                    </Button>
+                    <Button
+                        onPress={() => {
+                            refresh(auth).then((action) => {
+                                dispatch(action)
+                            })
+                        }}
+                    >
+                        <Text>Refresh</Text>
                     </Button>
                 </Container>
             </Layout>

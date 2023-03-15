@@ -1,5 +1,3 @@
-export type SearchMenuModel<T> = {
+export type SearchMenuModel = {
     query: string
-    list: T[]
-    error: string
 }

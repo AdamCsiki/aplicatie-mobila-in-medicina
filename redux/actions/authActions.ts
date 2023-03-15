@@ -1,35 +1,43 @@
 import AuthService from '../../services/AuthService'
-import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from '../types/types'
+import {
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT,
+    REFRESH_SUCCESS,
+} from '../types/types'
 import { LoginModel } from '../../models/LoginModel'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as SecureStore from 'expo-secure-store'
+
+function loginFailAction(error: any) {
+    return {
+        type: LOGIN_FAIL,
+        payload: {
+            accessToken: null,
+            error: JSON.stringify(error),
+        },
+    }
+}
 
 export const signIn = ({ email, password }: LoginModel) => {
     return AuthService.signIn({ email, password })
         .then((res: any) => {
-            if (res.error) {
-                return {
-                    type: LOGIN_FAIL,
-                    payload: {
-                        token: null,
-                        refresh: null,
-                        error: JSON.stringify(res.error.message),
-                    },
-                }
-            }
-
-            return AsyncStorage.multiGet(['token', 'refresh']).then(
-                (tokens) => {
-                    return {
-                        type: LOGIN_SUCCESS,
-                        payload: { token: tokens[0][1], refresh: tokens[1][1] },
-                    }
+            return SecureStore.getItemAsync('accessToken').then(
+                (accessToken) => {
+                    return SecureStore.getItemAsync('refreshToken').then(
+                        (refreshToken) => {
+                            return {
+                                type: LOGIN_SUCCESS,
+                                payload: {
+                                    accessToken: accessToken,
+                                },
+                            }
+                        }
+                    )
                 }
             )
         })
         .catch((err) => {
-            const msg = err.toString()
-
-            return { type: LOGIN_FAIL, error: msg }
+            return loginFailAction(err)
         })
 }
 
@@ -39,4 +47,15 @@ export const signOut = () => {
     return {
         type: LOGOUT,
     }
+}
+
+export const refresh = () => {
+    return AuthService.refresh().then(({ accessToken, refreshToken }) => {
+        return {
+            type: REFRESH_SUCCESS,
+            payload: {
+                accessToken,
+            },
+        }
+    })
 }

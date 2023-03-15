@@ -4,20 +4,22 @@ import {
     Text,
     Divider,
     TopNavigation,
+    Modal,
 } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import Container from '../../components/Container/Container'
-import PercentageBar from '../../components/PercentageBar/PercentageBar'
+import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import style from './DietScreent.style'
 import { ScrollView } from 'react-native'
 import EditablePercentageBar from '../../components/EditablePercentageBar/EditablePercentageBar'
 import Spacer from '../../components/Spacer/Spacer'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 function DietScreen({ navigation }: any) {
-    const [calories, setCalories] = useState<number>(0)
-    const [carbs, setCarbs] = useState<number>(0)
-    const [fats, setFats] = useState<number>(0)
-    const [protein, setProtein] = useState<number>(0)
+    const diet = useSelector((state: RootState) => state.diet)
+
+    const [statsEditVisible, setStatsEditVisible] = useState(false)
 
     const [addedFoods, setAddedFoods] = useState<any>([])
 
@@ -30,27 +32,71 @@ function DietScreen({ navigation }: any) {
                 nestedScrollEnabled
             >
                 <Container style={style.StatContainer} level="1">
-                    <Text category="h5">Stats</Text>
+                    <Layout style={style.StatHeader}>
+                        <Text category="h4">Stats</Text>
+                    </Layout>
 
                     <Spacer />
 
                     <Text category="h6">Calories</Text>
-                    <EditablePercentageBar percentage={calories} />
+                    <ProgressBar
+                        current={diet.currentCals}
+                        max={diet.maxCals}
+                        sign={'Kcal'}
+                    />
 
                     <Spacer />
 
                     <Text category="h6">Carbohydrates</Text>
-                    <PercentageBar percentage={carbs} />
+                    <ProgressBar
+                        current={diet.currentCarbs}
+                        max={diet.maxCarbs}
+                        sign={'g'}
+                    />
 
                     <Spacer />
 
                     <Text category="h6">Fats</Text>
-                    <PercentageBar percentage={fats} />
+                    <ProgressBar
+                        current={diet.currentFats}
+                        max={diet.maxFats}
+                        sign={'g'}
+                    />
 
                     <Spacer />
 
                     <Text category="h6">Protein</Text>
-                    <PercentageBar percentage={protein} />
+                    <ProgressBar
+                        current={diet.currentProtein}
+                        max={diet.maxProtein}
+                        sign={'g'}
+                    />
+
+                    <Spacer height={32} />
+
+                    {statsEditVisible && (
+                        <>
+                            <Spacer height={32} />
+                            <Layout style={style.StatsEditContainer}>
+                                <Button>
+                                    <Text>Add Carbs</Text>
+                                </Button>
+                                <Button>
+                                    <Text>Add Fats</Text>
+                                </Button>
+                                <Button>
+                                    <Text>Add Protein</Text>
+                                </Button>
+                            </Layout>
+                            <Spacer height={32} />
+                        </>
+                    )}
+                    <Button
+                        onPress={() => setStatsEditVisible(!statsEditVisible)}
+                        style={{ width: '100%' }}
+                    >
+                        <Text>Edit</Text>
+                    </Button>
                 </Container>
                 <Spacer />
                 <Container style={style.StatContainer} level="1">

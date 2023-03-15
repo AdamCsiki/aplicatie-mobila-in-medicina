@@ -1,38 +1,46 @@
 import FoodService from '../../services/FoodService'
-import { FOOD_SEARCH_FAIL, FOOD_SEARCH_SUCCESS } from '../types/types'
+import {
+    FOOD_SEARCH_FAIL,
+    FOOD_SEARCH_SUCCESS,
+    FOOD_SUCCESS,
+} from '../types/types'
 
 export const searchFoods = (query: string) => {
-    return FoodService.getFoodsByQuery(query).then((data: any) => {
-        if (!query) {
+    return FoodService.getFoodsByQuery(query)
+        .then((res) => {
             return {
-                type: FOOD_SEARCH_FAIL,
+                type: FOOD_SEARCH_SUCCESS,
                 payload: {
-                    error: 'Search query missing.',
+                    query: query,
                 },
+                error: '',
+                data: res.data.foods,
             }
-        }
-        if (data.error) {
+        })
+        .catch((err) => {
             return {
                 type: FOOD_SEARCH_FAIL,
                 payload: {
                     query: query,
-                    error: JSON.stringify(data.error),
                 },
+                error: `${err.message}`,
             }
-        }
-        return {
-            type: FOOD_SEARCH_SUCCESS,
-            payload: {
-                list: data.foods,
-                query: query,
-                error: '',
-            },
-        }
-    })
+        })
 }
 
 export const getAllFoods = () => {
-    return FoodService.getAllFoods().then((res) => {
-        return res.data
-    })
+    return FoodService.getAllFoods()
+        .then((res: any) => {
+            return {
+                type: FOOD_SUCCESS,
+                error: '',
+                data: res.data.foods,
+            }
+        })
+        .catch((err) => {
+            return {
+                type: FOOD_SEARCH_FAIL,
+                error: `${err.message}`,
+            }
+        })
 }

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import authReducer from './authReducer'
-import foodReducer from './foodReducer'
+import foodSearchReducer from './foodSearchReducer'
+import dietReducer from './dietReducer'
+import sportSearchReducer from './sportSearchReducer'
 
 export default combineReducers({
     auth: authReducer,
-    food: foodReducer,
+    diet: dietReducer,
 })

@@ -7,14 +7,12 @@ import { ApplicationProvider, Layout } from '@ui-kitten/components'
 import { IconRegistry } from '@ui-kitten/components'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
 
-import AuthProvider from './context/AuthContext'
-
 import style from './App.style'
 import AppNav from './router/AppNav'
 
 import { default as customTheme } from './themes/custom-theme.json'
 import { default as mapping } from './themes/mapping.json'
-import { Provider, useDispatch } from 'react-redux'
+import { Provider } from 'react-redux'
 import store from './redux/store'
 
 function App() {

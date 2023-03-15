@@ -1,7 +1,11 @@
 import axios from 'axios'
+import { CookieJar } from 'tough-cookie'
+import * as SecureStore from 'expo-secure-store'
 
-const API = 'http://10.0.2.2:8080'
+export const API = 'http://10.0.2.2:3000'
 const TIMEOUT = 3000
+
+export const jar = new CookieJar()
 
 export default axios.create({
     baseURL: API,

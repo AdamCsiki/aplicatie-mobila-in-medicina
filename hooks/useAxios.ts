@@ -1,40 +1,13 @@
 import axios from '../api/axios'
 import { useEffect, useState } from 'react'
 import httpStatus from '../misc/httpStatus'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 function useAxios() {
-    const [response, setResponse] = useState<any>({})
-    const [error, setError] = useState('')
-    const [loading, setLoading] = useState(true)
+    const auth = useSelector((state: RootState) => state.auth)
 
-    const fetchData = (
-        url: string,
-        method: string,
-        body = {},
-        headers = {},
-        callback: () => void
-    ) => {
-        setError('')
-
-        axios({
-            method: method,
-            url: url,
-            data: body,
-            headers: headers,
-        })
-            .then((res) => {
-                setResponse(res.data)
-            })
-            .catch((err) => {
-                setError(httpStatus[err.response.status].message)
-            })
-            .finally(() => {
-                setLoading(false)
-                callback()
-            })
-    }
-
-    return { response, error, loading, fetchData, axios }
+    return { axios }
 }
 
 export default useAxios

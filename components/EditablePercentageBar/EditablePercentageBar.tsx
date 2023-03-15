@@ -1,16 +1,16 @@
-import style from "./EditablePercentageBar.style";
-import { Layout } from "@ui-kitten/components";
-import { useState } from "react";
-import PercentageBar from "../PercentageBar/PercentageBar";
+import style from './EditablePercentageBar.style'
+import { Layout } from '@ui-kitten/components'
+import { useState } from 'react'
+import ProgressBar from '../ProgressBar/ProgressBar'
 
 function EditablePercentageBar({ percentage }: { percentage: number }) {
-	const [currentPercentage, setCurrentPercentage] = useState(0);
+    const [currentPercentage, setCurrentPercentage] = useState(0)
 
-	return (
-		<Layout style={style().EditablePercentageBar}>
-			<PercentageBar percentage={percentage} />
-		</Layout>
-	);
+    return (
+        <Layout style={style().EditablePercentageBar}>
+            <ProgressBar percentage={percentage} />
+        </Layout>
+    )
 }
 
-export default EditablePercentageBar;
+export default EditablePercentageBar
