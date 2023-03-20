@@ -6,6 +6,8 @@ export const LOGIN_FAIL = 'LOGIN_FAIL'
 export const LOGOUT = 'LOGOUT'
 export const REFRESH_SUCCESS = 'REFRESH_SUCCESS'
 
+export const OFFLINE = 'OFFLINE'
+
 // ! FOOD SEARCH TYPES
 export const FOOD_SEARCH_SUCCESS = 'FOOD_SEARCH_SUCCESS'
 export const FOOD_SEARCH_FAIL = 'FOOD_SEARCH_FAIL'

@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react'
 import defaultUser from '../../models/defaultUser'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { refresh, signOut } from '../../redux/actions/authActions'
-import { LOGOUT } from '../../redux/types/types'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { signOut } from '../../redux/actions/authActions'
 
 function Profile({ navigation }: { navigation: any }) {
     const auth = useSelector((state: RootState) => state.auth)
@@ -64,24 +62,14 @@ function Profile({ navigation }: { navigation: any }) {
                 <Container style={style.profileContainer} level="1">
                     <Button
                         onPress={() => {
-                            AsyncStorage.multiRemove(['token', 'refresh']).then(
-                                () => {
-                                    dispatch({
-                                        type: LOGOUT,
-                                    })
-                                }
-                            )
-                        }}
-                    >
-                        <Text>SignOut</Text>
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            refresh(auth).then((action) => {
+                            signOut().then((action) => {
                                 dispatch(action)
                             })
                         }}
                     >
+                        <Text>SignOut</Text>
+                    </Button>
+                    <Button>
                         <Text>Refresh</Text>
                     </Button>
                 </Container>

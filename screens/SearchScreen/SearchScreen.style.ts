@@ -59,6 +59,16 @@ export default StyleSheet.create({
 
         overflow: 'hidden',
     },
+    DietAddScreenListHeader: {
+        width: '100%',
+
+        padding: 8,
+
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     DietAddHeader: {
         width: '100%',
 

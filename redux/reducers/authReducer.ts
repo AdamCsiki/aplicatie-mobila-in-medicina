@@ -3,6 +3,7 @@ import {
     LOGIN_SUCCESS,
     LOGOUT,
     REFRESH_SUCCESS,
+    OFFLINE,
 } from '../types/types'
 import { AuthStateModel } from '../../models/AuthStateModel'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -26,6 +27,7 @@ function authReducer(
                 ...state,
                 isLoggedIn: true,
                 accessToken: payload.accessToken,
+                user: payload.user,
                 error: null,
             }
         case LOGIN_FAIL:
@@ -33,12 +35,14 @@ function authReducer(
                 ...state,
                 isLoggedIn: false,
                 accessToken: null,
+                user: null,
             }
         case LOGOUT: {
             return {
                 ...state,
                 isLoggedIn: false,
                 accessToken: null,
+                user: null,
                 error: null,
             }
         }
@@ -48,6 +52,11 @@ function authReducer(
                 isLoggedIn: true,
                 accessToken: payload.accessToken,
                 error: null,
+            }
+        }
+        case OFFLINE: {
+            return {
+                ...state,
             }
         }
         default:

@@ -4,15 +4,18 @@ import style from './SearchScreen.style'
 import SearchInput from '../../components/SearchInput/SearchInput'
 import ScrollContainer from '../../components/SearchList/SearchList'
 import Spacer from '../../components/Spacer/Spacer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import axios from '../../api/axios'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
+import { TouchableOpacity } from 'react-native'
+import { RootState } from '../../redux/store'
 
 function SearchScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
     const dispatch = useDispatch()
+    const auth = useSelector((state: RootState) => state.auth)
 
     const [foodList, setFoodList] = useState<FoodModel[]>([])
 
@@ -24,6 +27,10 @@ function SearchScreen({ navigation }: { navigation: any }) {
 
     const getFoodsByQuery = (query: string) => {
         return axios.get('/foods/find', { params: { search: query } })
+    }
+
+    const getPersonalFoods = () => {
+        return axios.get('/foods/uid', { params: { id: auth.user } })
     }
 
     const onRefresh = () => {
@@ -74,23 +81,41 @@ function SearchScreen({ navigation }: { navigation: any }) {
             </Container>
             <Spacer />
             <Container style={style.DietAddScreenListContainer}>
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        width: '100%',
-                        color: theme['error-color-100'],
-                    }}
-                >
-                    Search
-                </Text>
+                <Layout style={style.DietAddScreenListHeader}>
+                    <Text
+                        category={'h6'}
+                        style={{
+                            color: theme['error-color-100'],
+                        }}
+                    >
+                        Search
+                    </Text>
+                    <Button
+                        size="small"
+                        onPress={() => {
+                            getPersonalFoods().then((res) => {
+                                setFoodList(res.data)
+                            })
+                        }}
+                    >
+                        <Text category="h6">+</Text>
+                    </Button>
+                </Layout>
+
                 <ScrollContainer
                     data={foodList}
                     nestedScrollEnabled={true}
-                    itemOnPress={(item) => {
-                        navigation.navigate('Details', { item: item })
-                    }}
                     renderItem={({ item }) => {
-                        return <SearchFoodItem item={item} />
+                        return (
+                            <SearchFoodItem
+                                item={item}
+                                onPress={() => {
+                                    navigation.navigate('Details', {
+                                        item: item,
+                                    })
+                                }}
+                            />
+                        )
                     }}
                 />
             </Container>

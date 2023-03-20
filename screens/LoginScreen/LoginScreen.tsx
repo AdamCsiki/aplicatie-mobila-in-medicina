@@ -54,7 +54,13 @@ function LoginScreen({ navigation }: { navigation: any }) {
             scrollEnabled={true}
         >
             <Layout style={style.loginRegisterContainer}>
-                <Button>Register</Button>
+                <Button
+                    onPress={() => {
+                        navigation.navigate('SignUp')
+                    }}
+                >
+                    <Text>SignUp</Text>
+                </Button>
             </Layout>
             <Layout style={style.loginHeaderContainer}>
                 <Text category="h2">SignIn</Text>

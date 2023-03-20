@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler'
-import { Text, View } from 'react-native'
 
 import { useFonts } from 'expo-font'
 import * as eva from '@eva-design/eva'
@@ -14,6 +13,7 @@ import { default as customTheme } from './themes/custom-theme.json'
 import { default as mapping } from './themes/mapping.json'
 import { Provider } from 'react-redux'
 import store from './redux/store'
+import SplashScreen from './screens/SplashScreen/SplashScreen'
 
 function App() {
     const [loaded] = useFonts({
@@ -23,11 +23,7 @@ function App() {
     })
 
     if (!loaded) {
-        return (
-            <View style={style.AppLoading}>
-                <Text>Loading fonts :D</Text>
-            </View>
-        )
+        return <SplashScreen />
     }
 
     return (

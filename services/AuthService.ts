@@ -4,6 +4,7 @@ import { LoginModel } from '../models/LoginModel'
 import { Cookie } from 'tough-cookie'
 import getHttpOnlyToken from '../misc/getHttpOnlyToken'
 import { AxiosResponse } from 'axios'
+import { SignUpModel } from '../models/SignUpModel'
 
 function setTokens(res: AxiosResponse) {
     if (!res.data.token) {
@@ -34,9 +35,8 @@ function setTokens(res: AxiosResponse) {
     const refreshToken = getHttpOnlyToken(cookies[0].extensions)
 
     SecureStore.setItemAsync('accessToken', accessToken)
-    SecureStore.setItemAsync('refreshToken', refreshToken)
 
-    return { accessToken, refreshToken }
+    return { accessToken, user: res.data.id }
 }
 
 class AuthService {
@@ -49,12 +49,13 @@ class AuthService {
     }
 
     signOut() {
-        SecureStore.deleteItemAsync('token')
-        SecureStore.deleteItemAsync('refresh')
+        return SecureStore.deleteItemAsync('accessToken').then(() => {
+            axios.defaults.headers.common['Authorization'] = null
+        })
     }
 
-    register({ email, password }: LoginModel) {
-        return axios.post('/auth/register', { email, password })
+    signUp({ username, email, password }: SignUpModel) {
+        return axios.post('/auth/register', { username, email, password })
     }
 
     refresh() {

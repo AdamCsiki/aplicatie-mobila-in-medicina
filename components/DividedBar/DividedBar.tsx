@@ -11,7 +11,7 @@ function DividedBar({ divisions }: { divisions: number[] }) {
     ]
 
     return (
-        <Layout style={style.DividedBar}>
+        <Layout style={style.DividedBar} level="3">
             {divisions.map((div) => {
                 return (
                     <Layout

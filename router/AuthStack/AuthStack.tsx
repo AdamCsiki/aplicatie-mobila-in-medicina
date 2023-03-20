@@ -29,8 +29,15 @@ axios.interceptors.response.use(
     (err) => {
         const { message, config } = err
 
+        console.log('Message: ', message)
+
         if (!err) {
             console.log('Backend offline!')
+            return Promise.reject(err)
+        }
+
+        if (!err.response) {
+            console.log('Error response missing.')
             return Promise.reject(err)
         }
 
@@ -75,25 +82,24 @@ function AuthStack() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        SecureStore.getItemAsync('accessToken').then((accessToken) => {
-            axios.defaults.headers.common['Authorization'] =
-                'Bearer ' + accessToken
-            SecureStore.getItemAsync('refreshToken').then((refreshToken) => {
-                if (accessToken && refreshToken) {
-                    dispatch({
-                        type: LOGIN_SUCCESS,
-                        payload: { accessToken, refreshToken },
-                    })
-                }
+        SecureStore.getItemAsync('accessToken')
+            .then((accessToken) => {
+                console.log('TOKEN FROM SECURE_STORE: ', accessToken)
                 if (accessToken) {
+                    axios.defaults.headers.common['Authorization'] =
+                        'Bearer ' + accessToken
                     refresh().then((res) => {
                         dispatch(res)
                     })
                 }
-
+            })
+            .catch((err) => {
+                console.log(err.message)
+            })
+            .finally(() => {
                 setLoading(false)
             })
-        })
+        setLoading(false)
     }, [])
 
     return (

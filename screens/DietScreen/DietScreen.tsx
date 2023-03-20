@@ -5,6 +5,7 @@ import {
     Divider,
     TopNavigation,
     Modal,
+    useTheme,
 } from '@ui-kitten/components'
 import React, { useState } from 'react'
 import Container from '../../components/Container/Container'
@@ -22,6 +23,8 @@ function DietScreen({ navigation }: any) {
     const [statsEditVisible, setStatsEditVisible] = useState(false)
 
     const [addedFoods, setAddedFoods] = useState<any>([])
+
+    const theme = useTheme()
 
     return (
         <Layout style={{ flex: 1 }} level="4">
@@ -43,6 +46,7 @@ function DietScreen({ navigation }: any) {
                         current={diet.currentCals}
                         max={diet.maxCals}
                         sign={'Kcal'}
+                        color={theme['color-basic-400']}
                     />
 
                     <Spacer />
@@ -52,6 +56,7 @@ function DietScreen({ navigation }: any) {
                         current={diet.currentCarbs}
                         max={diet.maxCarbs}
                         sign={'g'}
+                        color={theme['color-success-500']}
                     />
 
                     <Spacer />
@@ -61,6 +66,7 @@ function DietScreen({ navigation }: any) {
                         current={diet.currentFats}
                         max={diet.maxFats}
                         sign={'g'}
+                        color={theme['color-warning-500']}
                     />
 
                     <Spacer />
@@ -70,6 +76,7 @@ function DietScreen({ navigation }: any) {
                         current={diet.currentProtein}
                         max={diet.maxProtein}
                         sign={'g'}
+                        color={theme['color-danger-500']}
                     />
 
                     <Spacer height={32} />
