@@ -1,18 +1,17 @@
 import { Button, Layout, ListItem, Text, useTheme } from '@ui-kitten/components'
-import Container from '../../components/Container/Container'
-import style from './SearchScreen.style'
+import style from './SearchFoodScreen.style'
 import SearchInput from '../../components/SearchInput/SearchInput'
-import ScrollContainer from '../../components/SearchList/SearchList'
+import SearchList from '../../components/SearchList/SearchList'
 import Spacer from '../../components/Spacer/Spacer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import axios from '../../api/axios'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
-import { TouchableOpacity } from 'react-native'
 import { RootState } from '../../redux/store'
+import { addFoodToStorage } from '../../redux/actions/dietActions'
 
-function SearchScreen({ navigation }: { navigation: any }) {
+function SearchFoodScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
     const dispatch = useDispatch()
     const auth = useSelector((state: RootState) => state.auth)
@@ -61,7 +60,7 @@ function SearchScreen({ navigation }: { navigation: any }) {
 
     return (
         <Layout style={style.DietAddScreen} level="4">
-            <Container style={style.DietAddScreenSearchContainer}>
+            <Layout style={style.DietAddScreenSearchContainer}>
                 <Layout style={style.DietAddScreenSearchDiv}>
                     <SearchInput
                         onChangeText={(text) => setSearchQuery(text)}
@@ -78,9 +77,9 @@ function SearchScreen({ navigation }: { navigation: any }) {
                         <Text category="h6">Tags</Text>
                     </Button>
                 </Layout>
-            </Container>
+            </Layout>
             <Spacer />
-            <Container style={style.DietAddScreenListContainer}>
+            <Layout style={style.DietAddScreenListContainer}>
                 <Layout style={style.DietAddScreenListHeader}>
                     <Text
                         category={'h6'}
@@ -102,9 +101,8 @@ function SearchScreen({ navigation }: { navigation: any }) {
                     </Button>
                 </Layout>
 
-                <ScrollContainer
+                <SearchList
                     data={foodList}
-                    nestedScrollEnabled={true}
                     renderItem={({ item }) => {
                         return (
                             <SearchFoodItem
@@ -114,13 +112,18 @@ function SearchScreen({ navigation }: { navigation: any }) {
                                         item: item,
                                     })
                                 }}
+                                onPressAdd={() => {
+                                    addFoodToStorage(item).then((action) => {
+                                        dispatch(action)
+                                    })
+                                }}
                             />
                         )
                     }}
                 />
-            </Container>
+            </Layout>
         </Layout>
     )
 }
 
-export default SearchScreen
+export default SearchFoodScreen

@@ -1,6 +1,11 @@
 import { DietModel } from '../../models/DietModel'
 import { ActionModel } from '../../models/ActionModel'
-import { DIET_DEFAULT, DIET_UPDATE, DIET_UPDATE_MAX } from '../types/types'
+import {
+    DIET_DEFAULT,
+    DIET_UPDATE,
+    DIET_UPDATE_ADD,
+    DIET_UPDATE_MAX,
+} from '../types/types'
 
 const initialState: DietModel = {
     currentCals: 0,
@@ -42,6 +47,14 @@ function dietReducer(
                 currentCarbs: payload.currentCarbs,
                 currentFats: payload.currentFats,
                 currentProtein: payload.currentProtein,
+            }
+        case DIET_UPDATE_ADD:
+            return {
+                ...state,
+                currentCals: state.currentCals + payload.currentCals,
+                currentCarbs: state.currentCarbs + payload.currentCarbs,
+                currentFats: state.currentFats + payload.currentFats,
+                currentProtein: state.currentProtein + payload.currentProtein,
             }
         default:
             return { ...state }

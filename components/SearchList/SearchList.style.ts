@@ -3,11 +3,14 @@ import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     ContentContainer: {
-        ...padding(8),
         borderRadius: 16,
+
+        overflow: 'hidden',
     },
     List: {
         width: '100%',
+
+        ...padding(8),
 
         borderRadius: 16,
 

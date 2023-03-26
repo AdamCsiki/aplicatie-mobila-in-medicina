@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import DietScreen from '../../screens/DietScreen/DietScreen'
-import SearchScreen from '../../screens/SearchScreen/SearchScreen'
+import SearchFoodScreen from '../../screens/SearchFoodScreen/SearchFoodScreen'
 import DetailsScreen from '../../screens/DetailsScreen/DetailsScreen'
 
 const { Navigator, Screen } = createStackNavigator()
@@ -15,7 +15,7 @@ function DietStack() {
             />
             <Screen
                 name="Foods"
-                component={SearchScreen}
+                component={SearchFoodScreen}
                 options={{ headerShown: true }}
             />
             <Screen

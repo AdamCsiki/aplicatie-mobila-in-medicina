@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { Drawer, DrawerItem, IndexPath } from '@ui-kitten/components'
 import SettingsScreen from '../../screens/SettingsScreen/SettingsScreen'
-import RootBottomTab from '../RootBottomTab/RootBottomTab'
+import RootBottomTab from '../MainTab/MainTab'
 
 const { Navigator, Screen } = createDrawerNavigator()
 

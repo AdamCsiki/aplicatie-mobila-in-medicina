@@ -1,7 +1,6 @@
 import { ScrollView, TouchableOpacity, Image } from 'react-native'
 import { Layout, Text, Button, Divider, useTheme } from '@ui-kitten/components'
 import style, { backgroundAnimation } from './Profile.style'
-import Container from '../../components/Container/Container'
 import Animated from 'react-native-reanimated'
 import { useEffect, useState } from 'react'
 import defaultUser from '../../models/defaultUser'
@@ -59,7 +58,7 @@ function Profile({ navigation }: { navigation: any }) {
                 <Divider />
                 <Text category="h5">Overview</Text>
                 <Divider />
-                <Container style={style.profileContainer} level="1">
+                <Layout style={style.profileContainer} level="1">
                     <Button
                         onPress={() => {
                             signOut().then((action) => {
@@ -72,7 +71,7 @@ function Profile({ navigation }: { navigation: any }) {
                     <Button>
                         <Text>Refresh</Text>
                     </Button>
-                </Container>
+                </Layout>
             </Layout>
         </ScrollView>
     )

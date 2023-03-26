@@ -54,7 +54,7 @@ export const signOut = () => {
             }
         })
         .catch((err) => {
-            failAction(err)
+            return failAction(err)
         })
 }
 

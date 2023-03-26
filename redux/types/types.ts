@@ -19,4 +19,5 @@ export const SPORT_SUCCESS = 'SPORT_SUCCESS'
 // ! DIET TYPES
 export const DIET_UPDATE_MAX = 'DIET_UPDATE_MAX'
 export const DIET_UPDATE = 'DIET_UPDATE'
+export const DIET_UPDATE_ADD = 'DIET_UPDATE_ADD'
 export const DIET_DEFAULT = 'DIET_DEFAULT'

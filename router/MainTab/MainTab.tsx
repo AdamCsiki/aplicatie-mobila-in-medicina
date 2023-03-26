@@ -3,6 +3,7 @@ import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components'
 import Profile from '../../screens/ProfileScreen/Profile'
 import DietScreen from '../../screens/DietScreen/DietScreen'
 import DietStack from '../DietStack/DietStack'
+import WeeklyStack from '../WeeklyStack/WeeklyStack'
 
 const RootBottomTabNav = createBottomTabNavigator()
 
@@ -19,6 +20,7 @@ const BottomTabBar = ({
     >
         <BottomNavigationTab title="Profile" />
         <BottomNavigationTab title="Diet" />
+        <BottomNavigationTab title="Weekly" />
     </BottomNavigation>
 )
 
@@ -32,6 +34,7 @@ function RootStack() {
         >
             <RootBottomTabNav.Screen name={'Profile'} component={Profile} />
             <RootBottomTabNav.Screen name={'Diet'} component={DietStack} />
+            <RootBottomTabNav.Screen name={'Weekly'} component={WeeklyStack} />
         </RootBottomTabNav.Navigator>
     )
 }

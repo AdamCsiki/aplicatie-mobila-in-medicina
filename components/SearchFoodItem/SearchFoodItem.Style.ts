@@ -3,23 +3,29 @@ import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SearchItem: {
-        maxHeight: 256,
+        maxHeight: 100,
         width: '100%',
+
+        padding: 0,
 
         borderRadius: 16,
 
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
+        alignItems: 'center',
     },
     SearchItemImage: {
-        width: 64,
-        height: 64,
+        minWidth: 45,
+        minHeight: 45,
+
+        width: 80,
+        height: 80,
+
         borderRadius: 16,
     },
     SearchItemMainContainer: {
-        maxWidth: '75%',
+        maxWidth: '50%',
 
         display: 'flex',
         flexDirection: 'column',
@@ -43,5 +49,24 @@ export default StyleSheet.create({
         justifyContent: 'flex-end',
 
         flexGrow: 1,
+    },
+    ButtonContainer: {
+        height: '100%',
+
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    Button: {
+        borderWidth: 1,
+        borderColor: '#00000000',
+    },
+    AddButton: {
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+    },
+    RemoveButton: {
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
     },
 })

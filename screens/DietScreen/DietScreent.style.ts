@@ -10,7 +10,6 @@ export default StyleSheet.create({
     },
     StatContainer: {
         width: '100%',
-        minHeight: 250,
         height: 'auto',
 
         ...padding(16, 16, 32, 16),

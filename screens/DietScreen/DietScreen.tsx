@@ -7,24 +7,38 @@ import {
     Modal,
     useTheme,
 } from '@ui-kitten/components'
-import React, { useState } from 'react'
-import Container from '../../components/Container/Container'
+import React, { useEffect, useState } from 'react'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import style from './DietScreent.style'
 import { ScrollView } from 'react-native'
 import EditablePercentageBar from '../../components/EditablePercentageBar/EditablePercentageBar'
 import Spacer from '../../components/Spacer/Spacer'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
+import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
+import {
+    calculateMacros,
+    getStoredFoods,
+} from '../../redux/actions/dietActions'
 
 function DietScreen({ navigation }: any) {
     const diet = useSelector((state: RootState) => state.diet)
+    const dispatch = useDispatch()
 
     const [statsEditVisible, setStatsEditVisible] = useState(false)
 
     const [addedFoods, setAddedFoods] = useState<any>([])
 
     const theme = useTheme()
+
+    useEffect(() => {
+        calculateMacros().then((action) => {
+            dispatch(action)
+        })
+        getStoredFoods().then((foods) => {
+            setAddedFoods(foods)
+        })
+    }, [])
 
     return (
         <Layout style={{ flex: 1 }} level="4">
@@ -34,9 +48,21 @@ function DietScreen({ navigation }: any) {
                 showsVerticalScrollIndicator
                 nestedScrollEnabled
             >
-                <Container style={style.StatContainer} level="1">
+                <Layout style={style.StatContainer} level="1">
                     <Layout style={style.StatHeader}>
                         <Text category="h4">Stats</Text>
+                        <Button
+                            onPress={() =>
+                                setStatsEditVisible(!statsEditVisible)
+                            }
+                        >
+                            <Text>Edit</Text>
+                        </Button>
+
+                        <FullScreenModal
+                            visible={statsEditVisible}
+                            onBackdropPress={() => setStatsEditVisible(false)}
+                        ></FullScreenModal>
                     </Layout>
 
                     <Spacer />
@@ -78,42 +104,33 @@ function DietScreen({ navigation }: any) {
                         sign={'g'}
                         color={theme['color-danger-500']}
                     />
+                </Layout>
 
-                    <Spacer height={32} />
+                <Spacer />
 
-                    {statsEditVisible && (
-                        <>
-                            <Spacer height={32} />
-                            <Layout style={style.StatsEditContainer}>
-                                <Button>
-                                    <Text>Add Carbs</Text>
-                                </Button>
-                                <Button>
-                                    <Text>Add Fats</Text>
-                                </Button>
-                                <Button>
-                                    <Text>Add Protein</Text>
-                                </Button>
-                            </Layout>
-                            <Spacer height={32} />
-                        </>
-                    )}
+                <Layout
+                    style={style.StatContainer}
+                    level="1"
+                    onTouchEnd={() => {
+                        getStoredFoods().then((foods) => {
+                            setAddedFoods(foods)
+                        })
+                    }}
+                >
+                    <Text category="h5">Foods</Text>
+
+                    <Spacer />
+
                     <Button
-                        onPress={() => setStatsEditVisible(!statsEditVisible)}
+                        onPress={() => navigation.navigate('Foods')}
                         style={{ width: '100%' }}
                     >
-                        <Text>Edit</Text>
-                    </Button>
-                </Container>
-                <Spacer />
-                <Container style={style.StatContainer} level="1">
-                    <Text category="h5">Foods</Text>
-                    <Button onPress={() => navigation.navigate('Foods')}>
                         <Text category="h4">Add Food</Text>
                     </Button>
-                </Container>
+                    <Text>{JSON.stringify(addedFoods)}</Text>
+                </Layout>
                 <Spacer />
-                <Container style={style.StatContainer} level="1"></Container>
+                <Layout style={style.StatContainer} level="1"></Layout>
             </ScrollView>
         </Layout>
     )
