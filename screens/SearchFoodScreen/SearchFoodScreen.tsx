@@ -9,7 +9,10 @@ import axios from '../../api/axios'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
 import { RootState } from '../../redux/store'
-import { addFoodToStorage } from '../../redux/actions/dietActions'
+import {
+    addOneFoodToStorage,
+    removeOneFoodFromStorage,
+} from '../../redux/actions/dietActions'
 
 function SearchFoodScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
@@ -113,9 +116,10 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                                     })
                                 }}
                                 onPressAdd={() => {
-                                    addFoodToStorage(item).then((action) => {
-                                        dispatch(action)
-                                    })
+                                    addOneFoodToStorage(item)
+                                }}
+                                onPressRemove={() => {
+                                    removeOneFoodFromStorage(item)
                                 }}
                             />
                         )

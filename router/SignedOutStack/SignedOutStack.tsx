@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import LoginScreen from '../../screens/LoginScreen/LoginScreen'
-import RegisterScreen from '../../screens/RegisterScreen/RegisterScreen'
+import SignInScreen from '../../screens/SignInScreen/SignInScreen'
+import SignUpScreen from '../../screens/SignUpScreen/SignUpScreen'
 
 const SignedOut = createStackNavigator()
 
@@ -11,8 +11,8 @@ function SignedOutStack() {
                 headerShown: false,
             }}
         >
-            <SignedOut.Screen name="SignIn" component={LoginScreen} />
-            <SignedOut.Screen name="SignUp" component={RegisterScreen} />
+            <SignedOut.Screen name="SignIn" component={SignInScreen} />
+            <SignedOut.Screen name="SignUp" component={SignUpScreen} />
         </SignedOut.Navigator>
     )
 }

@@ -10,7 +10,7 @@ function SearchList(props: ListProps) {
             {...props}
             style={{ ...style.List, backgroundColor: theme['color-basic-300'] }}
             contentContainerStyle={style.ContentContainer}
-            ItemSeparatorComponent={() => <Spacer height={16} />}
+            ItemSeparatorComponent={() => <Spacer height={8} />}
         />
     )
 }

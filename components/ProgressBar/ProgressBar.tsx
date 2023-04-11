@@ -19,6 +19,7 @@ function ProgressBar({
             <Layout style={style.ProgressBarTextContainer}>
                 <Text
                     category="h6"
+                    status={current > max ? 'danger' : 'basic'}
                     style={{
                         ...style.ProgressBarText,
                     }}
@@ -40,7 +41,7 @@ function ProgressBar({
                         {
                             backgroundColor:
                                 current > max
-                                    ? theme['color-danger-400']
+                                    ? theme['color-danger-800']
                                     : color ?? theme['color-success-400'],
                         },
                     ]}

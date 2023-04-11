@@ -1,4 +1,4 @@
-import style from './LoginScreen.style'
+import style from './SignInScreen.style'
 import { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LinkButton from '../../components/LinkButton/LinkButton'
@@ -7,7 +7,7 @@ import { LoginModel } from '../../models/LoginModel'
 import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from '../../redux/actions/authActions'
 
-function LoginScreen({ navigation }: { navigation: any }) {
+function SignInScreen({ navigation }: { navigation: any }) {
     const dispatch = useDispatch()
 
     const theme = useTheme()
@@ -96,4 +96,4 @@ function LoginScreen({ navigation }: { navigation: any }) {
     )
 }
 
-export default LoginScreen
+export default SignInScreen

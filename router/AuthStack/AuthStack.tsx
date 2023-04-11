@@ -3,12 +3,11 @@ import SignedOutStack from '../SignedOutStack/SignedOutStack'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { LOGIN_SUCCESS } from '../../redux/types/types'
 import SplashScreen from '../../screens/SplashScreen/SplashScreen'
 import { SignedInDrawer } from '../SignedInDrawer/SignedInDrawer'
 import * as SecureStore from 'expo-secure-store'
 import axios from '../../api/axios'
-import { refresh } from '../../redux/actions/authActions'
+import { offlineSignedIn } from '../../redux/actions/authActions'
 
 //
 //
@@ -73,7 +72,7 @@ axios.interceptors.response.use(
 //
 
 // ! Authorization stack begins here
-const Auth = createStackNavigator()
+const Stack = createStackNavigator()
 
 function AuthStack() {
     const auth = useSelector((state: RootState) => state.auth)
@@ -82,40 +81,29 @@ function AuthStack() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        SecureStore.getItemAsync('accessToken')
-            .then((accessToken) => {
-                console.log('TOKEN FROM SECURE_STORE: ', accessToken)
-                if (accessToken) {
-                    axios.defaults.headers.common['Authorization'] =
-                        'Bearer ' + accessToken
-                    refresh().then((res) => {
-                        dispatch(res)
-                    })
-                }
-            })
-            .catch((err) => {
-                console.log(err.message)
+        offlineSignedIn()
+            .then((action) => {
+                dispatch(action)
             })
             .finally(() => {
                 setLoading(false)
             })
-        setLoading(false)
     }, [])
 
     return (
-        <Auth.Navigator
+        <Stack.Navigator
             screenOptions={{
                 headerShown: false,
             }}
         >
             {loading ? (
-                <Auth.Screen name="SplashScreen" component={SplashScreen} />
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
             ) : auth.accessToken ? (
-                <Auth.Screen name="SignedIn" component={SignedInDrawer} />
+                <Stack.Screen name="SignedIn" component={SignedInDrawer} />
             ) : (
-                <Auth.Screen name="SignedOut" component={SignedOutStack} />
+                <Stack.Screen name="SignedOut" component={SignedOutStack} />
             )}
-        </Auth.Navigator>
+        </Stack.Navigator>
     )
 }
 

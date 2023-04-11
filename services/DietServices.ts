@@ -1,89 +1,173 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import foodModel from '../models/FoodModel'
-import foodsArrayModel from '../models/foodsArrayModel'
-import { DIET_DEFAULT, DIET_UPDATE } from '../redux/types/types'
+import UserFoodModel from '../models/UserFoodModel'
+import {
+    DEFAULT_MACROS,
+    DEFAULT_MAX_MACROS,
+    UPDATE_CURRENT_MACROS,
+    UPDATE_MAX_MACROS,
+} from '../redux/types/types'
+import UserMacrosModel from '../models/UserMacrosModel'
+import FoodModel from '../models/FoodModel'
 
 class DietServices {
     getStoredFoods() {
         return AsyncStorage.getItem('userFoods').then((userFoods) => {
             if (!userFoods) {
-                return []
+                return [] as UserFoodModel[]
             }
-            return JSON.parse(userFoods)
+            console.log('GET STORED FOODS: ', userFoods)
+            return JSON.parse(userFoods) as UserFoodModel[]
         })
     }
-    addFoodToStorage(newFood: foodModel) {
-        return AsyncStorage.getItem('userFoods').then((userFoods) => {
+    addFoodToStorage(newFood: foodModel, quantity: number) {
+        return this.getStoredFoods().then((userFoods) => {
             // ! IF THERE IS NOTHING IN THE STORAGE
-            if (!userFoods) {
-                const newFoodsArray: foodsArrayModel[] = [
-                    { id: 0, count: 1, food: newFood },
-                ]
+            if (userFoods.length === 0) {
+                userFoods.push({ id: 0, quantity: quantity, food: newFood })
 
                 return AsyncStorage.setItem(
                     'userFoods',
-                    JSON.stringify(newFoodsArray)
+                    JSON.stringify(userFoods)
                 )
             }
 
-            const userFoodsArray: foodsArrayModel[] = JSON.parse(userFoods)
-
             // ! IF FOOD EXISTS IN STORAGE
-            for (let i = 0; i < userFoodsArray.length; i++) {
-                if (
-                    JSON.stringify(userFoodsArray[i].food) ===
-                    JSON.stringify(newFood)
-                ) {
-                    userFoodsArray[i].count += 1
+            // ? Find the specific food, then adding the needed quantity
+            for (let i = 0; i < userFoods.length; i++) {
+                if (userFoods[i].food.id === newFood.id) {
+                    userFoods[i].quantity += quantity
+
                     return AsyncStorage.setItem(
                         'userFoods',
-                        JSON.stringify(userFoodsArray)
+                        JSON.stringify(userFoods)
                     )
                 }
             }
 
             // ! IF FOOD DOES NOT EXIST IN STORAGE
-            const newFoodObject: foodsArrayModel = {
-                id: userFoodsArray[userFoodsArray.length - 1].count + 1,
-                count: 1,
+            // ? Getting the last id of the list
+            // ? Adding a new userFood to the array
+            userFoods.push({
+                id: userFoods[userFoods.length - 1].quantity + 1,
+                quantity: 1,
                 food: newFood,
-            }
-            userFoodsArray.push(newFoodObject)
+            })
 
-            return AsyncStorage.setItem(
-                'userFoods',
-                JSON.stringify(userFoodsArray)
+            return AsyncStorage.setItem('userFoods', JSON.stringify(userFoods))
+        })
+    }
+
+    removeFoodFromStorage(oldFood: FoodModel, quantity: number) {
+        return this.getStoredFoods().then((userFoods) => {
+            if (userFoods.length === 0) {
+                return
+            }
+
+            // ! GETTING THE INDEX OF THE FOOD
+            // ? Needed to check if it's in the storage
+            // ? And for removing it
+            const oldFoodIndex = userFoods.findIndex(
+                (userFood) => userFood.food.id == oldFood.id
             )
+
+            if (oldFoodIndex == -1) {
+                return
+            }
+
+            if (userFoods[oldFoodIndex].quantity <= quantity) {
+                userFoods.splice(oldFoodIndex, 1)
+            } else {
+                userFoods[oldFoodIndex].quantity -= quantity
+            }
+
+            return AsyncStorage.setItem('userFoods', JSON.stringify(userFoods))
         })
     }
 
     calculateMacros() {
-        return AsyncStorage.getItem('userFoods').then((userFoods) => {
-            if (!userFoods) {
+        return this.getStoredFoods().then((userFoods) => {
+            if (userFoods.length === 0) {
                 return {
-                    type: DIET_DEFAULT,
+                    type: DEFAULT_MACROS,
                 }
             }
-            const userFoodsArray: foodsArrayModel[] = JSON.parse(userFoods)
+
+            if (userFoods.length === 0) {
+                return {
+                    type: DEFAULT_MACROS,
+                }
+            }
 
             const macros = { calories: 0, carbs: 0, fats: 0, proteins: 0 }
 
-            userFoodsArray.forEach((userFood) => {
-                macros.calories += userFood.food.calories
-                macros.carbs += userFood.food.carbs
-                macros.fats += userFood.food.fats
-                macros.proteins += userFood.food.proteins
+            userFoods.forEach((userFood) => {
+                macros.calories += userFood.food.calories * userFood.quantity
+                macros.carbs += userFood.food.carbs * userFood.quantity
+                macros.fats += userFood.food.fats * userFood.quantity
+                macros.proteins += userFood.food.proteins * userFood.quantity
             })
 
             return {
-                type: DIET_UPDATE,
+                type: UPDATE_CURRENT_MACROS,
                 payload: {
                     currentCals: macros.calories,
                     currentCarbs: macros.carbs,
                     currentFats: macros.fats,
-                    currentProtein: macros.proteins,
+                    currentProteins: macros.proteins,
                 },
             }
+        })
+    }
+
+    setMaxMacros(userMaxMacros: UserMacrosModel) {
+        userMaxMacros.maxFats = Math.ceil(userMaxMacros.maxFats)
+        userMaxMacros.maxCarbs = Math.ceil(userMaxMacros.maxCarbs)
+        userMaxMacros.maxProteins = Math.ceil(userMaxMacros.maxProteins)
+
+        return AsyncStorage.setItem(
+            'userMacros',
+            JSON.stringify(userMaxMacros)
+        ).then(() => {
+            return {
+                type: UPDATE_MAX_MACROS,
+                payload: {
+                    maxCals: userMaxMacros.maxCals,
+                    maxCarbs: userMaxMacros.maxCarbs,
+                    maxFats: userMaxMacros.maxFats,
+                    maxProteins: userMaxMacros.maxProteins,
+                },
+            }
+        })
+    }
+
+    getMaxMacros() {
+        return AsyncStorage.getItem('userMacros').then((userMacros) => {
+            if (!userMacros) {
+                return {
+                    type: DEFAULT_MAX_MACROS,
+                }
+            }
+
+            const parsedUserMacros: UserMacrosModel = JSON.parse(userMacros)
+
+            console.log(parsedUserMacros)
+
+            return {
+                type: UPDATE_MAX_MACROS,
+                payload: {
+                    maxCals: parsedUserMacros.maxCals,
+                    maxCarbs: parsedUserMacros.maxCarbs,
+                    maxFats: parsedUserMacros.maxFats,
+                    maxProteins: parsedUserMacros.maxProteins,
+                },
+            }
+        })
+    }
+
+    removeAllFoods() {
+        return AsyncStorage.removeItem('userFoods').then(() => {
+            return { type: DEFAULT_MACROS }
         })
     }
 }

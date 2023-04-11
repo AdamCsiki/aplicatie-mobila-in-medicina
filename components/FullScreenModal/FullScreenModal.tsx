@@ -7,9 +7,11 @@ function FullScreenModal(props: ModalProps) {
         <Modal
             {...props}
             style={style.FullScreenModal}
-            backdropStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+            backdropStyle={{
+                backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            }}
         >
-            <Layout style={style.FSModalContainer}></Layout>
+            <Layout style={style.FSModalContainer}>{props.children}</Layout>
         </Modal>
     )
 }

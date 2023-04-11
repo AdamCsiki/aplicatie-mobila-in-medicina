@@ -1,5 +1,5 @@
 import { Input, Layout, Text, Button } from '@ui-kitten/components'
-import style from './RegisterScreen.style'
+import style from './SignUpScreen.style'
 import React, { useState } from 'react'
 import debounce from '../../misc/debouncer'
 import axios from '../../api/axios'
@@ -8,7 +8,7 @@ import { ParamListBase, NavigationProp } from '@react-navigation/native'
 import { signIn } from '../../redux/actions/authActions'
 import { useDispatch } from 'react-redux'
 
-function RegisterScreen({
+function SignUpScreen({
     navigation,
 }: {
     navigation: NavigationProp<ParamListBase>
@@ -77,4 +77,4 @@ function RegisterScreen({
     )
 }
 
-export default RegisterScreen
+export default SignUpScreen

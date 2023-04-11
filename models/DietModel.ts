@@ -1,10 +1,12 @@
 export type DietModel = {
+    day: string
+    macroRatios: { carbs: number; fats: number; proteins: number }
     currentCals: number
     maxCals: number
     currentCarbs: number
     maxCarbs: number
     currentFats: number
     maxFats: number
-    currentProtein: number
-    maxProtein: number
+    currentProteins: number
+    maxProteins: number
 }

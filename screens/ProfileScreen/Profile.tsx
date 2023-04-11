@@ -1,5 +1,13 @@
 import { ScrollView, TouchableOpacity, Image } from 'react-native'
-import { Layout, Text, Button, Divider, useTheme } from '@ui-kitten/components'
+import {
+    Layout,
+    Text,
+    Button,
+    Divider,
+    useTheme,
+    Avatar,
+    Card,
+} from '@ui-kitten/components'
 import style, { backgroundAnimation } from './Profile.style'
 import Animated from 'react-native-reanimated'
 import { useEffect, useState } from 'react'
@@ -7,12 +15,13 @@ import defaultUser from '../../models/defaultUser'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { signOut } from '../../redux/actions/authActions'
+import HeadingAndContent from '../../components/HeadingAndContent/HeadingAndContent'
+import bodyReducer from '../../redux/reducers/bodyReducer'
+import Spacer from '../../components/Spacer/Spacer'
 
 function Profile({ navigation }: { navigation: any }) {
-    const auth = useSelector((state: RootState) => state.auth)
+    const body = useSelector((state: RootState) => state.body)
     const [user, setUser] = useState(defaultUser)
-
-    const dispatch = useDispatch()
 
     const theme = useTheme()
 
@@ -43,34 +52,24 @@ function Profile({ navigation }: { navigation: any }) {
             <Layout style={style.profileUser}>
                 <Layout style={style.profileUserBackground}>
                     <TouchableOpacity>
-                        <Image
+                        <Avatar
                             source={require('../../assets/horseprofile.jpeg')}
                             style={style.profileImage}
                         />
                     </TouchableOpacity>
                 </Layout>
-                <TouchableOpacity style={style.profileUsername}>
-                    <Text category="h5">Csiki Adam Csaba</Text>
-                </TouchableOpacity>
             </Layout>
             <Divider />
             <Layout style={style.profileMain} level="1">
-                <Divider />
-                <Text category="h5">Overview</Text>
-                <Divider />
-                <Layout style={style.profileContainer} level="1">
-                    <Button
-                        onPress={() => {
-                            signOut().then((action) => {
-                                dispatch(action)
-                            })
-                        }}
-                    >
-                        <Text>SignOut</Text>
-                    </Button>
-                    <Button>
-                        <Text>Refresh</Text>
-                    </Button>
+                <Layout style={style.profileStatsHeader}>
+                    <Text category={'h5'}>Stats</Text>
+                </Layout>
+
+                <Spacer />
+                <Layout style={style.profileContainer}>
+                    <HeadingAndContent title={'Age'} content={body.age} />
+                    <HeadingAndContent title={'Height'} content={body.height} />
+                    <HeadingAndContent title={'Weight'} content={body.weight} />
                 </Layout>
             </Layout>
         </ScrollView>

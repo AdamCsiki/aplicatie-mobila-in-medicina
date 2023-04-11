@@ -11,8 +11,11 @@ export default StyleSheet.create({
     StatContainer: {
         width: '100%',
         height: 'auto',
+        maxHeight: 600,
 
         ...padding(16, 16, 32, 16),
+
+        borderRadius: 16,
 
         display: 'flex',
         flexDirection: 'column',
@@ -51,5 +54,18 @@ export default StyleSheet.create({
         width: '100%',
 
         ...padding(16),
+    },
+    ItemContainer: {
+        width: '100%',
+        height: 'auto',
+
+        padding: 8,
+
+        borderRadius: 16,
+
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
 })

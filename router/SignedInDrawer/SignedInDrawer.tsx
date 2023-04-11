@@ -1,43 +1,18 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { Drawer, DrawerItem, IndexPath } from '@ui-kitten/components'
-import SettingsScreen from '../../screens/SettingsScreen/SettingsScreen'
-import RootBottomTab from '../MainTab/MainTab'
+import HomeTab from '../HomeTab/HomeTab'
+import SettingsStack from '../SettingsStack/SettingsStack'
 
-const { Navigator, Screen } = createDrawerNavigator()
+const Drawer = createDrawerNavigator()
 
-const DrawerContent = ({
-    navigation,
-    state,
-}: {
-    navigation: any
-    state: any
-}) => {
+function SignedInDrawer() {
     return (
-        <Drawer
-            selectedIndex={new IndexPath(state.index)}
-            onSelect={(index) =>
-                navigation.navigate(state.routeNames[index.row])
-            }
+        <Drawer.Navigator
+            initialRouteName={'Home'}
+            screenOptions={{ headerShown: false, drawerPosition: 'right' }}
         >
-            <DrawerItem title="Home" />
-            <DrawerItem title="Settings" />
-        </Drawer>
-    )
-}
-
-function SignedInDrawer({ navigation }: { navigation: any }) {
-    return (
-        <Navigator
-            drawerContent={(props) => <DrawerContent {...props} />}
-            detachInactiveScreens={true}
-            screenOptions={{
-                drawerPosition: 'right',
-                headerShown: false,
-            }}
-        >
-            <Screen name="Home" component={RootBottomTab} />
-            <Screen name="Settings" component={SettingsScreen} />
-        </Navigator>
+            <Drawer.Screen name="Home" component={HomeTab} />
+            <Drawer.Screen name="Settings" component={SettingsStack} />
+        </Drawer.Navigator>
     )
 }
 

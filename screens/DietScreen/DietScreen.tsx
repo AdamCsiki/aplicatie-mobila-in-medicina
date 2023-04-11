@@ -1,44 +1,56 @@
-import {
-    Button,
-    Layout,
-    Text,
-    Divider,
-    TopNavigation,
-    Modal,
-    useTheme,
-} from '@ui-kitten/components'
+import { Button, Layout, Text, useTheme, Input } from '@ui-kitten/components'
 import React, { useEffect, useState } from 'react'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import style from './DietScreent.style'
-import { ScrollView } from 'react-native'
-import EditablePercentageBar from '../../components/EditablePercentageBar/EditablePercentageBar'
+import { ScrollView } from 'react-native-virtualized-view'
 import Spacer from '../../components/Spacer/Spacer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import {
+    addOneFoodToStorage,
     calculateMacros,
+    getMaxMacros,
     getStoredFoods,
+    removeOneFoodFromStorage,
 } from '../../redux/actions/dietActions'
+import UserFoodModel from '../../models/UserFoodModel'
+import UserFoodItem from '../../components/UserFoodItem/UserFoodItem'
+import { useIsFocused } from '@react-navigation/native'
+import MacroEditModal from '../MacroEditModal/MacroEditModal'
 
 function DietScreen({ navigation }: any) {
     const diet = useSelector((state: RootState) => state.diet)
     const dispatch = useDispatch()
+    const isFocused = useIsFocused()
 
     const [statsEditVisible, setStatsEditVisible] = useState(false)
 
-    const [addedFoods, setAddedFoods] = useState<any>([])
+    const [addedFoods, setAddedFoods] = useState<UserFoodModel[]>([])
 
     const theme = useTheme()
 
+    const updateFood = (userFood: UserFoodModel) => {
+        if (userFood.quantity <= 0) {
+            setAddedFoods((old) => {
+                return old.filter((userFood) => userFood.quantity > 0)
+            })
+        }
+    }
+
+    // ! RELOAD DATA ON SCREEN FOCUSED
     useEffect(() => {
-        calculateMacros().then((action) => {
-            dispatch(action)
-        })
-        getStoredFoods().then((foods) => {
-            setAddedFoods(foods)
-        })
-    }, [])
+        if (isFocused) {
+            getMaxMacros().then((action) => {
+                dispatch(action)
+            })
+            getStoredFoods().then((foods) => {
+                setAddedFoods(foods)
+            })
+            calculateMacros().then((action) => {
+                dispatch(action)
+            })
+        }
+    }, [isFocused])
 
     return (
         <Layout style={{ flex: 1 }} level="4">
@@ -52,17 +64,12 @@ function DietScreen({ navigation }: any) {
                     <Layout style={style.StatHeader}>
                         <Text category="h4">Stats</Text>
                         <Button
-                            onPress={() =>
-                                setStatsEditVisible(!statsEditVisible)
-                            }
+                            onPress={() => {
+                                setStatsEditVisible(true)
+                            }}
                         >
                             <Text>Edit</Text>
                         </Button>
-
-                        <FullScreenModal
-                            visible={statsEditVisible}
-                            onBackdropPress={() => setStatsEditVisible(false)}
-                        ></FullScreenModal>
                     </Layout>
 
                     <Spacer />
@@ -72,7 +79,7 @@ function DietScreen({ navigation }: any) {
                         current={diet.currentCals}
                         max={diet.maxCals}
                         sign={'Kcal'}
-                        color={theme['color-basic-400']}
+                        color={theme['color-primary-300']}
                     />
 
                     <Spacer />
@@ -99,8 +106,8 @@ function DietScreen({ navigation }: any) {
 
                     <Text category="h6">Protein</Text>
                     <ProgressBar
-                        current={diet.currentProtein}
-                        max={diet.maxProtein}
+                        current={diet.currentProteins}
+                        max={diet.maxProteins}
                         sign={'g'}
                         color={theme['color-danger-500']}
                     />
@@ -108,30 +115,73 @@ function DietScreen({ navigation }: any) {
 
                 <Spacer />
 
-                <Layout
-                    style={style.StatContainer}
-                    level="1"
-                    onTouchEnd={() => {
-                        getStoredFoods().then((foods) => {
-                            setAddedFoods(foods)
-                        })
-                    }}
-                >
-                    <Text category="h5">Foods</Text>
+                <Layout style={style.StatContainer} level="1">
+                    <Layout style={style.StatHeader}>
+                        <Text category="h5">Foods</Text>
+                        <Button onPress={() => navigation.navigate('Foods')}>
+                            <Text category="h4">Add</Text>
+                        </Button>
+                    </Layout>
 
                     <Spacer />
 
-                    <Button
-                        onPress={() => navigation.navigate('Foods')}
-                        style={{ width: '100%' }}
-                    >
-                        <Text category="h4">Add Food</Text>
-                    </Button>
-                    <Text>{JSON.stringify(addedFoods)}</Text>
+                    {addedFoods.length > 0 ? (
+                        <Layout
+                            level={'4'}
+                            style={{
+                                ...style.ItemContainer,
+                            }}
+                        >
+                            {addedFoods.map((userFood: UserFoodModel) => {
+                                return (
+                                    <UserFoodItem
+                                        key={userFood.id}
+                                        quantity={userFood.quantity}
+                                        item={userFood.food}
+                                        onPress={() => {}}
+                                        onPressAdd={() => {
+                                            userFood.quantity += 1
+                                            updateFood(userFood)
+                                            addOneFoodToStorage(
+                                                userFood.food
+                                            ).then(() => {
+                                                calculateMacros().then(
+                                                    (action) => {
+                                                        dispatch(action)
+                                                    }
+                                                )
+                                            })
+                                        }}
+                                        onPressRemove={() => {
+                                            userFood.quantity -= 1
+                                            updateFood(userFood)
+                                            removeOneFoodFromStorage(
+                                                userFood.food
+                                            ).then(() => {
+                                                calculateMacros().then(
+                                                    (action) => {
+                                                        dispatch(action)
+                                                    }
+                                                )
+                                            })
+                                        }}
+                                    />
+                                )
+                            })}
+                        </Layout>
+                    ) : (
+                        <Text>No hungry?</Text>
+                    )}
                 </Layout>
                 <Spacer />
                 <Layout style={style.StatContainer} level="1"></Layout>
             </ScrollView>
+            <MacroEditModal
+                visible={statsEditVisible}
+                onClose={() => {
+                    setStatsEditVisible(false)
+                }}
+            />
         </Layout>
     )
 }
