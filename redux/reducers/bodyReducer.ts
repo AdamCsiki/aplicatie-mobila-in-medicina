@@ -3,7 +3,7 @@ import { ActionModel } from '../../models/ActionModel'
 import { DEFAULT_BODY_INFO, SET_BODY_INFO } from '../types/types'
 
 const initialState: BodyModel = {
-    sex: undefined,
+    bodyType: undefined,
     age: 0,
     weight: 0,
     height: 0,
@@ -19,7 +19,7 @@ function bodyReducer(
         case SET_BODY_INFO:
             return {
                 ...state,
-                sex: payload.sex,
+                bodyType: payload.bodyType,
                 age: payload.age,
                 height: payload.height,
                 weight: payload.weight,

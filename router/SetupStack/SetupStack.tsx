@@ -1,12 +1,19 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import SetupScreen from '../../screens/SetupScreen/SetupScreen'
+import SetupMacroScreen from '../../screens/SetupMacroScreen/SetupMacroScreen'
+import SetupBodyScreen from '../../screens/SetupBodyScreen/SetupBodyScreen'
+import { Text } from '@ui-kitten/components'
 
 const Stack = createStackNavigator()
 
 function SetupStack() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Setup" component={SetupScreen} />
+        <Stack.Navigator
+            screenOptions={{
+                headerTitle: 'Setup',
+            }}
+        >
+            <Stack.Screen name="SetupBody" component={SetupBodyScreen} />
+            <Stack.Screen name="SetupMacro" component={SetupMacroScreen} />
         </Stack.Navigator>
     )
 }

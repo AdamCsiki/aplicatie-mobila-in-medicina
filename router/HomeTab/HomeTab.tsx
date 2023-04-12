@@ -5,7 +5,7 @@ import DietStack from '../DietStack/DietStack'
 import WeeklyStack from '../WeeklyStack/WeeklyStack'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import SetupScreen from '../../screens/SetupScreen/SetupScreen'
+import SetupMacroScreen from '../../screens/SetupMacroScreen/SetupMacroScreen'
 import { DietModel } from '../../models/DietModel'
 import SetupStack from '../SetupStack/SetupStack'
 import { useEffect, useState } from 'react'
@@ -53,6 +53,8 @@ function HomeTab() {
     useEffect(() => {
         if (checkMacros(diet)) {
             setIsSetup(true)
+        } else {
+            setIsSetup(false)
         }
     }, [diet])
 

@@ -1,14 +1,26 @@
 import { Button, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import CheckBox from 'expo-checkbox'
 import React, { useEffect, useState } from 'react'
-import style from './SetupScreen.style'
+import style from './SetupMacroScreen.style'
 import Slider from '../../components/Slider/Slider'
 import Spacer from '../../components/Spacer/Spacer'
-import { useDispatch } from 'react-redux'
-import { setMaxMacros } from '../../redux/actions/dietActions'
+import { useDispatch, useSelector } from 'react-redux'
+import { setMacroRatios, setMaxMacros } from '../../redux/actions/dietActions'
 import debounce from '../../misc/debouncer'
+import { RootState } from '../../redux/store'
+import { MacroRatioModel } from '../../models/MacroRatioModel'
+import { ScrollView } from 'react-native-virtualized-view'
 
-function SetupScreen() {
+function SetupMacroScreen({
+    navigation,
+    onBack,
+    afterSubmit,
+}: {
+    navigation?: any
+    onBack?: () => void
+    afterSubmit?: () => void
+}) {
+    const diet = useSelector((state: RootState) => state.diet)
     const theme = useTheme()
     const dispatch = useDispatch()
 
@@ -17,46 +29,14 @@ function SetupScreen() {
 
     const [auto, setAuto] = useState(false)
 
-    const [cals, setCals] = useState(1000)
-    const [macros, setMacros] = useState({ carbs: 0, fats: 0, proteins: 0 })
-
-    const [ratios, setRatios] = useState({
-        carbs: 0.4,
-        fats: 0.3,
-        proteins: 0.3,
+    const [cals, setCals] = useState(diet.maxCals)
+    const [macros, setMacros] = useState({
+        carbs: diet.maxCarbs,
+        fats: diet.maxFats,
+        proteins: diet.maxProteins,
     })
 
-    const onChangeRatios = (name: string, value: string) => {
-        console.log(ratios)
-        setRatios((old) => ({
-            ...old,
-            [name]: (Number.parseInt(value) / 100).toFixed(2),
-        }))
-    }
-
-    // ! Update the macros if it's on AUTO mode
-    // * it updates based on changes upon Calories or Ratios
-    useEffect(() => {
-        if (!auto) {
-            return
-        }
-        setMacros((old) => ({
-            carbs: calculateCarbGrams(),
-            fats: calculateFatGrams(),
-            proteins: calculateProteinGrams(),
-        }))
-    }, [cals, ratios])
-
-    const onChangeMacros = (
-        type: 'carbs' | 'fats' | 'proteins',
-        value: number
-    ) => {
-        if (auto) {
-            return
-        }
-        console.log(macros)
-        setMacros((old) => ({ ...old, [type]: value }))
-    }
+    const [ratios, setRatios] = useState<MacroRatioModel>(diet.macroRatios)
 
     const calculateProteinGrams = () => {
         const gramsPerCal = 0.25
@@ -75,6 +55,23 @@ function SetupScreen() {
         return Number.parseFloat((ratios.fats * cals * gramsPerCal).toFixed(2))
     }
 
+    const onChangeRatios = (name: string, value: string) => {
+        setRatios((old) => ({
+            ...old,
+            [name]: (Number.parseInt(value) / 100).toFixed(2),
+        }))
+    }
+
+    const onChangeMacros = (
+        type: 'carbs' | 'fats' | 'proteins',
+        value: number
+    ) => {
+        if (auto) {
+            return
+        }
+        setMacros((old) => ({ ...old, [type]: value }))
+    }
+
     const onAutoChange = () => {
         setMacros({
             carbs: calculateCarbGrams(),
@@ -84,18 +81,41 @@ function SetupScreen() {
     }
 
     const onSubmit = () => {
+        setMacroRatios(ratios).then((action) => {
+            dispatch(action)
+        })
         setMaxMacros({
             maxCals: cals,
             maxCarbs: macros.carbs,
             maxFats: macros.fats,
             maxProteins: macros.proteins,
-        }).then((action) => {
-            dispatch(action)
         })
+            .then((action) => {
+                dispatch(action)
+            })
+            .finally(afterSubmit)
     }
 
+    // ! Update the macros if it's on AUTO mode
+    // * it updates based on changes upon Calories or Ratios
+    useEffect(() => {
+        if (!auto) {
+            return
+        }
+        setMacros((old) => ({
+            carbs: calculateCarbGrams(),
+            fats: calculateFatGrams(),
+            proteins: calculateProteinGrams(),
+        }))
+    }, [cals, ratios])
+
     return (
-        <Layout style={style.SetupScreen}>
+        <ScrollView
+            style={{
+                ...style.SetupScreen,
+                backgroundColor: theme['color-basic-100'],
+            }}
+        >
             <Layout style={style.RatioContainer}>
                 <Text style={{ paddingRight: 8 }}>Auto by ratios</Text>
                 <CheckBox value={auto} onValueChange={setAuto} />
@@ -156,6 +176,7 @@ function SetupScreen() {
                     startFromZero={true}
                     step={1}
                     minimumValue={0}
+                    minimumTrackTintColor={theme['color-primary-500']}
                     maximumValue={3000}
                     value={cals}
                     onValueChange={debounce((value) => {
@@ -193,7 +214,7 @@ function SetupScreen() {
                         (value) => onChangeMacros('carbs', value[0]),
                         sliderDelay
                     )}
-                    animationType={'spring'}
+                    animationType={'timing'}
                 />
             </Layout>
 
@@ -266,9 +287,28 @@ function SetupScreen() {
 
             <Spacer height={32} />
 
-            <Button onPress={onSubmit}>Finish</Button>
-        </Layout>
+            <Layout style={style.ContainerHeader}>
+                <Button
+                    onPress={() => {
+                        onBack?.()
+                        if (navigation) {
+                            navigation.navigate('SetupBody')
+                        }
+                    }}
+                >
+                    Back
+                </Button>
+                <Button
+                    onPress={() => {
+                        onSubmit()
+                    }}
+                    style={style.Button}
+                >
+                    Finish
+                </Button>
+            </Layout>
+        </ScrollView>
     )
 }
 
-export default SetupScreen
+export default SetupMacroScreen

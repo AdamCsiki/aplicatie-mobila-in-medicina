@@ -17,6 +17,8 @@ import UserFoodModel from '../../models/UserFoodModel'
 import UserFoodItem from '../../components/UserFoodItem/UserFoodItem'
 import { useIsFocused } from '@react-navigation/native'
 import MacroEditModal from '../MacroEditModal/MacroEditModal'
+import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
+import SetupMacroScreen from '../SetupMacroScreen/SetupMacroScreen'
 
 function DietScreen({ navigation }: any) {
     const diet = useSelector((state: RootState) => state.diet)
@@ -176,12 +178,15 @@ function DietScreen({ navigation }: any) {
                 <Spacer />
                 <Layout style={style.StatContainer} level="1"></Layout>
             </ScrollView>
-            <MacroEditModal
+            <FullScreenModal
                 visible={statsEditVisible}
-                onClose={() => {
-                    setStatsEditVisible(false)
-                }}
-            />
+                onBackdropPress={() => setStatsEditVisible(false)}
+            >
+                <SetupMacroScreen
+                    onBack={() => setStatsEditVisible(false)}
+                    afterSubmit={() => setStatsEditVisible(false)}
+                />
+            </FullScreenModal>
         </Layout>
     )
 }

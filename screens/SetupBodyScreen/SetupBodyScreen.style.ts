@@ -2,16 +2,10 @@ import { StyleSheet } from 'react-native'
 import padding from '../../misc/padding'
 
 export default StyleSheet.create({
-    SetupScreen: {
+    SetupBodyScreen: {
         flexGrow: 1,
 
         ...padding(16),
-    },
-    RatioContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
     },
     ContainerHeader: {
         display: 'flex',

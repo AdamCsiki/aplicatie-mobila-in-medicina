@@ -4,11 +4,15 @@ import UserFoodModel from '../models/UserFoodModel'
 import {
     DEFAULT_MACROS,
     DEFAULT_MAX_MACROS,
+    SET_BODY_INFO,
+    SET_MACRO_RATIOS,
     UPDATE_CURRENT_MACROS,
     UPDATE_MAX_MACROS,
 } from '../redux/types/types'
 import UserMacrosModel from '../models/UserMacrosModel'
 import FoodModel from '../models/FoodModel'
+import { MacroRatioModel } from '../models/MacroRatioModel'
+import { BodyModel } from '../models/BodyModel'
 
 class DietServices {
     getStoredFoods() {
@@ -168,6 +172,31 @@ class DietServices {
     removeAllFoods() {
         return AsyncStorage.removeItem('userFoods').then(() => {
             return { type: DEFAULT_MACROS }
+        })
+    }
+
+    setMacroRatios(ratios: MacroRatioModel) {
+        return AsyncStorage.setItem('userRatios', JSON.stringify(ratios)).then(
+            () => {
+                return {
+                    type: SET_MACRO_RATIOS,
+                    payload: {
+                        macroRatios: ratios,
+                    },
+                }
+            }
+        )
+    }
+
+    setBodyInfo(bodyInfo: BodyModel) {
+        return AsyncStorage.setItem(
+            'userBodyInfo',
+            JSON.stringify(bodyInfo)
+        ).then(() => {
+            return {
+                type: SET_BODY_INFO,
+                payload: bodyInfo,
+            }
         })
     }
 }

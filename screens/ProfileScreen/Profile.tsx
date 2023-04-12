@@ -2,28 +2,27 @@ import { ScrollView, TouchableOpacity, Image } from 'react-native'
 import {
     Layout,
     Text,
-    Button,
     Divider,
     useTheme,
     Avatar,
-    Card,
+    Button,
 } from '@ui-kitten/components'
 import style, { backgroundAnimation } from './Profile.style'
 import Animated from 'react-native-reanimated'
-import { useEffect, useState } from 'react'
-import defaultUser from '../../models/defaultUser'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { signOut } from '../../redux/actions/authActions'
 import HeadingAndContent from '../../components/HeadingAndContent/HeadingAndContent'
-import bodyReducer from '../../redux/reducers/bodyReducer'
 import Spacer from '../../components/Spacer/Spacer'
+import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
+import SetupBodyScreen from '../SetupBodyScreen/SetupBodyScreen'
+import { useState } from 'react'
 
 function Profile({ navigation }: { navigation: any }) {
     const body = useSelector((state: RootState) => state.body)
-    const [user, setUser] = useState(defaultUser)
 
     const theme = useTheme()
+
+    const [bodyEditVisible, setBodyEditVisible] = useState(false)
 
     return (
         <ScrollView
@@ -63,15 +62,30 @@ function Profile({ navigation }: { navigation: any }) {
             <Layout style={style.profileMain} level="1">
                 <Layout style={style.profileStatsHeader}>
                     <Text category={'h5'}>Stats</Text>
+                    <Button onPress={() => setBodyEditVisible(true)}>
+                        Edit
+                    </Button>
                 </Layout>
-
                 <Spacer />
                 <Layout style={style.profileContainer}>
+                    <HeadingAndContent
+                        title={'BodyType'}
+                        content={body.bodyType}
+                    />
                     <HeadingAndContent title={'Age'} content={body.age} />
                     <HeadingAndContent title={'Height'} content={body.height} />
                     <HeadingAndContent title={'Weight'} content={body.weight} />
                 </Layout>
             </Layout>
+            <FullScreenModal
+                visible={bodyEditVisible}
+                onBackdropPress={() => setBodyEditVisible(false)}
+            >
+                <SetupBodyScreen
+                    onBack={() => setBodyEditVisible(false)}
+                    afterSubmit={() => setBodyEditVisible(false)}
+                />
+            </FullScreenModal>
         </ScrollView>
     )
 }
