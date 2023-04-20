@@ -2,7 +2,8 @@ import SelectDropdown, {
     SelectDropdownProps,
 } from 'react-native-select-dropdown'
 import style from './Select.style'
-import { useTheme } from '@ui-kitten/components'
+import { Text, useTheme } from '@ui-kitten/components'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 function Select(props: SelectDropdownProps) {
     const theme = useTheme()
@@ -10,6 +11,7 @@ function Select(props: SelectDropdownProps) {
     return (
         <SelectDropdown
             {...props}
+            renderDropdownIcon={() => <Icon name={'chevron-down'} />}
             buttonStyle={{
                 ...style.Button,
                 borderColor: theme['color-basic-400'],

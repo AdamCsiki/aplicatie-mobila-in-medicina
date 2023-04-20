@@ -13,7 +13,7 @@ import {
 
 const initialState: DietModel = {
     day: new Date().toDateString(),
-    macroRatios: { carbs: 0, fats: 0, proteins: 0 },
+    macroRatios: { carbs: 0.4, fats: 0.2, proteins: 0.4 },
     currentCals: 0,
     currentCarbs: 0,
     currentProteins: 0,
@@ -29,6 +29,9 @@ function dietReducer(
     action: ActionModel<DietModel>
 ): DietModel {
     const { type, payload } = action
+
+    console.log('TYPE: ', type)
+    console.log('PAYLOAD: ', payload)
 
     switch (type) {
         case SET_MACRO_RATIOS:

@@ -25,31 +25,10 @@ export const profileAnimation = new Keyframe({
 
 export default StyleSheet.create({
     Profile: {
-        width: '100%',
-        height: '100%',
-
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-    },
-    profileBackground: {
-        width: '100%',
-        height: 220,
-
-        marginBottom: 16,
-
-        overflow: 'hidden',
-
-        position: 'relative',
-    },
-    profileBackgroundButton: {
-        width: '100%',
-        height: '100%',
-
-        position: 'relative',
-    },
-    profileBackgroundImage: {
         flexGrow: 1,
+
+        ...padding(16),
     },
     profileUser: {
         zIndex: 2,
@@ -138,5 +117,18 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    StatContainer: {
+        width: '100%',
+        height: 'auto',
+
+        ...padding(16, 16, 32, 16),
+
+        borderRadius: 16,
+
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
 })

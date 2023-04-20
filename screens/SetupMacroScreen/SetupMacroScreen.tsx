@@ -2,14 +2,14 @@ import { Button, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import CheckBox from 'expo-checkbox'
 import React, { useEffect, useState } from 'react'
 import style from './SetupMacroScreen.style'
-import Slider from '../../components/Slider/Slider'
+import Slider, { SliderThumb } from '../../components/Slider/Slider'
 import Spacer from '../../components/Spacer/Spacer'
 import { useDispatch, useSelector } from 'react-redux'
 import { setMacroRatios, setMaxMacros } from '../../redux/actions/dietActions'
-import debounce from '../../misc/debouncer'
 import { RootState } from '../../redux/store'
 import { MacroRatioModel } from '../../models/MacroRatioModel'
 import { ScrollView } from 'react-native-virtualized-view'
+import debounce from '../../misc/debouncer'
 
 function SetupMacroScreen({
     navigation,
@@ -21,6 +21,8 @@ function SetupMacroScreen({
     afterSubmit?: () => void
 }) {
     const diet = useSelector((state: RootState) => state.diet)
+    const body = useSelector((state: RootState) => state.body)
+
     const theme = useTheme()
     const dispatch = useDispatch()
 
@@ -29,36 +31,38 @@ function SetupMacroScreen({
 
     const [auto, setAuto] = useState(false)
 
-    const [cals, setCals] = useState(diet.maxCals)
-    const [macros, setMacros] = useState({
-        carbs: diet.maxCarbs,
-        fats: diet.maxFats,
-        proteins: diet.maxProteins,
-    })
+    const [maxCals, setMaxCals] = useState<number>(diet.maxCals)
+    const [maxCarbs, setMaxCarbs] = useState<number>(diet.maxCarbs)
+    const [maxFats, setMaxFats] = useState<number>(diet.maxFats)
+    const [maxProteins, setMaxProteins] = useState<number>(diet.maxProteins)
 
     const [ratios, setRatios] = useState<MacroRatioModel>(diet.macroRatios)
 
     const calculateProteinGrams = () => {
         const gramsPerCal = 0.25
         return Number.parseFloat(
-            (ratios.proteins * cals * gramsPerCal).toFixed(2)
+            (ratios.proteins * maxCals * gramsPerCal).toFixed(2)
         )
     }
 
     const calculateCarbGrams = () => {
         const gramsPerCal = 0.25
-        return Number.parseFloat((ratios.carbs * cals * gramsPerCal).toFixed(2))
+        return Number.parseFloat(
+            (ratios.carbs * maxCals * gramsPerCal).toFixed(2)
+        )
     }
 
     const calculateFatGrams = () => {
         const gramsPerCal = 0.11
-        return Number.parseFloat((ratios.fats * cals * gramsPerCal).toFixed(2))
+        return Number.parseFloat(
+            (ratios.fats * maxCals * gramsPerCal).toFixed(2)
+        )
     }
 
-    const onChangeRatios = (name: string, value: string) => {
+    const onChangeRatios = (name: string, value: number) => {
         setRatios((old) => ({
             ...old,
-            [name]: (Number.parseInt(value) / 100).toFixed(2),
+            [name]: (value / 100).toFixed(2),
         }))
     }
 
@@ -69,15 +73,26 @@ function SetupMacroScreen({
         if (auto) {
             return
         }
-        setMacros((old) => ({ ...old, [type]: value }))
+        switch (type) {
+            case 'carbs': {
+                setMaxCarbs(value)
+                break
+            }
+            case 'fats': {
+                setMaxFats(value)
+                break
+            }
+            case 'proteins': {
+                setMaxProteins(value)
+                break
+            }
+        }
     }
 
     const onAutoChange = () => {
-        setMacros({
-            carbs: calculateCarbGrams(),
-            fats: calculateFatGrams(),
-            proteins: calculateProteinGrams(),
-        })
+        setMaxCarbs(calculateCarbGrams())
+        setMaxFats(calculateFatGrams())
+        setMaxProteins(calculateProteinGrams())
     }
 
     const onSubmit = () => {
@@ -85,10 +100,10 @@ function SetupMacroScreen({
             dispatch(action)
         })
         setMaxMacros({
-            maxCals: cals,
-            maxCarbs: macros.carbs,
-            maxFats: macros.fats,
-            maxProteins: macros.proteins,
+            maxCals: maxCals,
+            maxCarbs: maxCarbs,
+            maxFats: maxFats,
+            maxProteins: maxProteins,
         })
             .then((action) => {
                 dispatch(action)
@@ -102,20 +117,43 @@ function SetupMacroScreen({
         if (!auto) {
             return
         }
-        setMacros((old) => ({
-            carbs: calculateCarbGrams(),
-            fats: calculateFatGrams(),
-            proteins: calculateProteinGrams(),
-        }))
-    }, [cals, ratios])
+        onAutoChange()
+    }, [maxCals, ratios])
 
     return (
-        <ScrollView
+        <Layout
             style={{
                 ...style.SetupScreen,
                 backgroundColor: theme['color-basic-100'],
             }}
         >
+            <Layout style={style.Container}>
+                <Layout style={style.ContainerHeader}>
+                    <Text category={'h5'}>Calories</Text>
+                    <Input
+                        size={'small'}
+                        value={`${maxCals}`}
+                        onChangeText={(text) => {
+                            setMaxCals(Number.parseInt(text) || 0)
+                        }}
+                    />
+                </Layout>
+                <Spacer />
+                <Slider
+                    animateTransitions={true}
+                    startFromZero={true}
+                    step={1}
+                    value={maxCals}
+                    minimumValue={0}
+                    minimumTrackTintColor={theme['color-primary-500']}
+                    maximumValue={body.maxCalsByBody}
+                    onValueChange={debounce((value) => {
+                        setMaxCals(value[0])
+                    }, sliderDelay)}
+                    animationType={'timing'}
+                />
+            </Layout>
+            <Spacer height={32} />
             <Layout style={style.RatioContainer}>
                 <Text style={{ paddingRight: 8 }}>Auto by ratios</Text>
                 <CheckBox value={auto} onValueChange={setAuto} />
@@ -127,27 +165,36 @@ function SetupMacroScreen({
                         <Input
                             size={'small'}
                             placeholder={'Carb'}
-                            onChangeText={debounce((value) => {
-                                onChangeRatios('carbs', value)
-                            }, inputDelay)}
+                            onChangeText={(value) => {
+                                onChangeRatios(
+                                    'carbs',
+                                    Number.parseInt(value) || 0
+                                )
+                            }}
                             defaultValue={`${ratios.carbs * 100}`}
                         />
                         <Text category={'h5'}>/</Text>
                         <Input
                             size={'small'}
                             placeholder={'Fats'}
-                            onChangeText={debounce((value) => {
-                                onChangeRatios('fats', value)
-                            }, inputDelay)}
+                            onChangeText={(value) => {
+                                onChangeRatios(
+                                    'fats',
+                                    Number.parseInt(value) || 0
+                                )
+                            }}
                             defaultValue={`${ratios.fats * 100}`}
                         />
                         <Text category={'h5'}>/</Text>
                         <Input
                             size={'small'}
                             placeholder={'Prot'}
-                            onChangeText={debounce((value) => {
-                                onChangeRatios('proteins', value)
-                            }, inputDelay)}
+                            onChangeText={(value) => {
+                                onChangeRatios(
+                                    'proteins',
+                                    Number.parseInt(value) || 0
+                                )
+                            }}
                             defaultValue={`${ratios.proteins * 100}`}
                         />
                     </Layout>
@@ -156,62 +203,28 @@ function SetupMacroScreen({
             <Spacer />
             <Layout style={style.Container}>
                 <Layout style={style.ContainerHeader}>
-                    <Text category={'h5'}>Calories</Text>
-                    <Input
-                        size={'small'}
-                        defaultValue={`${cals}`}
-                        onChangeText={debounce((text) => {
-                            setCals(Number.parseInt(text))
-                            if (auto) {
-                                onAutoChange()
-                            }
-                        }, inputDelay)}
-                    />
-                </Layout>
-                <Spacer />
-                <Slider
-                    renderThumbComponent={() => (
-                        <Text style={{ bottom: 20 }}>{cals}</Text>
-                    )}
-                    startFromZero={true}
-                    step={1}
-                    minimumValue={0}
-                    minimumTrackTintColor={theme['color-primary-500']}
-                    maximumValue={3000}
-                    value={cals}
-                    onValueChange={debounce((value) => {
-                        setCals(value[0])
-                    }, sliderDelay)}
-                    animationType={'timing'}
-                />
-            </Layout>
-            <Spacer />
-            <Layout style={style.Container}>
-                <Layout style={style.ContainerHeader}>
                     <Text category={'h5'}>Carbohydrates</Text>
                     <Input
                         size={'small'}
-                        defaultValue={`${macros.carbs}`}
+                        defaultValue={`${maxCarbs}`}
                         disabled={auto}
-                        onChangeText={debounce((text) => {
-                            onChangeMacros('carbs', Number.parseFloat(text))
-                        }, inputDelay)}
+                        onChangeText={(text) => {
+                            setMaxCarbs(Number.parseInt(text) || 0)
+                        }}
                     />
                 </Layout>
                 <Spacer />
                 <Slider
+                    animateTransitions={true}
                     disabled={auto}
-                    renderThumbComponent={() => (
-                        <Text style={{ bottom: 20 }}>{macros.carbs}g</Text>
-                    )}
                     startFromZero={true}
                     step={1}
+                    value={maxCarbs}
                     minimumValue={0}
                     minimumTrackTintColor={theme['color-success-500']}
-                    maximumValue={3000}
-                    value={macros.carbs}
+                    maximumValue={500}
                     onValueChange={debounce(
-                        (value) => onChangeMacros('carbs', value[0]),
+                        (value_array) => setMaxCarbs(value_array[0]),
                         sliderDelay
                     )}
                     animationType={'timing'}
@@ -224,27 +237,25 @@ function SetupMacroScreen({
                     <Text category={'h5'}>Fats</Text>
                     <Input
                         size={'small'}
-                        defaultValue={`${macros.fats}`}
+                        defaultValue={`${maxFats}`}
                         disabled={auto}
-                        onChangeText={debounce((text) => {
-                            onChangeMacros('fats', Number.parseFloat(text))
-                        }, inputDelay)}
+                        onChangeText={(text) => {
+                            setMaxCals(Number.parseInt(text) || 0)
+                        }}
                     />
                 </Layout>
                 <Spacer />
                 <Slider
+                    animateTransitions={true}
                     disabled={auto}
-                    renderThumbComponent={() => (
-                        <Text style={{ bottom: 20 }}>{macros.fats}g</Text>
-                    )}
                     startFromZero={true}
                     step={1}
+                    value={maxFats}
                     minimumValue={0}
                     minimumTrackTintColor={theme['color-warning-500']}
-                    maximumValue={3000}
-                    value={macros.fats.valueOf()}
+                    maximumValue={500}
                     onValueChange={debounce(
-                        (value) => onChangeMacros('fats', value),
+                        (value) => setMaxFats(value[0]),
                         sliderDelay
                     )}
                     animationType={'timing'}
@@ -256,7 +267,7 @@ function SetupMacroScreen({
                     <Text category={'h5'}>Proteins</Text>
                     <Input
                         size={'small'}
-                        defaultValue={`${macros.proteins}`}
+                        defaultValue={`${maxProteins}`}
                         disabled={auto}
                         onChangeText={debounce((text) => {
                             onChangeMacros('proteins', Number.parseFloat(text))
@@ -265,20 +276,16 @@ function SetupMacroScreen({
                 </Layout>
                 <Spacer />
                 <Slider
+                    animateTransitions={true}
                     disabled={auto}
-                    renderThumbComponent={() => (
-                        <Text style={{ bottom: 20 }}>
-                            {macros.proteins.valueOf()}g
-                        </Text>
-                    )}
                     startFromZero={true}
                     step={1}
+                    value={maxProteins}
                     minimumValue={0}
                     minimumTrackTintColor={theme['color-danger-500']}
-                    maximumValue={3000}
-                    value={macros.proteins.valueOf()}
+                    maximumValue={500}
                     onValueChange={debounce(
-                        (value) => onChangeMacros('proteins', value),
+                        (value) => onChangeMacros('proteins', value[0]),
                         sliderDelay
                     )}
                     animationType={'timing'}
@@ -307,7 +314,7 @@ function SetupMacroScreen({
                     Finish
                 </Button>
             </Layout>
-        </ScrollView>
+        </Layout>
     )
 }
 

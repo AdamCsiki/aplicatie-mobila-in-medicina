@@ -5,14 +5,26 @@ import { Cookie } from 'tough-cookie'
 import getHttpOnlyToken from '../misc/getHttpOnlyToken'
 import { AxiosResponse } from 'axios'
 import { SignUpModel } from '../models/SignUpModel'
+import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from '../redux/types/types'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ActionModel } from '../models/ActionModel'
+import { AuthStateModel } from '../models/AuthStateModel'
 
 function setTokens(res: AxiosResponse) {
     if (!res.data.token) {
-        return { error: 'No access token.' }
+        return {
+            accessToken: undefined,
+            user: undefined,
+            error: 'No access token.',
+        }
     }
 
     if (!res.headers['set-cookie']) {
-        return { error: 'Set-cookie missing.' }
+        return {
+            accessToken: undefined,
+            user: undefined,
+            error: 'Set-cookie missing.',
+        }
     }
 
     const accessToken = res.data.token
@@ -25,14 +37,12 @@ function setTokens(res: AxiosResponse) {
     )
 
     if (!cookies[0]) {
-        return { error: 'Cookies missing.' }
+        return {
+            accessToken: undefined,
+            user: undefined,
+            error: 'Cookies missing.',
+        }
     }
-
-    if (!cookies[0].extensions) {
-        return { error: 'Refresh token missing.' }
-    }
-
-    const refreshToken = getHttpOnlyToken(cookies[0].extensions)
 
     SecureStore.setItemAsync('accessToken', accessToken)
 
@@ -40,22 +50,59 @@ function setTokens(res: AxiosResponse) {
 }
 
 class AuthService {
+    autoSignInOffline() {
+        return SecureStore.getItemAsync('accessToken').then((accessToken) => {
+            return {
+                type: LOGIN_SUCCESS,
+                accessToken: accessToken,
+            }
+        })
+    }
     signIn({ email, password }: LoginModel) {
         return axios
             .post('/auth/signin', { email: email, password: password })
             .then((res) => {
-                return setTokens(res)
+                const { accessToken, user } = setTokens(res)
+
+                return {
+                    type: LOGIN_SUCCESS,
+                    payload: {
+                        accessToken: accessToken,
+                        user: user,
+                    },
+                }
+            })
+            .catch((err) => {
+                console.log('ERROR: ', err)
+                return {
+                    type: LOGIN_FAIL,
+                }
             })
     }
 
     signOut() {
-        return SecureStore.deleteItemAsync('accessToken').then(() => {
-            axios.defaults.headers.common['Authorization'] = null
-        })
+        return SecureStore.deleteItemAsync('accessToken')
+            .then(() => {
+                axios.defaults.headers.common['Authorization'] = null
+                return {
+                    type: LOGOUT,
+                }
+            })
+            .then((err) => {
+                axios.defaults.headers.common['Authorization'] = null
+
+                console.log('ERROR: ', err)
+
+                return {
+                    type: LOGOUT,
+                }
+            })
     }
 
     signUp({ username, email, password }: SignUpModel) {
-        return axios.post('/auth/register', { username, email, password })
+        return axios
+            .post('/auth/register', { username, email, password })
+            .then((res) => {})
     }
 
     refresh() {

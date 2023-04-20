@@ -39,12 +39,6 @@ export const setMacroRatios = (ratios: MacroRatioModel) => {
     return DietServices.setMacroRatios(ratios)
 }
 
-export const setBodyInfo = (bodyInfo: BodyModel) => {
-    console.log('action: SET BODY INFO')
-    console.log(bodyInfo)
-    return DietServices.setBodyInfo(bodyInfo)
-}
-
 export const removeAllFoods = () => {
     console.log('action: REMOVE ALL FOODS')
     return DietServices.removeAllFoods()

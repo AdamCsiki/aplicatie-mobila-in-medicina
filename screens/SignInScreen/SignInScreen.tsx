@@ -6,13 +6,16 @@ import { Layout, Button, Text, Input, useTheme } from '@ui-kitten/components'
 import { LoginModel } from '../../models/LoginModel'
 import { useDispatch, useSelector } from 'react-redux'
 import { signIn } from '../../redux/actions/authActions'
+import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 
 function SignInScreen({ navigation }: { navigation: any }) {
     const dispatch = useDispatch()
 
     const theme = useTheme()
 
-    const [customError, setCustomError] = useState('')
+    const [customError, setCustomError] = useState<string | undefined>(
+        undefined
+    )
 
     const [formData, setFormData] = useState<LoginModel>({
         email: '',
@@ -20,8 +23,6 @@ function SignInScreen({ navigation }: { navigation: any }) {
     })
 
     const submitLogin = () => {
-        setCustomError('')
-
         if (
             formData.email.trim().length == 0 ||
             formData.password.trim().length == 0
@@ -30,12 +31,8 @@ function SignInScreen({ navigation }: { navigation: any }) {
             return
         }
 
-        signIn(formData).then((res: any) => {
-            if (res.error) {
-                setCustomError(res.error)
-                return
-            }
-            dispatch(res)
+        signIn(formData).then((action) => {
+            dispatch(action)
         })
     }
 
@@ -85,13 +82,18 @@ function SignInScreen({ navigation }: { navigation: any }) {
                 <LinkButton buttonStyle={style.loginInput}>
                     Can't sign in?
                 </LinkButton>
-                {customError && <Text category="danger">{customError}</Text>}
             </Layout>
             <Layout style={style.loginButtonContainer}>
                 <Button onPress={submitLogin}>
                     <Text>SignIn</Text>
                 </Button>
             </Layout>
+            <FullScreenModal
+                visible={customError != undefined}
+                onBackdropPress={() => setCustomError(undefined)}
+            >
+                <Text>{customError}</Text>
+            </FullScreenModal>
         </KeyboardAwareScrollView>
     )
 }

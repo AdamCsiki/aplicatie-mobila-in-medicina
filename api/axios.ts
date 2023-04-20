@@ -1,10 +1,11 @@
 import axios from 'axios'
 import { CookieJar } from 'tough-cookie'
-import * as SecureStore from 'expo-secure-store'
 
 export const API = 'http://10.0.2.2:3000'
-// export const API = 'http://192.168.0.192:3000' // from phone (local laptop ip)
-const TIMEOUT = 3000
+// export const API = 'http://localhost:3000'
+// export const API = 'https://laptop-legion-adam.cerberus-saurolophus.ts.net:443'
+
+const TIMEOUT = 10000
 
 export const jar = new CookieJar()
 

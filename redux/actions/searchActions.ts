@@ -8,39 +8,19 @@ import {
 export const searchFoods = (query: string) => {
     return FoodService.getFoodsByQuery(query)
         .then((res) => {
-            return {
-                type: FOOD_SEARCH_SUCCESS,
-                payload: {
-                    query: query,
-                },
-                error: '',
-                data: res.data.foods,
-            }
+            return res.data
         })
         .catch((err) => {
-            return {
-                type: FOOD_SEARCH_FAIL,
-                payload: {
-                    query: query,
-                },
-                error: `${err.message}`,
-            }
+            return []
         })
 }
 
 export const getAllFoods = () => {
     return FoodService.getAllFoods()
-        .then((res: any) => {
-            return {
-                type: FOOD_SUCCESS,
-                error: '',
-                data: res.data.foods,
-            }
+        .then((res) => {
+            return res.data
         })
         .catch((err) => {
-            return {
-                type: FOOD_SEARCH_FAIL,
-                error: `${err.message}`,
-            }
+            return []
         })
 }

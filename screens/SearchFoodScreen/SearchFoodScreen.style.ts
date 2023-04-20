@@ -11,21 +11,25 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
 
+        flexBasis: 0,
+
         flex: 1,
     },
     DietAddScreenSearchContainer: {
         width: '100%',
         maxWidth: '100%',
 
-        minHeight: 150,
+        minHeight: 125,
 
         ...padding(8),
 
-        borderRadius: 16,
+        borderRadius: 8,
 
         display: 'flex',
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+
+        flexBasis: 0,
 
         overflow: 'hidden',
     },

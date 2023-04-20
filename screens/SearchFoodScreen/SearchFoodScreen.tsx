@@ -13,38 +13,38 @@ import {
     addOneFoodToStorage,
     removeOneFoodFromStorage,
 } from '../../redux/actions/dietActions'
+import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
+import FoodService from '../../services/FoodService'
+import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
+import CreateFoodScreen from '../CreateFoodScreen/CreateFoodScreen'
 
 function SearchFoodScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
     const dispatch = useDispatch()
     const auth = useSelector((state: RootState) => state.auth)
 
+    let dateTimestamp = new Date().toDateString()
+
+    const [createFoodVisible, setCreateFoodVisible] = useState(false)
+
     const [foodList, setFoodList] = useState<FoodModel[]>([])
 
     const [searchQuery, setSearchQuery] = useState<string>('')
-
-    const getAllFoods = () => {
-        return axios.get('/foods')
-    }
-
-    const getFoodsByQuery = (query: string) => {
-        return axios.get('/foods/find', { params: { search: query } })
-    }
 
     const getPersonalFoods = () => {
         return axios.get('/foods/uid', { params: { id: auth.user } })
     }
 
-    const onRefresh = () => {
+    const onSearch = () => {
         if (!searchQuery.trim()) {
             return getAllFoods()
-                .then((res) => setFoodList(res.data))
+                .then((res) => setFoodList(res))
                 .catch((err) => {
                     console.log(err.message)
                 })
         }
-        return getFoodsByQuery(searchQuery.trim())
-            .then((res) => setFoodList(res.data))
+        return searchFoods(searchQuery.trim())
+            .then((res) => setFoodList(res))
             .catch((err) => {
                 console.log(err.message)
             })
@@ -53,7 +53,6 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
     useEffect(() => {
         getAllFoods()
             .then((res) => {
-                console.log(res.data)
                 setFoodList(res.data)
             })
             .catch((err) => {
@@ -71,13 +70,17 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                             setSearchQuery(event.nativeEvent.text)
                         }}
                     />
-                    <Button onPress={() => onRefresh()}>
+                    <Button onPress={() => onSearch()}>
                         <Text>Search</Text>
                     </Button>
                 </Layout>
                 <Layout style={style.DietAddScreenSearchDiv}>
-                    <Button>
-                        <Text category="h6">Tags</Text>
+                    <Button
+                        onPress={() => {
+                            setCreateFoodVisible(true)
+                        }}
+                    >
+                        <Text category="h6">Create</Text>
                     </Button>
                 </Layout>
             </Layout>
@@ -92,14 +95,7 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                     >
                         Search
                     </Text>
-                    <Button
-                        size="small"
-                        onPress={() => {
-                            getPersonalFoods().then((res) => {
-                                setFoodList(res.data)
-                            })
-                        }}
-                    >
+                    <Button size="small" onPress={() => {}}>
                         <Text category="h6">+</Text>
                     </Button>
                 </Layout>
@@ -110,6 +106,7 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                         return (
                             <SearchFoodItem
                                 item={item}
+                                reloadImage={dateTimestamp}
                                 onPress={() => {
                                     navigation.navigate('Details', {
                                         item: item,
@@ -126,6 +123,17 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                     }}
                 />
             </Layout>
+            <FullScreenModal
+                visible={createFoodVisible}
+                onBackdropPress={() => setCreateFoodVisible(false)}
+            >
+                <CreateFoodScreen
+                    onBack={() => setCreateFoodVisible(false)}
+                    afterSubmit={() => {
+                        setCreateFoodVisible(false)
+                    }}
+                />
+            </FullScreenModal>
         </Layout>
     )
 }

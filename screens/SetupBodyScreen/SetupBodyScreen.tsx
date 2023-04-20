@@ -7,7 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import Select from '../../components/Select/Select'
 import Spacer from '../../components/Spacer/Spacer'
-import { setBodyInfo } from '../../redux/actions/dietActions'
+import { setBodyInfo } from '../../redux/actions/bodyActions'
+import {
+    calculateBMR_harris,
+    calculateBMR_mifflin,
+} from '../../misc/MacroEquations'
 
 function SetupBodyScreen({
     navigation,
@@ -20,7 +24,7 @@ function SetupBodyScreen({
 }) {
     const dispatch = useDispatch()
 
-    const bodyTypes = ['Male', 'Female']
+    const bodyTypes = ['male', 'female']
     const body = useSelector((state: RootState) => state.body)
 
     const [userBody, setUserBody] = useState<BodyModel>(body)
@@ -33,11 +37,39 @@ function SetupBodyScreen({
     }
 
     const onSubmit = () => {
-        setBodyInfo(userBody)
+        const updatedUserBody = {
+            ...userBody,
+            maxCalsByBody: Math.ceil(
+                9.99 * userBody.weight +
+                    6.25 * userBody.height +
+                    4.92 * userBody.age +
+                    (userBody.bodyType == 'male' ? 5 : -161)
+            ),
+            BMR_mifflin: Math.ceil(
+                calculateBMR_mifflin(
+                    userBody.weight,
+                    userBody.height,
+                    userBody.age,
+                    userBody.bodyType
+                )
+            ),
+            BMR_harris: Math.ceil(
+                calculateBMR_harris(
+                    userBody.weight,
+                    userBody.height,
+                    userBody.age,
+                    userBody.bodyType
+                )
+            ),
+        }
+
+        setBodyInfo(updatedUserBody)
             .then((action) => {
                 dispatch(action)
             })
-            .finally(afterSubmit)
+            .finally(() => {
+                afterSubmit?.()
+            })
     }
 
     return (
@@ -47,6 +79,7 @@ function SetupBodyScreen({
                 <Spacer />
                 <Select
                     data={bodyTypes}
+                    defaultValue={body.bodyType}
                     onSelect={(selectedItem, index) => {
                         setUserBody((old) => ({
                             ...old,
@@ -60,6 +93,7 @@ function SetupBodyScreen({
                 <Text category={'h6'}>Age</Text>
                 <Spacer />
                 <Input
+                    defaultValue={`${body.age}`}
                     onChangeText={(text) =>
                         onChange('age', Number.parseFloat(text))
                     }
@@ -70,6 +104,7 @@ function SetupBodyScreen({
                 <Text category={'h6'}>Height</Text>
                 <Spacer />
                 <Input
+                    defaultValue={`${body.height}`}
                     onChangeText={(text) =>
                         onChange('height', Number.parseFloat(text))
                     }
@@ -80,6 +115,7 @@ function SetupBodyScreen({
                 <Text category={'h6'}>Weight</Text>
                 <Spacer />
                 <Input
+                    defaultValue={`${body.weight}`}
                     onChangeText={(text) =>
                         onChange('weight', Number.parseFloat(text))
                     }
@@ -93,7 +129,7 @@ function SetupBodyScreen({
                             onBack?.()
                         }}
                     >
-                        Back
+                        Cancel
                     </Button>
                 )}
                 <Button
@@ -104,7 +140,7 @@ function SetupBodyScreen({
                         onSubmit()
                     }}
                 >
-                    Next
+                    {navigation ? 'Next' : 'Done'}
                 </Button>
             </Layout>
         </Layout>

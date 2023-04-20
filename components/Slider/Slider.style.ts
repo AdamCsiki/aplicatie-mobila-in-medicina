@@ -11,5 +11,24 @@ export default StyleSheet.create({
 
         borderRadius: 8,
     },
-    Thumb: {},
+    Thumb: {
+        borderRadius: 16,
+
+        height: 20,
+        width: 20,
+
+        alignSelf: 'flex-start',
+
+        position: 'relative',
+    },
+    ThumbText: {
+        width: 50,
+
+        textAlign: 'center',
+
+        left: '-75%',
+        bottom: 25,
+
+        position: 'absolute',
+    },
 })

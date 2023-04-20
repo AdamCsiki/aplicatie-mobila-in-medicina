@@ -31,47 +31,16 @@ function failAction(error: any) {
 export const signIn = ({ email, password }: LoginModel) => {
     console.log('action: SIGN IN')
     return AuthService.signIn({ email, password })
-        .then((res: any) => {
-            SecureStore.setItemAsync('user', `${res.user}`)
-            return SecureStore.getItemAsync('accessToken').then(
-                (accessToken) => {
-                    return {
-                        type: LOGIN_SUCCESS,
-                        payload: {
-                            accessToken: accessToken,
-                            user: res.user,
-                        },
-                    }
-                }
-            )
-        })
-        .catch((err) => {
-            return failAction(err)
-        })
 }
 
 export const signOut = () => {
     console.log('action: SIGN OUT')
     return AuthService.signOut()
-        .then(() => {
-            return {
-                type: LOGOUT,
-            }
-        })
-        .catch((err) => {
-            return failAction(err)
-        })
 }
 
 export const signUp = ({ username, email, password }: SignUpModel) => {
     console.log('action: SIGN UP')
     return AuthService.signUp({ username, email, password })
-        .catch((err) => {
-            console.log(err.message)
-        })
-        .catch((err) => {
-            return failAction(err)
-        })
 }
 
 export const offlineSignedIn = () => {

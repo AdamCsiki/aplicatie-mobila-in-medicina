@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     FullScreenModal: {
         width: '90%',
-        height: '95%',
+        maxHeight: '95%',
 
         right: '5%',
         bottom: '2.5%',
@@ -11,10 +11,10 @@ export default StyleSheet.create({
         top: '2.5%',
 
         display: 'flex',
+        flex: 1,
     },
     FSModalContainer: {
         borderRadius: 16,
         padding: 16,
-        flexGrow: 1,
     },
 })

@@ -8,11 +8,13 @@ import { ListItemProps } from '@ui-kitten/components/ui/list/listItem.component'
 
 function SearchFoodItem({
     item,
+    reloadImage,
     onPress,
     onPressAdd = () => {},
     onPressRemove = () => {},
 }: {
     item: FoodModel
+    reloadImage?: string
     onPress: () => void
     onPressAdd?: () => void
     onPressRemove?: () => void
@@ -31,7 +33,11 @@ function SearchFoodItem({
                 <Image
                     source={{
                         uri: item.image_path
-                            ? API + item.image_path + `?timestamp=${new Date()}`
+                            ? reloadImage
+                                ? API +
+                                  item.image_path +
+                                  `?reload=${reloadImage}`
+                                : API + item.image_path
                             : API + '/images/foods/default.png',
                     }}
                     style={style.SearchItemImage}

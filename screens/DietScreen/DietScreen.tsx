@@ -16,7 +16,6 @@ import {
 import UserFoodModel from '../../models/UserFoodModel'
 import UserFoodItem from '../../components/UserFoodItem/UserFoodItem'
 import { useIsFocused } from '@react-navigation/native'
-import MacroEditModal from '../MacroEditModal/MacroEditModal'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupMacroScreen from '../SetupMacroScreen/SetupMacroScreen'
 
@@ -42,9 +41,6 @@ function DietScreen({ navigation }: any) {
     // ! RELOAD DATA ON SCREEN FOCUSED
     useEffect(() => {
         if (isFocused) {
-            getMaxMacros().then((action) => {
-                dispatch(action)
-            })
             getStoredFoods().then((foods) => {
                 setAddedFoods(foods)
             })

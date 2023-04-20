@@ -22,6 +22,10 @@ function authReducer(
 ) {
     const { type, payload } = action
 
+    console.log('STATE: ', state)
+    console.log('TYPE: ', type)
+    console.log('PAYLOAD: ', payload)
+
     switch (type) {
         case OFFLINE_LOGGED_IN:
             return {
@@ -48,7 +52,7 @@ function authReducer(
                 accessToken: null,
                 user: null,
             }
-        case LOGOUT: {
+        case LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,
@@ -56,7 +60,6 @@ function authReducer(
                 user: null,
                 error: null,
             }
-        }
         case REFRESH_SUCCESS: {
             return {
                 ...state,

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import foodModel from '../models/FoodModel'
 import UserFoodModel from '../models/UserFoodModel'
 import {
+    DEFAULT_BODY_INFO,
     DEFAULT_MACROS,
     DEFAULT_MAX_MACROS,
     SET_BODY_INFO,
@@ -155,8 +156,6 @@ class DietServices {
 
             const parsedUserMacros: UserMacrosModel = JSON.parse(userMacros)
 
-            console.log(parsedUserMacros)
-
             return {
                 type: UPDATE_MAX_MACROS,
                 payload: {
@@ -189,13 +188,37 @@ class DietServices {
     }
 
     setBodyInfo(bodyInfo: BodyModel) {
-        return AsyncStorage.setItem(
-            'userBodyInfo',
-            JSON.stringify(bodyInfo)
-        ).then(() => {
+        return AsyncStorage.setItem('userBodyInfo', JSON.stringify(bodyInfo))
+            .then(() => {
+                return {
+                    type: SET_BODY_INFO,
+                    payload: {
+                        ...bodyInfo,
+                    },
+                }
+            })
+            .catch((err) => {
+                console.log('ERROR: ', err)
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
+            })
+    }
+
+    getBodyInfo() {
+        return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
+            if (!userBodyInfo) {
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
+            }
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+
             return {
                 type: SET_BODY_INFO,
-                payload: bodyInfo,
+                payload: {
+                    ...bodyInfo,
+                },
             }
         })
     }
