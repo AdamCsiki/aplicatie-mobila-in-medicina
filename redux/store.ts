@@ -6,12 +6,18 @@ const middleware = [thunk]
 
 const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            immutableCheck: false,
+            serializableCheck: false,
+        }),
 })
 
 function select(state: RootState) {
     return state.auth
 }
 
+// ! Making sure the states are changed by logging the result, can be removed after finalization
 let currentValue: any
 store.subscribe(() => {
     let previousValue = currentValue

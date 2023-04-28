@@ -9,14 +9,10 @@ import axios from '../../api/axios'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
 import { RootState } from '../../redux/store'
-import {
-    addOneFoodToStorage,
-    removeOneFoodFromStorage,
-} from '../../redux/actions/dietActions'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
-import FoodService from '../../services/FoodService'
 import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
 import CreateFoodScreen from '../CreateFoodScreen/CreateFoodScreen'
+import AddFoodScreen from '../AddFoodScreen/AddFoodScreen'
 
 function SearchFoodScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
@@ -26,8 +22,10 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
     let dateTimestamp = new Date().toDateString()
 
     const [createFoodVisible, setCreateFoodVisible] = useState(false)
+    const [addFoodVisible, setAddFoodVisible] = useState(false)
 
     const [foodList, setFoodList] = useState<FoodModel[]>([])
+    const [pickedFood, setPickedFood] = useState<FoodModel>()
 
     const [searchQuery, setSearchQuery] = useState<string>('')
 
@@ -52,8 +50,8 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
 
     useEffect(() => {
         getAllFoods()
-            .then((res) => {
-                setFoodList(res.data)
+            .then((foods) => {
+                setFoodList(foods)
             })
             .catch((err) => {
                 console.log(err.message)
@@ -87,14 +85,7 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
             <Spacer />
             <Layout style={style.DietAddScreenListContainer}>
                 <Layout style={style.DietAddScreenListHeader}>
-                    <Text
-                        category={'h6'}
-                        style={{
-                            color: theme['error-color-100'],
-                        }}
-                    >
-                        Search
-                    </Text>
+                    <Text category={'h6'}>Search</Text>
                     <Button size="small" onPress={() => {}}>
                         <Text category="h6">+</Text>
                     </Button>
@@ -113,10 +104,8 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                                     })
                                 }}
                                 onPressAdd={() => {
-                                    addOneFoodToStorage(item)
-                                }}
-                                onPressRemove={() => {
-                                    removeOneFoodFromStorage(item)
+                                    setPickedFood(item)
+                                    setAddFoodVisible(true)
                                 }}
                             />
                         )
@@ -132,6 +121,16 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                     afterSubmit={() => {
                         setCreateFoodVisible(false)
                     }}
+                />
+            </FullScreenModal>
+            <FullScreenModal
+                visible={addFoodVisible}
+                onBackdropPress={() => setAddFoodVisible(false)}
+            >
+                <AddFoodScreen
+                    foodItem={pickedFood}
+                    onBack={() => setAddFoodVisible(false)}
+                    afterSubmit={() => setAddFoodVisible(false)}
                 />
             </FullScreenModal>
         </Layout>

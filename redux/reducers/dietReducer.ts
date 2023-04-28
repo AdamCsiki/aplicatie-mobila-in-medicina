@@ -9,6 +9,8 @@ import {
     UPDATE_MAX_MACROS,
     SET_BODY_INFO,
     SET_MACRO_RATIOS,
+    SETUP_IS_DONE,
+    SETUP_IS_NOT_DONE,
 } from '../types/types'
 
 const initialState: DietModel = {
@@ -22,6 +24,7 @@ const initialState: DietModel = {
     maxCarbs: 0,
     maxFats: 0,
     maxProteins: 0,
+    isSetup: false,
 }
 
 function dietReducer(
@@ -90,6 +93,10 @@ function dietReducer(
                 currentProteins:
                     state.currentProteins + payload.currentProteins,
             }
+        case SETUP_IS_DONE:
+            return { ...state, isSetup: true }
+        case SETUP_IS_NOT_DONE:
+            return { ...state, isSetup: false }
         default:
             return { ...state }
     }

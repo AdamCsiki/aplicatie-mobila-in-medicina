@@ -133,7 +133,10 @@ function DietScreen({ navigation }: any) {
                             {addedFoods.map((userFood: UserFoodModel) => {
                                 return (
                                     <UserFoodItem
-                                        key={userFood.id}
+                                        key={
+                                            new Date().getMonth() +
+                                            Math.random() * 100000
+                                        }
                                         quantity={userFood.quantity}
                                         item={userFood.food}
                                         onPress={() => {}}

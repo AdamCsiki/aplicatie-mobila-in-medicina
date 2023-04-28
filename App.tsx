@@ -14,6 +14,9 @@ import { default as mapping } from './themes/mapping.json'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import SplashScreen from './screens/SplashScreen/SplashScreen'
+import { createContext, useState } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ThemeContext } from './themes/ThemeContext'
 
 function App() {
     const [loaded] = useFonts({
@@ -22,6 +25,24 @@ function App() {
         Bauhaus: require('./assets/fonts/BauhausRegular.ttf'),
     })
 
+    AsyncStorage.getItem('theme').then((theme) => {
+        if (!theme || (theme != 'light' && theme != 'dark')) {
+            return
+        }
+        console.log('theme', theme)
+        setTheme(theme)
+    })
+
+    const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+    const toggleTheme = () => {
+        const nextTheme = theme === 'light' ? 'dark' : 'light'
+
+        AsyncStorage.setItem('theme', nextTheme).then(() => {
+            setTheme(nextTheme)
+        })
+    }
+
     if (!loaded) {
         return <SplashScreen />
     }
@@ -29,15 +50,19 @@ function App() {
     return (
         <Provider store={store}>
             <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider
-                {...eva}
-                theme={{ ...eva.light, ...customTheme }}
-                customMapping={{ ...eva.mapping, ...mapping }}
+            <ThemeContext.Provider
+                value={{ theme: theme, toggleTheme: toggleTheme }}
             >
-                <Layout style={style.App} level="1">
-                    <AppNav />
-                </Layout>
-            </ApplicationProvider>
+                <ApplicationProvider
+                    {...eva}
+                    theme={{ ...eva[theme], ...customTheme }}
+                    customMapping={{ ...eva.mapping, ...mapping }}
+                >
+                    <Layout style={style.App} level="1">
+                        <AppNav />
+                    </Layout>
+                </ApplicationProvider>
+            </ThemeContext.Provider>
         </Provider>
     )
 }

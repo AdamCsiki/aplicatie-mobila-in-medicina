@@ -11,19 +11,24 @@ function Select(props: SelectDropdownProps) {
     return (
         <SelectDropdown
             {...props}
-            renderDropdownIcon={() => <Icon name={'chevron-down'} />}
+            renderDropdownIcon={() => (
+                <Icon name={'chevron-down'} color={theme['text-basic-color']} />
+            )}
             buttonStyle={{
                 ...style.Button,
-                borderColor: theme['color-basic-400'],
-                backgroundColor: theme['color-basic-200'],
+                borderColor: theme['border-basic-color-1'],
+                backgroundColor: theme['background-basic-color-3'],
             }}
             buttonTextStyle={{
                 ...style.ButtonText,
-                color: theme['color-basic-1000'],
+                color: theme['text-basic-color'],
+            }}
+            rowTextStyle={{
+                color: theme['text-basic-color'],
             }}
             dropdownStyle={{
                 ...style.Dropdown,
-                backgroundColor: theme['color-basic-100'],
+                backgroundColor: theme['background-basic-color-3'],
             }}
             onSelect={(selectedItem, index) => {
                 props.onSelect(selectedItem, index)

@@ -16,6 +16,8 @@ export function SliderThumb({
             style={{
                 ...style.Thumb,
                 backgroundColor: theme['color-basic-700'],
+                borderWidth: 1,
+                borderColor: theme['border-basic-color-2'],
             }}
         >
             <Text style={style.ThumbText} category={'c2'}>
@@ -25,12 +27,23 @@ export function SliderThumb({
     )
 }
 
-export default (props?: SliderProps) => (
-    <Slider
-        animateTransitions={true}
-        {...props}
-        renderThumbComponent={() => <SliderThumb index={props?.value} />}
-        containerStyle={{ ...props?.containerStyle, ...style.Container }}
-        trackStyle={{ ...props?.containerStyle, ...style.Track }}
-    />
-)
+export default (props?: SliderProps) => {
+    const theme = useTheme()
+
+    return (
+        <Slider
+            animateTransitions={true}
+            {...props}
+            renderThumbComponent={() => <SliderThumb index={props?.value} />}
+            containerStyle={{
+                ...props?.containerStyle,
+                ...style.Container,
+            }}
+            trackStyle={{
+                ...props?.containerStyle,
+                ...style.Track,
+                backgroundColor: theme['background-basic-color-4'],
+            }}
+        />
+    )
+}

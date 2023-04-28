@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { CookieJar } from 'tough-cookie'
 
-export const API = 'http://10.0.2.2:3000'
+// export const API = 'http://10.0.2.2:3000'
 // export const API = 'http://localhost:3000'
-// export const API = 'https://laptop-legion-adam.cerberus-saurolophus.ts.net:443'
+export const API = 'https://laptop-legion-adam.cerberus-saurolophus.ts.net:443'
 
 const TIMEOUT = 10000
 

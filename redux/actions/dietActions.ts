@@ -3,6 +3,8 @@ import DietServices from '../../services/DietServices'
 import UserMacrosModel from '../../models/UserMacrosModel'
 import { MacroRatioModel } from '../../models/MacroRatioModel'
 import { BodyModel } from '../../models/BodyModel'
+import { SETUP_IS_DONE } from '../types/types'
+import dietServices from '../../services/DietServices'
 
 export const addOneFoodToStorage = (newFood: FoodModel) => {
     console.log('action: ADD ONE TO STORAGE: ', newFood)
@@ -37,6 +39,14 @@ export const setMaxMacros = (userMacros: UserMacrosModel) => {
 export const setMacroRatios = (ratios: MacroRatioModel) => {
     console.log('action: SET MACRO RATIOS')
     return DietServices.setMacroRatios(ratios)
+}
+
+export const setupIsDone = () => {
+    return DietServices.setupIsDone()
+}
+
+export const isSetupDone = () => {
+    return DietServices.isSetupDone()
 }
 
 export const removeAllFoods = () => {

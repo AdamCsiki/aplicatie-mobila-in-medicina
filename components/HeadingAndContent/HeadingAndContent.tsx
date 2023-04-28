@@ -37,7 +37,7 @@ function HeadingAndContent({
             <Text
                 category={category ?? 'h6'}
                 style={{
-                    ...style.Heading,
+                    ...style.Header,
                     width: horizontal ? '60%' : '100%',
                     textAlign: horizontal ? 'left' : 'center',
                 }}

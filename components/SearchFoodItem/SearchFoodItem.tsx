@@ -11,13 +11,11 @@ function SearchFoodItem({
     reloadImage,
     onPress,
     onPressAdd = () => {},
-    onPressRemove = () => {},
 }: {
     item: FoodModel
     reloadImage?: string
     onPress: () => void
     onPressAdd?: () => void
-    onPressRemove?: () => void
 }) {
     const theme = useTheme()
 
@@ -25,7 +23,7 @@ function SearchFoodItem({
         <ListItem
             style={{
                 ...style.SearchItem,
-                backgroundColor: theme['color-basic-100'],
+                backgroundColor: theme['background-basic-color-1'],
             }}
             onPress={() => onPress?.()}
         >
@@ -60,28 +58,15 @@ function SearchFoodItem({
                 </Layout>
             </Layout>
             <Layout style={style.ButtonContainer}>
-                <Button
-                    size={'small'}
+                <TouchableOpacity
                     style={{
-                        backgroundColor: theme['color-success-600'],
                         ...style.Button,
-                        ...style.AddButton,
+                        backgroundColor: theme['background-basic-color-2'],
                     }}
                     onPress={onPressAdd}
                 >
                     <Text category={'h5'}>+</Text>
-                </Button>
-                <Button
-                    size={'small'}
-                    style={{
-                        backgroundColor: theme['color-danger-600'],
-                        ...style.Button,
-                        ...style.RemoveButton,
-                    }}
-                    onPress={onPressRemove}
-                >
-                    <Text category={'h5'}>-</Text>
-                </Button>
+                </TouchableOpacity>
             </Layout>
         </ListItem>
     )

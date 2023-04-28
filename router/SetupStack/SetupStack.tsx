@@ -1,7 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import SetupMacroScreen from '../../screens/SetupMacroScreen/SetupMacroScreen'
 import SetupBodyScreen from '../../screens/SetupBodyScreen/SetupBodyScreen'
-import { Text } from '@ui-kitten/components'
 
 const Stack = createStackNavigator()
 

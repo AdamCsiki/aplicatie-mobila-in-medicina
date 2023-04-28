@@ -5,8 +5,12 @@ import {
     DEFAULT_BODY_INFO,
     DEFAULT_MACROS,
     DEFAULT_MAX_MACROS,
+    EQUATION_TYPES,
     SET_BODY_INFO,
+    SET_CURRENT_BMR,
     SET_MACRO_RATIOS,
+    SETUP_IS_DONE,
+    SETUP_IS_NOT_DONE,
     UPDATE_CURRENT_MACROS,
     UPDATE_MAX_MACROS,
 } from '../redux/types/types'
@@ -212,6 +216,7 @@ class DietServices {
                     type: DEFAULT_BODY_INFO,
                 }
             }
+
             const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
 
             return {
@@ -221,6 +226,55 @@ class DietServices {
                 },
             }
         })
+    }
+
+    setCurrentBMR(bmr: EQUATION_TYPES) {
+        return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
+            if (!userBodyInfo) {
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
+            }
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+            bodyInfo.current_BMR = bmr
+
+            return {
+                type: SET_CURRENT_BMR,
+                payload: {
+                    current_BMR: bmr,
+                },
+            }
+        })
+    }
+
+    isSetupDone() {
+        return AsyncStorage.getItem('setupIsDone')
+            .then((setupIsDone) => {
+                if (!setupIsDone) {
+                    return {
+                        type: SETUP_IS_NOT_DONE,
+                    }
+                }
+
+                return {
+                    type: SETUP_IS_DONE,
+                }
+            })
+            .catch((err) => {
+                return {
+                    type: SETUP_IS_NOT_DONE,
+                }
+            })
+    }
+
+    setupIsDone() {
+        return AsyncStorage.setItem('setupIsDone', JSON.stringify(true)).then(
+            () => {
+                return {
+                    type: SETUP_IS_DONE,
+                }
+            }
+        )
     }
 }
 

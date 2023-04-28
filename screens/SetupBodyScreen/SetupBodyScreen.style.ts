@@ -3,8 +3,6 @@ import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SetupBodyScreen: {
-        flexGrow: 1,
-
         ...padding(16),
     },
     ContainerHeader: {

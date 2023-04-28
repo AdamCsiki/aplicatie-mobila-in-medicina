@@ -9,4 +9,5 @@ export type DietModel = {
     maxFats: number
     currentProteins: number
     maxProteins: number
+    isSetup: boolean
 }

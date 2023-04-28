@@ -28,17 +28,17 @@ function UserFoodItem({
             {...ListItemProps}
             style={{
                 ...style.UserFoodItem,
-                backgroundColor: theme['color-basic-100'],
+                backgroundColor: theme['background-basic-color-1'],
             }}
             onPress={() => onPress?.()}
         >
             <Layout style={style.ButtonContainer}>
                 <TouchableOpacity onPress={onPressAdd} style={style.Button}>
-                    <Text category={'label'}>+</Text>
+                    <Text category={'h6'}>+</Text>
                 </TouchableOpacity>
                 <Text>{quantity}</Text>
                 <TouchableOpacity onPress={onPressRemove} style={style.Button}>
-                    <Text category={'label'}>-</Text>
+                    <Text category={'h6'}>-</Text>
                 </TouchableOpacity>
             </Layout>
             <TouchableOpacity style={style.FoodImageContainer}>
@@ -56,7 +56,7 @@ function UserFoodItem({
                 <Layout style={style.FoodItemHeader}>
                     <Text category="h6">{item.name}</Text>
                 </Layout>
-                <Text>Cals: {item.calories}</Text>
+                <Text>Cals: {item.calories * quantity}</Text>
                 <Layout style={style.FoodItemDetails}>
                     <DividedBar
                         divisions={[item.proteins, item.fats, item.carbs]}

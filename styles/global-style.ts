@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native'
-import padding from '../../misc/padding'
+import padding from '../misc/padding'
 
 export default StyleSheet.create({
-    CreateFoodScreen: {
+    ScrollContainerParent: {
         flexGrow: 1,
     },
     ScrollContainer: {
@@ -24,16 +24,5 @@ export default StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-    },
-    IngredientsContainer: {
-        height: 300,
-
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    IngredientsList: {
-        height: 200,
     },
 })

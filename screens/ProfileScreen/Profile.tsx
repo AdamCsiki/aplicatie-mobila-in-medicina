@@ -8,7 +8,7 @@ import Spacer from '../../components/Spacer/Spacer'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupBodyScreen from '../SetupBodyScreen/SetupBodyScreen'
 import { useEffect, useState } from 'react'
-import { getBodyInfo } from '../../redux/actions/bodyActions'
+import { getBodyInfo, setCurrentBMR } from '../../redux/actions/bodyActions'
 import { calculateCalories } from '../../misc/MacroEquations'
 import {
     DAILY_EXERCISE,
@@ -26,24 +26,27 @@ import {
     WEIGHT_LOSS,
 } from '../../misc/MacroTypes'
 import Select from '../../components/Select/Select'
+import { HARRIS_EQUATION, MIFFLIN_EQUATION } from '../../redux/types/types'
 
 function Profile({ navigation }: { navigation: any }) {
     const body = useSelector((state: RootState) => state.body)
     const dispatch = useDispatch()
-
-    const theme = useTheme()
 
     const [bodyEditVisible, setBodyEditVisible] = useState(false)
     const [bmr, setBmr] = useState(body.BMR_mifflin)
 
     const [activity, setActivity] = useState<EXERCISE_ACTIVITY_TYPE>(undefined)
 
+    // ! Switching the current BMR if the state changes
+    // ? This needs to be done because it doesn't update on the screen otherwise
     useEffect(() => {
-        getBodyInfo().then((action) => {
-            console.log(action.payload)
-            dispatch(action)
-        })
-    }, [])
+        switch (body.current_BMR) {
+            case MIFFLIN_EQUATION:
+                return setBmr(body.BMR_mifflin)
+            case HARRIS_EQUATION:
+                return setBmr(body.BMR_harris)
+        }
+    }, [body])
 
     return (
         <Layout style={{ flex: 1 }} level={'4'}>
@@ -63,10 +66,7 @@ function Profile({ navigation }: { navigation: any }) {
                     </Layout>
                     <Spacer />
                     <Layout style={style.profileContainer}>
-                        <HeadingAndContent
-                            title={'BodyType'}
-                            content={body.bodyType}
-                        />
+                        <HeadingAndContent title={'Sex'} content={body.sex} />
                         <Spacer />
                         <HeadingAndContent title={'Age'} content={body.age} />
                         <HeadingAndContent
@@ -80,25 +80,28 @@ function Profile({ navigation }: { navigation: any }) {
                         <Spacer />
                         <Layout style={style.profileStatsHeader}>
                             <Text category={'h5'} style={{ textAlign: 'left' }}>
-                                BMR
+                                BMR:
                             </Text>
                             <Select
-                                defaultValueByIndex={0}
-                                data={['mifflin equation', 'harris equation']}
+                                defaultValueByIndex={
+                                    body.current_BMR == MIFFLIN_EQUATION ? 0 : 1
+                                }
+                                data={[MIFFLIN_EQUATION, HARRIS_EQUATION]}
                                 onSelect={(selectedItem, index) => {
-                                    switch (selectedItem) {
-                                        case 'mifflin eq.': {
-                                            setBmr(body.BMR_mifflin)
-                                            break
+                                    console.log(selectedItem)
+                                    setCurrentBMR(selectedItem).then(
+                                        (action) => {
+                                            dispatch(action)
                                         }
-                                        case 'harris eq.': {
-                                            setBmr(body.BMR_harris)
-                                            break
-                                        }
-                                    }
+                                    )
                                 }}
                             />
                         </Layout>
+                        <Spacer />
+                        <HeadingAndContent
+                            title={'Current BMR'}
+                            content={bmr + ' Cals./day'}
+                        />
                         <Spacer />
                         <HeadingAndContent
                             title={'Mifflin-St.Jeor Eq.'}
@@ -108,6 +111,7 @@ function Profile({ navigation }: { navigation: any }) {
                             title={'Harris-Benedict Eq.'}
                             content={body.BMR_harris + ' Cals./day'}
                         />
+
                         <Spacer height={32} />
                         <Layout style={style.profileStatsHeader}>
                             <Text category={'h5'}>Activity:</Text>

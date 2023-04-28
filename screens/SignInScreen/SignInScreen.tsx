@@ -40,11 +40,11 @@ function SignInScreen({ navigation }: { navigation: any }) {
         <KeyboardAwareScrollView
             style={{
                 ...style.Login,
-                backgroundColor: theme['color-basic-100'],
+                backgroundColor: theme['background-basic-color-1'],
             }}
             contentContainerStyle={{
                 ...style.LoginContainer,
-                backgroundColor: theme['color-basic-100'],
+                backgroundColor: theme['background-basic-color-1'],
             }}
             persistentScrollbar={true}
             enableOnAndroid={true}

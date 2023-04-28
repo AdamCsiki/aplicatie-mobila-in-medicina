@@ -2,12 +2,23 @@ import { createStackNavigator } from '@react-navigation/stack'
 import DietScreen from '../../screens/DietScreen/DietScreen'
 import SearchFoodScreen from '../../screens/SearchFoodScreen/SearchFoodScreen'
 import DetailsScreen from '../../screens/DetailsScreen/DetailsScreen'
+import { useTheme } from '@ui-kitten/components'
 
 const { Navigator, Screen } = createStackNavigator()
 
 function DietStack() {
+    const theme = useTheme()
+
     return (
-        <Navigator>
+        <Navigator
+            screenOptions={{
+                headerShown: false,
+                headerStyle: {
+                    backgroundColor: theme['background-basic-color-1'],
+                },
+                headerTintColor: theme['text-basic-color'],
+            }}
+        >
             <Screen
                 name="DietScreen"
                 component={DietScreen}
@@ -21,7 +32,9 @@ function DietStack() {
             <Screen
                 name="Details"
                 component={DetailsScreen}
-                options={{ headerShown: true }}
+                options={{
+                    headerShown: true,
+                }}
             />
         </Navigator>
     )

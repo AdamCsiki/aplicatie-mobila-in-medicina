@@ -6,14 +6,14 @@ export default StyleSheet.create({
         maxHeight: 100,
         width: '100%',
 
-        padding: 0,
-
         borderRadius: 16,
 
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+
+        overflow: 'hidden',
     },
     SearchItemImage: {
         minWidth: 45,
@@ -55,18 +55,35 @@ export default StyleSheet.create({
 
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     Button: {
-        borderWidth: 1,
-        borderColor: '#00000000',
+        width: 40,
+        height: '140%',
+
+        left: 8,
+
+        borderRadius: 8,
+
+        ...padding(2, 8),
+
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-end',
     },
     AddButton: {
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
     },
     RemoveButton: {
         borderBottomLeftRadius: 16,
         borderBottomRightRadius: 16,
+
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
     },
 })

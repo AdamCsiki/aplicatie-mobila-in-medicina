@@ -1,13 +1,15 @@
 import { BodyModel } from '../../models/BodyModel'
 import { ActionModel } from '../../models/ActionModel'
-import { DEFAULT_BODY_INFO, SET_BMR, SET_BODY_INFO } from '../types/types'
 import {
-    calculateBMR_harris,
-    calculateBMR_mifflin,
-} from '../../misc/MacroEquations'
+    DEFAULT_BODY_INFO,
+    MIFFLIN_EQUATION,
+    SET_BMR,
+    SET_BODY_INFO,
+    SET_CURRENT_BMR,
+} from '../types/types'
 
 const initialState: BodyModel = {
-    bodyType: undefined,
+    sex: undefined,
     age: 0,
     weight: 0,
     height: 0,
@@ -17,6 +19,7 @@ const initialState: BodyModel = {
     maxProteinsByBody: 0,
     BMR_mifflin: 0,
     BMR_harris: 0,
+    current_BMR: MIFFLIN_EQUATION,
 }
 
 function bodyReducer(
@@ -29,30 +32,17 @@ function bodyReducer(
         case SET_BODY_INFO:
             return {
                 ...state,
-                bodyType: payload.bodyType,
+                sex: payload.sex,
                 age: payload.age,
                 height: payload.height,
                 weight: payload.weight,
                 maxCalsByBody: payload.maxCalsByBody,
                 BMR_mifflin: payload.BMR_mifflin,
                 BMR_harris: payload.BMR_harris,
+                current_BMR: payload.current_BMR,
             }
-        case SET_BMR:
-            return {
-                ...state,
-                BMR_mifflin: calculateBMR_mifflin(
-                    state.weight,
-                    state.height,
-                    state.age,
-                    state.bodyType
-                ),
-                BMR_harris: calculateBMR_harris(
-                    state.weight,
-                    state.height,
-                    state.age,
-                    state.bodyType
-                ),
-            }
+        case SET_CURRENT_BMR:
+            return { ...state, current_BMR: payload.current_BMR }
         case DEFAULT_BODY_INFO:
             return {
                 ...initialState,

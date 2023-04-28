@@ -15,8 +15,6 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-        overflow: 'scroll',
     },
     FoodImageContainer: {
         flexGrow: 1,
@@ -69,12 +67,18 @@ export default StyleSheet.create({
     },
     Button: {
         borderRadius: 16,
+        // borderWidth: 1,
+        // borderColor: '#000000',
+
+        height: 30,
+        width: 40,
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
 
         padding: 0,
         margin: 0,
-
-        borderWidth: 0,
-        borderColor: '#00000000',
     },
     AddButton: {
         borderTopLeftRadius: 16,

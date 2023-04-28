@@ -5,7 +5,11 @@ import style from './SetupMacroScreen.style'
 import Slider, { SliderThumb } from '../../components/Slider/Slider'
 import Spacer from '../../components/Spacer/Spacer'
 import { useDispatch, useSelector } from 'react-redux'
-import { setMacroRatios, setMaxMacros } from '../../redux/actions/dietActions'
+import {
+    setMacroRatios,
+    setMaxMacros,
+    setupIsDone,
+} from '../../redux/actions/dietActions'
 import { RootState } from '../../redux/store'
 import { MacroRatioModel } from '../../models/MacroRatioModel'
 import { ScrollView } from 'react-native-virtualized-view'
@@ -108,7 +112,14 @@ function SetupMacroScreen({
             .then((action) => {
                 dispatch(action)
             })
-            .finally(afterSubmit)
+            .finally(() => {
+                if (navigation) {
+                    setupIsDone().then((action) => {
+                        dispatch(action)
+                    })
+                }
+                afterSubmit?.()
+            })
     }
 
     // ! Update the macros if it's on AUTO mode
@@ -124,7 +135,6 @@ function SetupMacroScreen({
         <Layout
             style={{
                 ...style.SetupScreen,
-                backgroundColor: theme['color-basic-100'],
             }}
         >
             <Layout style={style.Container}>

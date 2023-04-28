@@ -72,7 +72,7 @@ export const offlineSignedIn = () => {
         .catch((err) => {
             console.log(err.message)
             return {
-                type: LOGOUT,
+                type: null,
             }
         })
 }

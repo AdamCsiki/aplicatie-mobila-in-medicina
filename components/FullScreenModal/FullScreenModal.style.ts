@@ -11,7 +11,6 @@ export default StyleSheet.create({
         top: '2.5%',
 
         display: 'flex',
-        flex: 1,
     },
     FSModalContainer: {
         borderRadius: 16,

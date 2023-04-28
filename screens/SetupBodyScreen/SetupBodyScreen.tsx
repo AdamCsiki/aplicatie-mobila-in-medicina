@@ -1,7 +1,6 @@
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import style from './SetupBodyScreen.style'
 import { useState } from 'react'
-import SelectDropdown from 'react-native-select-dropdown'
 import { BodyModel } from '../../models/BodyModel'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
@@ -12,6 +11,7 @@ import {
     calculateBMR_harris,
     calculateBMR_mifflin,
 } from '../../misc/MacroEquations'
+import { BODY_TYPE_FEMALE, BODY_TYPE_MALE } from '../../misc/MacroTypes'
 
 function SetupBodyScreen({
     navigation,
@@ -24,13 +24,13 @@ function SetupBodyScreen({
 }) {
     const dispatch = useDispatch()
 
-    const bodyTypes = ['male', 'female']
+    const bodyTypes = [BODY_TYPE_MALE, BODY_TYPE_FEMALE]
     const body = useSelector((state: RootState) => state.body)
 
     const [userBody, setUserBody] = useState<BodyModel>(body)
 
     const onChange = (
-        type: 'bodyType' | 'age' | 'height' | 'weight',
+        type: 'sex' | 'age' | 'height' | 'weight',
         value: number
     ) => {
         setUserBody((old) => ({ ...old, [type]: value }))
@@ -43,14 +43,14 @@ function SetupBodyScreen({
                 9.99 * userBody.weight +
                     6.25 * userBody.height +
                     4.92 * userBody.age +
-                    (userBody.bodyType == 'male' ? 5 : -161)
+                    (userBody.sex == BODY_TYPE_MALE ? 5 : -161)
             ),
             BMR_mifflin: Math.ceil(
                 calculateBMR_mifflin(
                     userBody.weight,
                     userBody.height,
                     userBody.age,
-                    userBody.bodyType
+                    userBody.sex
                 )
             ),
             BMR_harris: Math.ceil(
@@ -58,7 +58,7 @@ function SetupBodyScreen({
                     userBody.weight,
                     userBody.height,
                     userBody.age,
-                    userBody.bodyType
+                    userBody.sex
                 )
             ),
         }
@@ -75,15 +75,15 @@ function SetupBodyScreen({
     return (
         <Layout style={style.SetupBodyScreen}>
             <Layout style={style.Container}>
-                <Text category={'h6'}>Body type</Text>
+                <Text category={'h6'}>Sex</Text>
                 <Spacer />
                 <Select
                     data={bodyTypes}
-                    defaultValue={body.bodyType}
+                    defaultValue={body.sex}
                     onSelect={(selectedItem, index) => {
                         setUserBody((old) => ({
                             ...old,
-                            bodyType: selectedItem,
+                            sex: selectedItem,
                         }))
                     }}
                 />

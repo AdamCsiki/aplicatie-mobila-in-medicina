@@ -1,4 +1,6 @@
 import {
+    BODY_TYPE_FEMALE,
+    BODY_TYPE_MALE,
     DAILY_EXERCISE,
     EXERCISE_ACTIVITY_TYPE,
     EXTREME_EXERCISE,
@@ -28,10 +30,13 @@ export const calculateBMR_mifflin = (
     weight: number,
     height: number,
     age: number,
-    bodyType: 'male' | 'female' | undefined
+    bodyType: BODY_TYPE_MALE | BODY_TYPE_FEMALE | undefined
 ) => {
     return (
-        10 * weight + 6.25 * height + 5 * age + (bodyType == 'male' ? 5 : -161)
+        10 * weight +
+        6.25 * height +
+        5 * age +
+        (bodyType == BODY_TYPE_MALE ? 5 : -161)
     )
 }
 
@@ -39,9 +44,9 @@ export const calculateBMR_harris = (
     weight: number,
     height: number,
     age: number,
-    bodyType: 'male' | 'female' | undefined
+    bodyType: BODY_TYPE_MALE | BODY_TYPE_FEMALE | undefined
 ) => {
-    return bodyType == 'male'
+    return bodyType == BODY_TYPE_MALE
         ? 13.397 * weight + 4.799 * height - 5.677 * age + 88.362
         : 9.247 * weight + 3.098 * height - 4.33 * age + 447.593
 }

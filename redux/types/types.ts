@@ -31,3 +31,12 @@ export const UPDATE_MAX_MACROS = 'UPDATE_MAX_MACROS'
 export const UPDATE_CURRENT_MACROS = 'DIET_UPDATE'
 export const ADD_CURRENT_MACROS = 'ADD_DIET'
 export const DEFAULT_MACROS = 'DEFAULT_DIET'
+export const SET_CURRENT_BMR = 'SET_CURRENT_BMR'
+export const SETUP_IS_DONE = 'SETUP_IS_DONE'
+export const SETUP_IS_NOT_DONE = 'SETUP_IS_NOT_DONE'
+
+export const MIFFLIN_EQUATION = 'Mifflin equation'
+export type MIFFLIN_EQUATION = 'Mifflin equation'
+export const HARRIS_EQUATION = 'Harris equation'
+export type HARRIS_EQUATION = 'Harris equation'
+export type EQUATION_TYPES = HARRIS_EQUATION | MIFFLIN_EQUATION
