@@ -99,3 +99,15 @@ export const calculateCalories = (
             return calculateBMR_with_activity(BMR)
     }
 }
+
+export const calculateBMI = (weight: number, height: number) => {
+    return Number(weight / Math.pow(height / 100, 2))
+}
+
+export const bodyFatPercentage = (
+    weight: number,
+    height: number,
+    age: number
+) => {
+    return calculateBMI(weight, height) * 1.2 + age * 0.23 - 16.2
+}

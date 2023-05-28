@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import Select from '../../components/Select/Select'
 import Spacer from '../../components/Spacer/Spacer'
-import { setBodyInfo } from '../../redux/actions/bodyActions'
+import { setBodyInfo, setCurrentBMR } from '../../redux/actions/bodyActions'
 import {
     calculateBMR_harris,
     calculateBMR_mifflin,
 } from '../../misc/MacroEquations'
 import { BODY_TYPE_FEMALE, BODY_TYPE_MALE } from '../../misc/MacroTypes'
+import gstyle from '../../styles/global-style'
+import { HARRIS_EQUATION, MIFFLIN_EQUATION } from '../../redux/types/types'
 
 function SetupBodyScreen({
     navigation,
@@ -39,12 +41,13 @@ function SetupBodyScreen({
     const onSubmit = () => {
         const updatedUserBody = {
             ...userBody,
-            maxCalsByBody: Math.ceil(
-                9.99 * userBody.weight +
-                    6.25 * userBody.height +
-                    4.92 * userBody.age +
-                    (userBody.sex == BODY_TYPE_MALE ? 5 : -161)
-            ),
+            maxCalsByBody:
+                Math.ceil(
+                    9.99 * userBody.weight +
+                        6.25 * userBody.height +
+                        4.92 * userBody.age +
+                        (userBody.sex == BODY_TYPE_MALE ? 5 : -161)
+                ) * 1.5,
             BMR_mifflin: Math.ceil(
                 calculateBMR_mifflin(
                     userBody.weight,
@@ -68,15 +71,43 @@ function SetupBodyScreen({
                 dispatch(action)
             })
             .finally(() => {
-                afterSubmit?.()
+                let bmr = 0
+
+                switch (body.BMR_equation) {
+                    case MIFFLIN_EQUATION: {
+                        bmr = calculateBMR_mifflin(
+                            body.weight,
+                            body.height,
+                            body.age,
+                            body.sex
+                        )
+                        break
+                    }
+                    case HARRIS_EQUATION: {
+                        bmr = calculateBMR_harris(
+                            body.weight,
+                            body.height,
+                            body.age,
+                            body.sex
+                        )
+                        break
+                    }
+                }
+
+                return setCurrentBMR(body.BMR_equation, bmr)
+                    .then((action) => {
+                        dispatch(action)
+                    })
+                    .finally(() => {
+                        afterSubmit?.()
+                    })
             })
     }
 
     return (
         <Layout style={style.SetupBodyScreen}>
-            <Layout style={style.Container}>
+            <Layout style={gstyle.Header}>
                 <Text category={'h6'}>Sex</Text>
-                <Spacer />
                 <Select
                     data={bodyTypes}
                     defaultValue={body.sex}

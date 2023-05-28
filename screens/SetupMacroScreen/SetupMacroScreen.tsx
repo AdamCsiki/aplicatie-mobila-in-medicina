@@ -129,7 +129,7 @@ function SetupMacroScreen({
             return
         }
         onAutoChange()
-    }, [maxCals, ratios])
+    }, [maxCals, ratios, auto])
 
     return (
         <Layout

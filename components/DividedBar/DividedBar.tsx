@@ -5,6 +5,7 @@ import style from './DividedBar.style'
 function DividedBar({ divisions }: { divisions: number[] }) {
     const theme = useTheme()
     const colors = [
+        theme['background-basic-color-4'],
         theme['color-success-500'],
         theme['color-warning-500'],
         theme['color-danger-500'],

@@ -4,9 +4,10 @@ import {
     BottomNavigationTab,
     useTheme,
 } from '@ui-kitten/components'
-import Profile from '../../screens/ProfileScreen/Profile'
+import BodyScreen from '../../screens/BodyScreen/BodyScreen'
 import DietStack from '../DietStack/DietStack'
 import WeeklyStack from '../WeeklyStack/WeeklyStack'
+import PlanScreen from '../../screens/PlanScreen/PlanScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -16,8 +17,9 @@ function BottomTabBar({ navigation, state }: { navigation: any; state: any }) {
             selectedIndex={state.index}
             onSelect={(index) => navigation.navigate(state.routeNames[index])}
         >
-            <BottomNavigationTab title="Profile" />
-            <BottomNavigationTab title="Diet" />
+            <BottomNavigationTab title="BODY" />
+            <BottomNavigationTab title="PLAN" />
+            <BottomNavigationTab title="DIET" />
         </BottomNavigation>
     )
 }
@@ -27,12 +29,13 @@ function HomeTab() {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
+                headerTitleStyle: { fontWeight: 'bold', fontSize: 800 },
             }}
             tabBar={BottomTabBar}
         >
-            <Tab.Screen name={'Profile'} component={Profile} />
+            <Tab.Screen name={'Body'} component={BodyScreen} />
+            <Tab.Screen name={'Plan'} component={PlanScreen} />
             <Tab.Screen name={'Diet'} component={DietStack} />
-            <Tab.Screen name={'Weekly'} component={WeeklyStack} />
         </Tab.Navigator>
     )
 }

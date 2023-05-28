@@ -1,14 +1,6 @@
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    TextInputSubmitEditingEventData,
-} from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
+import { TextInputSubmitEditingEventData } from 'react-native'
 import style from './SearchInput.style'
-import Icon from 'react-native-vector-icons/Entypo'
-import { useRef } from 'react'
-import { Input, Layout } from '@ui-kitten/components'
+import { Input } from '@ui-kitten/components'
 import { NativeEvent } from 'react-native-reanimated/lib/types'
 
 function SearchInput({
@@ -29,8 +21,7 @@ function SearchInput({
             textAlign={'left'}
             onChangeText={onChangeText}
             onSubmitEditing={onSubmitEditing}
-        ></Input>
+        />
     )
 }
-
 export default SearchInput

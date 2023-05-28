@@ -3,76 +3,12 @@ import padding from '../../misc/padding'
 import margin from '../../misc/margin'
 import { Keyframe } from 'react-native-reanimated'
 
-export const backgroundAnimation = new Keyframe({
-    from: {
-        borderBottomLeftRadius: 100,
-    },
-    to: {
-        borderBottomLeftRadius: 500,
-    },
-}).duration(3000)
-
-export const profileAnimation = new Keyframe({
-    from: {
-        width: 170,
-        height: 170,
-    },
-    to: {
-        width: 150,
-        height: 150,
-    },
-}).duration(3000)
-
 export default StyleSheet.create({
-    Profile: {
+    DetailsScreen: {
         display: 'flex',
         flexGrow: 1,
 
         ...padding(16),
-    },
-    profileUser: {
-        zIndex: 2,
-
-        width: 170,
-        height: 170,
-
-        backgroundColor: 'transparent',
-
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-
-        position: 'absolute',
-
-        top: 55,
-        left: -5,
-    },
-    profileUserBackground: {
-        width: 170,
-        height: 170,
-
-        borderRadius: 250,
-
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    profileImage: {
-        height: 150,
-        width: 150,
-
-        borderRadius: 250,
-    },
-    profileUsername: {
-        width: 200,
-
-        top: '30%',
-        left: '10%',
-
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     profileHeader: {
         width: '100%',

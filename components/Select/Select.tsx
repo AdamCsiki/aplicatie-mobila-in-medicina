@@ -11,6 +11,9 @@ function Select(props: SelectDropdownProps) {
     return (
         <SelectDropdown
             {...props}
+            showsVerticalScrollIndicator={true}
+            disableAutoScroll={true}
+            statusBarTranslucent={true}
             renderDropdownIcon={() => (
                 <Icon name={'chevron-down'} color={theme['text-basic-color']} />
             )}
@@ -23,12 +26,13 @@ function Select(props: SelectDropdownProps) {
                 ...style.ButtonText,
                 color: theme['text-basic-color'],
             }}
-            rowTextStyle={{
-                color: theme['text-basic-color'],
-            }}
             dropdownStyle={{
                 ...style.Dropdown,
                 backgroundColor: theme['background-basic-color-3'],
+            }}
+            rowStyle={{ ...style.Row }}
+            rowTextStyle={{
+                color: theme['text-basic-color'],
             }}
             onSelect={(selectedItem, index) => {
                 props.onSelect(selectedItem, index)

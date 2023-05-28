@@ -14,7 +14,7 @@ import { default as mapping } from './themes/mapping.json'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import SplashScreen from './screens/SplashScreen/SplashScreen'
-import { createContext, useState } from 'react'
+import { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ThemeContext } from './themes/ThemeContext'
 

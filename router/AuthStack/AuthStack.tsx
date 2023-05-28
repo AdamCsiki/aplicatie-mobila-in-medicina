@@ -37,6 +37,7 @@ function AuthStack() {
             const { message, config } = err
 
             console.log('Message: ', message)
+            console.log('Config: ', config)
 
             if (!err) {
                 console.log('Backend offline!')

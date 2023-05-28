@@ -54,20 +54,13 @@ export const offlineSignedIn = () => {
                 }
             }
 
-            return refresh().then((action) => {
-                if (action.type == OFFLINE) {
-                    axios.defaults.headers.common['Authorization'] =
-                        'Bearer ' + accessToken
-                    return {
-                        type: OFFLINE_LOGGED_IN,
-                        payload: {
-                            accessToken: accessToken,
-                            isLoggedIn: true,
-                        },
-                    }
-                }
-                return action
-            })
+            return {
+                type: OFFLINE_LOGGED_IN,
+                payload: {
+                    accessToken: accessToken,
+                    isLoggedIn: true,
+                },
+            }
         })
         .catch((err) => {
             console.log(err.message)

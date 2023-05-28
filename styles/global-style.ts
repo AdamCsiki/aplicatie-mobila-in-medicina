@@ -20,9 +20,23 @@ export default StyleSheet.create({
         alignItems: 'center',
     },
     Container: {
+        borderRadius: 16,
+
+        padding: 16,
+
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+
+        overflow: 'hidden',
+    },
+    BasicContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+
+        overflow: 'hidden',
     },
 })

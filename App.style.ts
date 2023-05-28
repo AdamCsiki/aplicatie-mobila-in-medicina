@@ -1,26 +1,28 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-	App: {
-		zIndex: 1,
+    App: {
+        zIndex: 1,
 
-		height: "100%",
-		width: "100%",
+        paddingTop: StatusBar.currentHeight,
 
-		display: "flex",
-		justifyContent: "flex-start",
+        height: '100%',
+        width: '100%',
 
-		position: "relative",
-	},
+        display: 'flex',
+        justifyContent: 'flex-start',
 
-	AppLoading: {
-		zIndex: 1,
+        position: 'relative',
+    },
 
-		height: "100%",
-		width: "100%",
+    AppLoading: {
+        zIndex: 1,
 
-		display: "flex",
-		justifyContent: "center",
-		alignItems: "center",
-	},
-});
+        height: '100%',
+        width: '100%',
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})

@@ -3,13 +3,14 @@ import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     CreateFoodScreen: {
-        flexGrow: 1,
+        flex: 1,
+
+        padding: 16,
     },
     ScrollContainer: {
         display: 'flex',
         flexGrow: 1,
-
-        ...padding(8),
+        padding: 16,
     },
     Header: {
         width: '100%',
@@ -17,7 +18,7 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     Container: {
         display: 'flex',
@@ -26,7 +27,8 @@ export default StyleSheet.create({
         alignItems: 'flex-start',
     },
     IngredientsContainer: {
-        height: 300,
+        height: 400,
+        width: '100%',
 
         display: 'flex',
         flexDirection: 'column',
@@ -35,5 +37,17 @@ export default StyleSheet.create({
     },
     IngredientsList: {
         height: 200,
+    },
+    ImageContainer: {
+        borderRadius: 16,
+
+        width: 100,
+        height: 100,
+
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        overflow: 'hidden',
     },
 })

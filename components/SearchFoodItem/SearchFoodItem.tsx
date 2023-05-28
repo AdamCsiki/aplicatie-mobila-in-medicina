@@ -53,7 +53,12 @@ function SearchFoodItem({
                     {/*</Text>*/}
 
                     <DividedBar
-                        divisions={[item.proteins, item.fats, item.carbs]}
+                        divisions={[
+                            item.proteins,
+                            item.fats,
+                            item.carbs,
+                            item.empty_calories,
+                        ]}
                     />
                 </Layout>
             </Layout>

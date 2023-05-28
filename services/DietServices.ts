@@ -7,6 +7,7 @@ import {
     DEFAULT_MAX_MACROS,
     EQUATION_TYPES,
     SET_BODY_INFO,
+    SET_CURRENT_ACTIVITY,
     SET_CURRENT_BMR,
     SET_MACRO_RATIOS,
     SETUP_IS_DONE,
@@ -18,6 +19,7 @@ import UserMacrosModel from '../models/UserMacrosModel'
 import FoodModel from '../models/FoodModel'
 import { MacroRatioModel } from '../models/MacroRatioModel'
 import { BodyModel } from '../models/BodyModel'
+import { EXERCISE_ACTIVITY_TYPE } from '../misc/MacroTypes'
 
 class DietServices {
     getStoredFoods() {
@@ -120,10 +122,10 @@ class DietServices {
             return {
                 type: UPDATE_CURRENT_MACROS,
                 payload: {
-                    currentCals: macros.calories,
-                    currentCarbs: macros.carbs,
-                    currentFats: macros.fats,
-                    currentProteins: macros.proteins,
+                    currentCals: macros.calories.toFixed(2),
+                    currentCarbs: macros.carbs.toFixed(2),
+                    currentFats: macros.fats.toFixed(2),
+                    currentProteins: macros.proteins.toFixed(2),
                 },
             }
         })
@@ -228,22 +230,55 @@ class DietServices {
         })
     }
 
-    setCurrentBMR(bmr: EQUATION_TYPES) {
+    setCurrentBMR(bmr_equation: EQUATION_TYPES, bmr: number) {
         return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
             if (!userBodyInfo) {
                 return {
                     type: DEFAULT_BODY_INFO,
                 }
             }
-            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
-            bodyInfo.current_BMR = bmr
 
-            return {
-                type: SET_CURRENT_BMR,
-                payload: {
-                    current_BMR: bmr,
-                },
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+            bodyInfo.BMR_equation = bmr_equation
+            bodyInfo.BMR = bmr
+
+            return AsyncStorage.setItem(
+                'userBodyInfo',
+                JSON.stringify(bodyInfo)
+            ).then(() => {
+                return {
+                    type: SET_CURRENT_BMR,
+                    payload: {
+                        current_BMR: bmr_equation,
+                        BMR: bmr,
+                    },
+                }
+            })
+        })
+    }
+
+    setCurrentActivity(activity: EXERCISE_ACTIVITY_TYPE) {
+        return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
+            if (!userBodyInfo) {
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
             }
+
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+            bodyInfo.activity = activity
+
+            return AsyncStorage.setItem(
+                'userBodyInfo',
+                JSON.stringify(bodyInfo)
+            ).then(() => {
+                return {
+                    type: SET_CURRENT_ACTIVITY,
+                    payload: {
+                        activity: activity,
+                    },
+                }
+            })
         })
     }
 

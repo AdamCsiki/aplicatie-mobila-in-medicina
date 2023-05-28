@@ -8,6 +8,8 @@ function SearchList(props: ListProps) {
     return (
         <List
             {...props}
+            scrollEnabled
+            showsVerticalScrollIndicator
             style={{
                 ...style.List,
                 backgroundColor: theme['background-basic-color-3'],

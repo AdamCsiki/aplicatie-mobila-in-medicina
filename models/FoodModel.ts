@@ -3,6 +3,7 @@ interface FoodModel {
     name: string
     image_path: string
     calories: number
+    empty_calories: number
     carbs: number
     fats: number
     proteins: number

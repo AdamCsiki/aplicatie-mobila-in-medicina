@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
     FullScreenModal: {
@@ -8,7 +8,7 @@ export default StyleSheet.create({
         right: '5%',
         bottom: '2.5%',
         left: '5%',
-        top: '2.5%',
+        top: StatusBar.currentHeight,
 
         display: 'flex',
     },

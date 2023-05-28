@@ -1,8 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import DietScreen from '../../screens/DietScreen/DietScreen'
 import SearchFoodScreen from '../../screens/SearchFoodScreen/SearchFoodScreen'
-import DetailsScreen from '../../screens/DetailsScreen/DetailsScreen'
+import FoodScreen from '../../screens/FoodScreen/FoodScreen'
 import { useTheme } from '@ui-kitten/components'
+import CreateFoodScreen from '../../screens/CreateFoodScreen/CreateFoodScreen'
+import AddIngredients from '../../screens/CreateFoodScreen/AddIngredients'
 
 const { Navigator, Screen } = createStackNavigator()
 
@@ -24,18 +26,16 @@ function DietStack() {
                 component={DietScreen}
                 options={{ headerShown: false }}
             />
-            <Screen
-                name="Foods"
-                component={SearchFoodScreen}
-                options={{ headerShown: true }}
-            />
+            <Screen name="Foods" component={SearchFoodScreen} />
             <Screen
                 name="Details"
-                component={DetailsScreen}
+                // @ts-ignore
+                component={FoodScreen}
                 options={{
                     headerShown: true,
                 }}
             />
+            <Screen name={'Create'} component={CreateFoodScreen} />
         </Navigator>
     )
 }

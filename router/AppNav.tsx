@@ -5,7 +5,7 @@ import AuthStack from './AuthStack/AuthStack'
 function AppNav() {
     return (
         <NavigationContainer>
-            <StatusBar hidden style="auto" animated={true} />
+            <StatusBar style="auto" animated translucent />
             <AuthStack />
         </NavigationContainer>
     )

@@ -23,6 +23,7 @@ import SplashScreen from '../../screens/SplashScreen/SplashScreen'
 import SetupStack from '../SetupStack/SetupStack'
 import { getBodyInfo } from '../../redux/actions/bodyActions'
 import { SETUP_IS_DONE } from '../../redux/types/types'
+import { StatusBar } from 'react-native'
 
 const { Navigator, Screen } = createDrawerNavigator()
 
@@ -35,6 +36,7 @@ const DrawerContent = ({ navigation, state }: any) => {
             onSelect={(index) =>
                 navigation.navigate(state.routeNames[index.row])
             }
+            style={{ paddingTop: StatusBar.currentHeight }}
             footer={() => (
                 <Layout
                     style={{
@@ -112,7 +114,6 @@ function SignedInDrawer() {
         <Navigator
             initialRouteName={'Home'}
             screenOptions={{
-                headerShown: false,
                 // drawerPosition: 'right',
                 headerStyle: {
                     backgroundColor: theme['background-basic-color-1'],
@@ -121,7 +122,11 @@ function SignedInDrawer() {
             }}
             drawerContent={(props) => <DrawerContent {...props} />}
         >
-            <Screen name="Home" component={HomeTab} />
+            <Screen
+                name="Home"
+                component={HomeTab}
+                options={{ headerTitle: () => null }}
+            />
             <Screen
                 name="Settings"
                 component={SettingsStack}

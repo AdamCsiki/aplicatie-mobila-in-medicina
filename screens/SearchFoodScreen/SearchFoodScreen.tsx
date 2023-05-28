@@ -11,8 +11,8 @@ import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
 import { RootState } from '../../redux/store'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
-import CreateFoodScreen from '../CreateFoodScreen/CreateFoodScreen'
 import AddFoodScreen from '../AddFoodScreen/AddFoodScreen'
+import FoodScreen from '../FoodScreen/FoodScreen'
 
 function SearchFoodScreen({ navigation }: { navigation: any }) {
     const theme = useTheme()
@@ -21,17 +21,13 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
 
     let dateTimestamp = new Date().toDateString()
 
-    const [createFoodVisible, setCreateFoodVisible] = useState(false)
     const [addFoodVisible, setAddFoodVisible] = useState(false)
+    const [foodDetailsVisible, setFoodDetailsVisible] = useState(false)
 
     const [foodList, setFoodList] = useState<FoodModel[]>([])
     const [pickedFood, setPickedFood] = useState<FoodModel>()
 
     const [searchQuery, setSearchQuery] = useState<string>('')
-
-    const getPersonalFoods = () => {
-        return axios.get('/foods/uid', { params: { id: auth.user } })
-    }
 
     const onSearch = () => {
         if (!searchQuery.trim()) {
@@ -75,7 +71,7 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                 <Layout style={style.DietAddScreenSearchDiv}>
                     <Button
                         onPress={() => {
-                            setCreateFoodVisible(true)
+                            navigation.navigate('Create')
                         }}
                     >
                         <Text category="h6">Create</Text>
@@ -99,9 +95,8 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                                 item={item}
                                 reloadImage={dateTimestamp}
                                 onPress={() => {
-                                    navigation.navigate('Details', {
-                                        item: item,
-                                    })
+                                    setPickedFood(item)
+                                    setFoodDetailsVisible(true)
                                 }}
                                 onPressAdd={() => {
                                     setPickedFood(item)
@@ -113,24 +108,26 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                 />
             </Layout>
             <FullScreenModal
-                visible={createFoodVisible}
-                onBackdropPress={() => setCreateFoodVisible(false)}
-            >
-                <CreateFoodScreen
-                    onBack={() => setCreateFoodVisible(false)}
-                    afterSubmit={() => {
-                        setCreateFoodVisible(false)
-                    }}
-                />
-            </FullScreenModal>
-            <FullScreenModal
                 visible={addFoodVisible}
                 onBackdropPress={() => setAddFoodVisible(false)}
             >
                 <AddFoodScreen
                     foodItem={pickedFood}
+                    navigation={navigation}
                     onBack={() => setAddFoodVisible(false)}
                     afterSubmit={() => setAddFoodVisible(false)}
+                />
+            </FullScreenModal>
+            <FullScreenModal
+                visible={foodDetailsVisible}
+                onBackdropPress={() => setFoodDetailsVisible(false)}
+            >
+                <FoodScreen
+                    navigation={navigation}
+                    foodItem={pickedFood!}
+                    onBack={() => {
+                        setFoodDetailsVisible(false)
+                    }}
                 />
             </FullScreenModal>
         </Layout>

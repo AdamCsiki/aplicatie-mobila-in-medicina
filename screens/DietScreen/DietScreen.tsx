@@ -9,7 +9,6 @@ import { RootState } from '../../redux/store'
 import {
     addOneFoodToStorage,
     calculateMacros,
-    getMaxMacros,
     getStoredFoods,
     removeOneFoodFromStorage,
 } from '../../redux/actions/dietActions'

@@ -1,5 +1,9 @@
 import { EQUATION_TYPES } from '../redux/types/types'
-import { BODY_TYPE_FEMALE, BODY_TYPE_MALE } from '../misc/MacroTypes'
+import {
+    BODY_TYPE_FEMALE,
+    BODY_TYPE_MALE,
+    EXERCISE_ACTIVITY_TYPE,
+} from '../misc/MacroTypes'
 
 export type BodyModel = {
     height: number
@@ -12,5 +16,7 @@ export type BodyModel = {
     maxProteinsByBody: number
     BMR_mifflin: number
     BMR_harris: number
-    current_BMR: EQUATION_TYPES
+    BMR_equation: EQUATION_TYPES
+    BMR: number
+    activity: EXERCISE_ACTIVITY_TYPE
 }

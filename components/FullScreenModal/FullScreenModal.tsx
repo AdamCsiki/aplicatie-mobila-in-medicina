@@ -1,12 +1,13 @@
 import style from './FullScreenModal.style'
 import { Layout, Modal } from '@ui-kitten/components'
 import { ModalProps } from '@ui-kitten/components/ui/modal/modal.component'
+import { StatusBar } from 'react-native'
 
 function FullScreenModal(props: ModalProps) {
     return (
         <Modal
             {...props}
-            style={style.FullScreenModal}
+            style={{ ...style.FullScreenModal }}
             backdropStyle={{
                 backgroundColor: 'rgba(0, 0, 0, 0.6)',
             }}

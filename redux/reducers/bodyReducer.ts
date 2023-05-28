@@ -5,8 +5,10 @@ import {
     MIFFLIN_EQUATION,
     SET_BMR,
     SET_BODY_INFO,
+    SET_CURRENT_ACTIVITY,
     SET_CURRENT_BMR,
 } from '../types/types'
+import { EXERCISE_ACTIVITY_TYPE, SEDENTARY } from '../../misc/MacroTypes'
 
 const initialState: BodyModel = {
     sex: undefined,
@@ -19,7 +21,9 @@ const initialState: BodyModel = {
     maxProteinsByBody: 0,
     BMR_mifflin: 0,
     BMR_harris: 0,
-    current_BMR: MIFFLIN_EQUATION,
+    BMR_equation: MIFFLIN_EQUATION,
+    BMR: 0,
+    activity: SEDENTARY,
 }
 
 function bodyReducer(
@@ -37,12 +41,15 @@ function bodyReducer(
                 height: payload.height,
                 weight: payload.weight,
                 maxCalsByBody: payload.maxCalsByBody,
-                BMR_mifflin: payload.BMR_mifflin,
-                BMR_harris: payload.BMR_harris,
-                current_BMR: payload.current_BMR,
             }
         case SET_CURRENT_BMR:
-            return { ...state, current_BMR: payload.current_BMR }
+            return {
+                ...state,
+                BMR_equation: payload.BMR_equation,
+                BMR: payload.BMR,
+            }
+        case SET_CURRENT_ACTIVITY:
+            return { ...state, activity: payload.activity }
         case DEFAULT_BODY_INFO:
             return {
                 ...initialState,

@@ -7,7 +7,7 @@ import FoodModel from '../../models/FoodModel'
 import Spacer from '../../components/Spacer/Spacer'
 import Select from '../../components/Select/Select'
 import { SpinnerComponent } from 'react-native-ui-kitten/ui/spinner/spinner.component'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function AddFoodScreen({
     foodItem,
@@ -20,8 +20,12 @@ function AddFoodScreen({
     onBack?: () => void
     afterSubmit?: () => void
 }) {
-    const [quantity, setQuantity] = useState(0)
+    const [quantity, setQuantity] = useState<number>(0)
     const [quantityType, setQuantityType] = useState('g')
+
+    useEffect(() => {
+        console.log(quantity)
+    }, [quantity])
 
     return (
         <Layout style={gstyle.ScrollContainerParent}>
@@ -31,18 +35,20 @@ function AddFoodScreen({
                     <Text>{foodItem?.name}</Text>
                 </Layout>
                 <Spacer height={32} />
-                <Layout
-                    style={{
-                        ...gstyle.Header,
-                        justifyContent: 'space-between',
-                    }}
-                >
+                <Layout style={gstyle.Header}>
                     <Input
                         placeholder={'Quantity'}
                         style={{ flexGrow: 1 }}
-                        onChangeText={(text) =>
-                            setQuantity(Number.parseFloat(text))
-                        }
+                        keyboardType={'number-pad'}
+                        defaultValue={quantity.toFixed(2)}
+                        onEndEditing={(e) => {
+                            if (!e.nativeEvent.text) {
+                                setQuantity(0.0)
+                                return
+                            }
+
+                            setQuantity(Number.parseFloat(e.nativeEvent.text))
+                        }}
                     />
                     <Select
                         data={['g', 'Kg']}
