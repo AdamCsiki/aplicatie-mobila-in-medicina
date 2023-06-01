@@ -3,14 +3,12 @@ import { Layout, Text, Button } from '@ui-kitten/components'
 import style from './BodyScreen.style'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import HeadingAndContent from '../../components/HeadingAndContent/HeadingAndContent'
 import Spacer from '../../components/Spacer/Spacer'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupBodyScreen from '../SetupBodyScreen/SetupBodyScreen'
 import { useEffect, useState } from 'react'
-import { bodyFatPercentage, calculateBMI } from '../../misc/MacroEquations'
+import { bodyFatPercentage, calculateBMI } from '../../misc/Equations'
 import gstyle from '../../styles/global-style'
-import { HARRIS_EQUATION, MIFFLIN_EQUATION } from '../../redux/types/types'
 import DataTable from '../../components/Table/Table'
 
 function BodyScreen({ navigation }: { navigation: any }) {
@@ -29,7 +27,7 @@ function BodyScreen({ navigation }: { navigation: any }) {
             >
                 <Layout style={gstyle.Container} level="1">
                     <Layout style={gstyle.Header}>
-                        <Text category={'h5'}>Details</Text>
+                        <Text category={'h4'}>Body</Text>
                         <Button onPress={() => setBodyEditVisible(true)}>
                             Edit
                         </Button>
@@ -47,7 +45,7 @@ function BodyScreen({ navigation }: { navigation: any }) {
 
                 <Layout style={gstyle.Container}>
                     <Layout style={gstyle.Header}>
-                        <Text category={'h5'}>Body mass index</Text>
+                        <Text category={'h5'}>Body mass index (BMI)</Text>
                     </Layout>
 
                     <Spacer />
@@ -78,8 +76,25 @@ function BodyScreen({ navigation }: { navigation: any }) {
                     <Spacer height={32} />
 
                     <DataTable
-                        labels={['Current BMR']}
-                        data={[body.BMR + ' Cals./day']}
+                        labels={['Equation used', 'BMR']}
+                        data={[body.BMR_equation, body.BMR + ' Kcal/day']}
+                    />
+                </Layout>
+
+                <Spacer />
+
+                <Layout style={gstyle.Container}>
+                    <Layout style={gstyle.Header}>
+                        <Text category={'h5'} style={{ textAlign: 'left' }}>
+                            Resting metabolic rate (RMR)
+                        </Text>
+                    </Layout>
+
+                    <Spacer height={32} />
+
+                    <DataTable
+                        labels={['Equation used', 'RMR']}
+                        data={[body.RMR_equation, body.RMR + ' Kcal/day']}
                     />
                 </Layout>
 

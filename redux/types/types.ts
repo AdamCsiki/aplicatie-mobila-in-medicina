@@ -32,7 +32,9 @@ export const UPDATE_CURRENT_MACROS = 'DIET_UPDATE'
 export const ADD_CURRENT_MACROS = 'ADD_DIET'
 export const DEFAULT_MACROS = 'DEFAULT_DIET'
 export const SET_CURRENT_BMR = 'SET_CURRENT_BMR'
+export const SET_CURRENT_RMR = 'SET_CURRENT_RMR'
 export const SET_CURRENT_ACTIVITY = 'SET_CURRENT_ACTIVITY'
+export const SET_CURRENT_WEIGHT_PLAN = 'SET_CURRENT_WEIGHT_PLAN'
 export const SETUP_IS_DONE = 'SETUP_IS_DONE'
 export const SETUP_IS_NOT_DONE = 'SETUP_IS_NOT_DONE'
 
@@ -41,3 +43,12 @@ export type MIFFLIN_EQUATION = 'Mifflin equation'
 export const HARRIS_EQUATION = 'Harris equation'
 export type HARRIS_EQUATION = 'Harris equation'
 export type EQUATION_TYPES = HARRIS_EQUATION | MIFFLIN_EQUATION
+
+export const WEIGHT_LOSS = 'Weight loss'
+export type WEIGHT_LOSS = 'Weight loss'
+export const WEIGHT_GAIN = 'Weight gain'
+export type WEIGHT_GAIN = 'Weight gain'
+export const MAINTAIN_WEIGHT = 'Maintain weight'
+export type MAINTAIN_WEIGHT = 'Maintain weight'
+
+export type WEIGHT_PLAN_TYPES = WEIGHT_LOSS | WEIGHT_GAIN | MAINTAIN_WEIGHT

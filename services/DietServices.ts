@@ -10,16 +10,20 @@ import {
     SET_CURRENT_ACTIVITY,
     SET_CURRENT_BMR,
     SET_MACRO_RATIOS,
+    SET_CURRENT_WEIGHT_PLAN,
     SETUP_IS_DONE,
     SETUP_IS_NOT_DONE,
     UPDATE_CURRENT_MACROS,
     UPDATE_MAX_MACROS,
+    WEIGHT_PLAN_TYPES,
+    SET_CURRENT_RMR,
 } from '../redux/types/types'
 import UserMacrosModel from '../models/UserMacrosModel'
 import FoodModel from '../models/FoodModel'
 import { MacroRatioModel } from '../models/MacroRatioModel'
 import { BodyModel } from '../models/BodyModel'
 import { EXERCISE_ACTIVITY_TYPE } from '../misc/MacroTypes'
+import { BMR_TYPES, RMR_TYPES } from '../misc/Equations'
 
 class DietServices {
     getStoredFoods() {
@@ -230,13 +234,15 @@ class DietServices {
         })
     }
 
-    setCurrentBMR(bmr_equation: EQUATION_TYPES, bmr: number) {
+    setCurrentBMR(bmr_equation: BMR_TYPES, bmr: number) {
         return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
             if (!userBodyInfo) {
                 return {
                     type: DEFAULT_BODY_INFO,
                 }
             }
+
+            bmr = Number.parseFloat(bmr.toFixed(2))
 
             const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
             bodyInfo.BMR_equation = bmr_equation
@@ -249,8 +255,37 @@ class DietServices {
                 return {
                     type: SET_CURRENT_BMR,
                     payload: {
-                        current_BMR: bmr_equation,
+                        BMR_equation: bmr_equation,
                         BMR: bmr,
+                    },
+                }
+            })
+        })
+    }
+
+    setCurrentRMR(rmr_equation: RMR_TYPES, rmr: number) {
+        return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
+            if (!userBodyInfo) {
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
+            }
+
+            rmr = Number.parseFloat(rmr.toFixed(2))
+
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+            bodyInfo.RMR_equation = rmr_equation
+            bodyInfo.RMR = rmr
+
+            return AsyncStorage.setItem(
+                'userBodyInfo',
+                JSON.stringify(bodyInfo)
+            ).then(() => {
+                return {
+                    type: SET_CURRENT_RMR,
+                    payload: {
+                        RMR_equation: rmr_equation,
+                        RMR: rmr,
                     },
                 }
             })
@@ -276,6 +311,36 @@ class DietServices {
                     type: SET_CURRENT_ACTIVITY,
                     payload: {
                         activity: activity,
+                    },
+                }
+            })
+        })
+    }
+
+    setCurrentWeightPlan(
+        weightPlanType: WEIGHT_PLAN_TYPES,
+        weightPlanValue: number
+    ) {
+        return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
+            if (!userBodyInfo) {
+                return {
+                    type: DEFAULT_BODY_INFO,
+                }
+            }
+
+            const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+            bodyInfo.weightPlanType = weightPlanType
+            bodyInfo.weightPlanValue = weightPlanValue
+
+            return AsyncStorage.setItem(
+                'userBodyInfo',
+                JSON.stringify(bodyInfo)
+            ).then(() => {
+                return {
+                    type: SET_CURRENT_WEIGHT_PLAN,
+                    payload: {
+                        weightPlanType: weightPlanType,
+                        weightPlanValue: weightPlanValue,
                     },
                 }
             })

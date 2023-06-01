@@ -39,4 +39,8 @@ export default StyleSheet.create({
 
         overflow: 'hidden',
     },
+    Input: {
+        maxWidth: '50%',
+        flexGrow: 1,
+    },
 })

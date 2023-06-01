@@ -6,12 +6,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import Select from '../../components/Select/Select'
 import Spacer from '../../components/Spacer/Spacer'
-import { setBodyInfo, setCurrentBMR } from '../../redux/actions/bodyActions'
 import {
-    calculateBMR_harris,
-    calculateBMR_mifflin,
-} from '../../misc/MacroEquations'
-import { BODY_TYPE_FEMALE, BODY_TYPE_MALE } from '../../misc/MacroTypes'
+    setBodyInfo,
+    setCurrentBMR,
+    setCurrentRMR,
+} from '../../redux/actions/bodyActions'
+import {
+    calculateBMR,
+    calculateRMR,
+    HARRIS_BMR,
+    HarrisBMR,
+    MIFFLIN_BMR,
+    MifflinBMR,
+} from '../../misc/Equations'
+import { SEX_TYPE_FEMALE, SEX_TYPE_MALE } from '../../misc/MacroTypes'
 import gstyle from '../../styles/global-style'
 import { HARRIS_EQUATION, MIFFLIN_EQUATION } from '../../redux/types/types'
 
@@ -26,7 +34,7 @@ function SetupBodyScreen({
 }) {
     const dispatch = useDispatch()
 
-    const bodyTypes = [BODY_TYPE_MALE, BODY_TYPE_FEMALE]
+    const bodyTypes = [SEX_TYPE_MALE, SEX_TYPE_FEMALE]
     const body = useSelector((state: RootState) => state.body)
 
     const [userBody, setUserBody] = useState<BodyModel>(body)
@@ -41,29 +49,6 @@ function SetupBodyScreen({
     const onSubmit = () => {
         const updatedUserBody = {
             ...userBody,
-            maxCalsByBody:
-                Math.ceil(
-                    9.99 * userBody.weight +
-                        6.25 * userBody.height +
-                        4.92 * userBody.age +
-                        (userBody.sex == BODY_TYPE_MALE ? 5 : -161)
-                ) * 1.5,
-            BMR_mifflin: Math.ceil(
-                calculateBMR_mifflin(
-                    userBody.weight,
-                    userBody.height,
-                    userBody.age,
-                    userBody.sex
-                )
-            ),
-            BMR_harris: Math.ceil(
-                calculateBMR_harris(
-                    userBody.weight,
-                    userBody.height,
-                    userBody.age,
-                    userBody.sex
-                )
-            ),
         }
 
         setBodyInfo(updatedUserBody)
@@ -71,30 +56,30 @@ function SetupBodyScreen({
                 dispatch(action)
             })
             .finally(() => {
-                let bmr = 0
+                let bmr = calculateBMR(
+                    updatedUserBody.BMR_equation,
+                    updatedUserBody.weight,
+                    updatedUserBody.height,
+                    updatedUserBody.age,
+                    updatedUserBody.sex
+                )
+                let rmr = calculateRMR(
+                    updatedUserBody.RMR_equation,
+                    updatedUserBody.weight,
+                    updatedUserBody.height,
+                    updatedUserBody.age,
+                    updatedUserBody.sex
+                )
 
-                switch (body.BMR_equation) {
-                    case MIFFLIN_EQUATION: {
-                        bmr = calculateBMR_mifflin(
-                            body.weight,
-                            body.height,
-                            body.age,
-                            body.sex
-                        )
-                        break
-                    }
-                    case HARRIS_EQUATION: {
-                        bmr = calculateBMR_harris(
-                            body.weight,
-                            body.height,
-                            body.age,
-                            body.sex
-                        )
-                        break
-                    }
-                }
+                updatedUserBody.BMR = bmr
 
-                return setCurrentBMR(body.BMR_equation, bmr)
+                setCurrentRMR(updatedUserBody.RMR_equation, rmr).then(
+                    (action) => {
+                        dispatch(action)
+                    }
+                )
+
+                return setCurrentBMR(updatedUserBody.BMR_equation, bmr)
                     .then((action) => {
                         dispatch(action)
                     })

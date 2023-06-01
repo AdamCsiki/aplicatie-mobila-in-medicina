@@ -18,7 +18,7 @@ function PlanScreen(props: any) {
         <Layout style={style.PlanScreen} level={'4'}>
             <Layout style={gstyle.Container}>
                 <Layout style={gstyle.Header}>
-                    <Text category={'h5'}>Plan</Text>
+                    <Text category={'h4'}>Plan</Text>
                     <Button
                         onPress={() => {
                             setEditVisible(true)
@@ -31,7 +31,18 @@ function PlanScreen(props: any) {
                 <Spacer height={32} />
 
                 <Layout style={gstyle.BasicContainer}>
-                    <DataTable labels={['Activity: ']} data={[body.activity]} />
+                    <DataTable
+                        labels={[
+                            'Physical Activity: ',
+                            'Current Plan: ',
+                            'Weight: ',
+                        ]}
+                        data={[
+                            body.activity,
+                            body.weightPlanType,
+                            body.weightPlanValue + ' Kg / Week',
+                        ]}
+                    />
                 </Layout>
             </Layout>
 

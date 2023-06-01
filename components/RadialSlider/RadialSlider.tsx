@@ -1,4 +1,4 @@
-import { calculateBMI } from '../../misc/MacroEquations'
+import { calculateBMI } from '../../misc/Equations'
 import { RadialSlider } from 'react-native-radial-slider'
 import { RootSliderProps } from 'react-native-radial-slider/lib/components/RadialSlider/types'
 import { useTheme } from '@ui-kitten/components'
