@@ -1,10 +1,8 @@
-import { Button, Layout, ListItem, Text, useTheme } from '@ui-kitten/components'
+import { Layout, ListItem, Text, useTheme } from '@ui-kitten/components'
 import style from './SearchFoodItem.Style'
-import { Image, TouchableOpacity } from 'react-native'
-import DividedBar from '../DividedBar/DividedBar'
-import { API } from '../../api/axios'
+import { TouchableOpacity } from 'react-native'
 import FoodModel from '../../models/FoodModel'
-import { ListItemProps } from '@ui-kitten/components/ui/list/listItem.component'
+import Spacer from '../Spacer/Spacer'
 
 function SearchFoodItem({
     item,
@@ -27,40 +25,13 @@ function SearchFoodItem({
             }}
             onPress={() => onPress?.()}
         >
-            <TouchableOpacity>
-                <Image
-                    source={{
-                        uri: item.image_path
-                            ? reloadImage
-                                ? API +
-                                  item.image_path +
-                                  `?reload=${reloadImage}`
-                                : API + item.image_path
-                            : API + '/images/foods/default.png',
-                    }}
-                    style={style.SearchItemImage}
-                />
-            </TouchableOpacity>
-
             <Layout style={style.SearchItemMainContainer}>
-                <Layout style={style.SearchItemHeader}>
-                    <Text category="h6">{item.name}</Text>
-                </Layout>
-                <Text>Cals: {item.calories}</Text>
-                <Layout style={style.SearchItemDetails}>
-                    {/*<Text category="c1">*/}
-                    {/*    {item.proteins}g P | {item.fats}g F | {item.carbs}g C*/}
-                    {/*</Text>*/}
-
-                    <DividedBar
-                        divisions={[
-                            item.proteins,
-                            item.fats,
-                            item.carbs,
-                            item.empty_calories,
-                        ]}
-                    />
-                </Layout>
+                <Text category="h6">
+                    {item.name}
+                    {item.producer ? ` - ${item.producer}` : ''}
+                </Text>
+                <Spacer height={8} />
+                <Text category={'c1'}>Kcal: {item.calories}</Text>
             </Layout>
             <Layout style={style.ButtonContainer}>
                 <TouchableOpacity

@@ -1,5 +1,4 @@
 import { Layout, useTheme } from '@ui-kitten/components'
-import { useEffect, useState } from 'react'
 import style from './DividedBar.style'
 
 function DividedBar({ divisions }: { divisions: number[] }) {
@@ -26,7 +25,7 @@ function DividedBar({ divisions }: { divisions: number[] }) {
                                     )) *
                                     100 +
                                 '%',
-                            height: 16,
+                            height: '100%',
                             backgroundColor: colors.pop(),
                         }}
                     ></Layout>

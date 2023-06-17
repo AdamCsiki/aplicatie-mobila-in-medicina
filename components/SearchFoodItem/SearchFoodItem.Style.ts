@@ -3,10 +3,8 @@ import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SearchItem: {
-        maxHeight: 100,
+        maxHeight: 70,
         width: '100%',
-
-        borderRadius: 16,
 
         display: 'flex',
         flexDirection: 'row',
@@ -15,24 +13,15 @@ export default StyleSheet.create({
 
         overflow: 'hidden',
     },
-    SearchItemImage: {
-        minWidth: 45,
-        minHeight: 45,
-
-        width: 80,
-        height: 80,
-
-        borderRadius: 16,
-    },
     SearchItemMainContainer: {
-        maxWidth: '50%',
+        height: '100%',
+
+        paddingLeft: 8,
 
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         alignItems: 'flex-start',
-
-        flexGrow: 1,
     },
     SearchItemHeader: {
         width: '100%',
@@ -60,7 +49,7 @@ export default StyleSheet.create({
     },
     Button: {
         width: 40,
-        height: '140%',
+        height: '170%',
 
         left: 8,
 
@@ -71,19 +60,5 @@ export default StyleSheet.create({
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-end',
-    },
-    AddButton: {
-        borderBottomLeftRadius: 4,
-        borderBottomRightRadius: 4,
-
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-    },
-    RemoveButton: {
-        borderBottomLeftRadius: 16,
-        borderBottomRightRadius: 16,
-
-        borderTopLeftRadius: 4,
-        borderTopRightRadius: 4,
     },
 })

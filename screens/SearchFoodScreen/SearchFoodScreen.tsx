@@ -1,23 +1,18 @@
-import { Button, Layout, ListItem, Text, useTheme } from '@ui-kitten/components'
+import { Button, Layout, Text } from '@ui-kitten/components'
 import style from './SearchFoodScreen.style'
 import SearchInput from '../../components/SearchInput/SearchInput'
 import SearchList from '../../components/SearchList/SearchList'
 import Spacer from '../../components/Spacer/Spacer'
-import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import axios from '../../api/axios'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
-import { RootState } from '../../redux/store'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
 import AddFoodScreen from '../AddFoodScreen/AddFoodScreen'
 import FoodScreen from '../FoodScreen/FoodScreen'
 
-function SearchFoodScreen({ navigation }: { navigation: any }) {
-    const theme = useTheme()
-    const dispatch = useDispatch()
-    const auth = useSelector((state: RootState) => state.auth)
+function SearchFoodScreen({ route, navigation }: any) {
+    const { meal } = route.params
 
     let dateTimestamp = new Date().toDateString()
 
@@ -30,6 +25,7 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
     const [searchQuery, setSearchQuery] = useState<string>('')
 
     const onSearch = () => {
+        setFoodList([])
         if (!searchQuery.trim()) {
             return getAllFoods()
                 .then((res) => setFoodList(res))
@@ -68,24 +64,27 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                         <Text>Search</Text>
                     </Button>
                 </Layout>
-                <Layout style={style.DietAddScreenSearchDiv}>
+            </Layout>
+            <Spacer />
+            <Layout style={style.DietAddScreenListContainer}>
+                <Layout style={style.DietAddScreenListHeader}>
                     <Button
                         onPress={() => {
                             navigation.navigate('Create')
                         }}
                     >
-                        <Text category="h6">Create</Text>
+                        <Text>Create</Text>
+                    </Button>
+                    <Button
+                        onPress={() => {
+                            onSearch()
+                        }}
+                    >
+                        <Text>Refresh</Text>
                     </Button>
                 </Layout>
-            </Layout>
-            <Spacer />
-            <Layout style={style.DietAddScreenListContainer}>
-                <Layout style={style.DietAddScreenListHeader}>
-                    <Text category={'h6'}>Search</Text>
-                    <Button size="small" onPress={() => {}}>
-                        <Text category="h6">+</Text>
-                    </Button>
-                </Layout>
+
+                <Spacer />
 
                 <SearchList
                     data={foodList}
@@ -112,7 +111,8 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                 onBackdropPress={() => setAddFoodVisible(false)}
             >
                 <AddFoodScreen
-                    foodItem={pickedFood}
+                    meal={meal}
+                    foodItem={pickedFood!}
                     navigation={navigation}
                     onBack={() => setAddFoodVisible(false)}
                     afterSubmit={() => setAddFoodVisible(false)}
@@ -127,6 +127,9 @@ function SearchFoodScreen({ navigation }: { navigation: any }) {
                     foodItem={pickedFood!}
                     onBack={() => {
                         setFoodDetailsVisible(false)
+                    }}
+                    onAdd={() => {
+                        setAddFoodVisible(true)
                     }}
                 />
             </FullScreenModal>

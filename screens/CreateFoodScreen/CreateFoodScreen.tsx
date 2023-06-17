@@ -1,16 +1,11 @@
 import { Button, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import style from './CreateFoodScreen.style'
-import SearchList from '../../components/SearchList/SearchList'
-import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
 import Spacer from '../../components/Spacer/Spacer'
-import { ScrollView } from 'react-native-virtualized-view'
-import gstyle from '../../styles/global-style'
-import { useEffect, useState } from 'react'
-import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
+import globalStyle from '../../styles/global-style'
+import { useState } from 'react'
 import FoodModel from '../../models/FoodModel'
 import { Image, TouchableOpacity } from 'react-native'
-import { launchImageLibraryAsync, launchCameraAsync } from 'expo-image-picker'
-import axios from '../../api/axios'
+import { launchImageLibraryAsync } from 'expo-image-picker'
 import FoodService from '../../services/FoodService'
 import Select from '../../components/Select/Select'
 
@@ -25,8 +20,6 @@ function CreateFoodScreen({
 }) {
     const theme = useTheme()
 
-    const [ingredientsVisible, setIngredientsVisible] = useState(false)
-    const [ingredientsList, setIngredientsList] = useState<FoodModel[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
 
     const [createdFood, setCreatedFood] = useState<FoodModel>({} as FoodModel)
@@ -64,21 +57,6 @@ function CreateFoodScreen({
             })
     }
 
-    const onSearchIngredients = () => {
-        if (!searchQuery.trim()) {
-            return getAllFoods()
-                .then((res) => setIngredientsList(res))
-                .catch((err) => {
-                    console.log(err.message)
-                })
-        }
-        return searchFoods(searchQuery.trim())
-            .then((res) => setIngredientsList(res))
-            .catch((err) => {
-                console.log(err.message)
-            })
-    }
-
     const onSubmit = () => {
         afterSubmit?.()
         if (navigation) {
@@ -86,70 +64,10 @@ function CreateFoodScreen({
         }
     }
 
-    if (ingredientsVisible) {
-        return (
-            <Layout style={style.CreateFoodScreen} level={'4'}>
-                <Layout style={gstyle.Container}>
-                    <Layout style={style.IngredientsContainer}>
-                        <Layout style={style.Header}>
-                            <Text>Ingredients</Text>
-                        </Layout>
-                        <Spacer />
-                        <Layout style={style.Header}>
-                            <Input style={{ width: '60%' }} />
-                            <Button
-                                onPress={() => {
-                                    onSearchIngredients()
-                                }}
-                            >
-                                Search
-                            </Button>
-                        </Layout>
-                        <Spacer />
-                        <SearchList
-                            data={ingredientsList}
-                            renderItem={({ item }) => {
-                                return (
-                                    <SearchFoodItem
-                                        item={item}
-                                        onPress={() => {}}
-                                        onPressAdd={() => {}}
-                                    />
-                                )
-                            }}
-                        />
-                    </Layout>
-                    <Spacer />
-                    <Layout
-                        style={{
-                            ...style.Header,
-                            alignItems: 'flex-end',
-                        }}
-                    >
-                        <Button
-                            onPress={() => {
-                                setIngredientsVisible(false)
-                            }}
-                        >
-                            Back
-                        </Button>
-                        <Button
-                            onPress={() => {
-                                navigation.navig
-                            }}
-                        >
-                            Next
-                        </Button>
-                    </Layout>
-                </Layout>
-            </Layout>
-        )
-    }
-
     return (
         <Layout style={style.CreateFoodScreen} level={'4'}>
-            <Layout style={gstyle.Container}>
-                <Layout style={style.Header}>
+            <Layout style={globalStyle.Container}>
+                <Layout style={style.SpaceBetween}>
                     <Layout style={{ flex: 1, paddingRight: 16 }}>
                         <Text category={'h5'}>Create</Text>
                         <Spacer />
@@ -175,18 +93,23 @@ function CreateFoodScreen({
                         )}
                     </TouchableOpacity>
                 </Layout>
+
                 <Spacer />
-                <Layout style={gstyle.BasicContainer}>
+
+                <Layout style={globalStyle.BasicContainer}>
                     <Input placeholder={'Description'} multiline />
                 </Layout>
+
                 <Spacer />
+
                 <Layout
                     style={{
-                        ...gstyle.Header,
+                        ...globalStyle.SpaceBetween,
                         justifyContent: 'space-between',
                     }}
                 >
                     <Input
+                        size={'large'}
                         placeholder={'Quantity'}
                         style={{
                             flexGrow: 1,
@@ -212,15 +135,8 @@ function CreateFoodScreen({
                 </Layout>
                 <Spacer />
                 <Layout style={style.Container}>
-                    <Layout style={gstyle.Header}>
+                    <Layout style={globalStyle.SpaceBetween}>
                         <Text category={'h6'}>Macronutrients</Text>
-                        <Button
-                            onPress={() => {
-                                setIngredientsVisible(true)
-                            }}
-                        >
-                            Custom
-                        </Button>
                     </Layout>
                     <Spacer />
                     <Input placeholder={'Calories'}></Input>
@@ -234,7 +150,7 @@ function CreateFoodScreen({
                 <Spacer height={32} />
                 <Layout
                     style={{
-                        ...style.Header,
+                        ...style.SpaceBetween,
                         alignItems: 'flex-end',
                     }}
                 >

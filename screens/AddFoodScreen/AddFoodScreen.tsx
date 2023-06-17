@@ -1,46 +1,90 @@
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import { ScrollView } from 'react-native-virtualized-view'
-import style from './AddFoodScreen.style'
 import gstyle from '../../styles/global-style'
-import { Image, TouchableOpacity } from 'react-native'
 import FoodModel from '../../models/FoodModel'
 import Spacer from '../../components/Spacer/Spacer'
 import Select from '../../components/Select/Select'
-import { SpinnerComponent } from 'react-native-ui-kitten/ui/spinner/spinner.component'
 import { useEffect, useState } from 'react'
+import { MEAL_TYPES } from '../../redux/types/types'
+import { addFood } from '../../redux/actions/foodActions'
+import { useDispatch } from 'react-redux'
+import {
+    MassMeasurementArray,
+    UnitOfMeasurement,
+    unitOfMeasurementArray,
+} from '../../models/MeasurmentModel'
+import Table from '../../components/Table/Table'
+import * as math from 'mathjs'
 
 function AddFoodScreen({
+    meal,
     foodItem,
     navigation,
     onBack,
     afterSubmit,
 }: {
-    foodItem?: FoodModel
+    meal: MEAL_TYPES
+    foodItem: FoodModel
     navigation?: any
     onBack?: () => void
     afterSubmit?: () => void
 }) {
-    const [quantity, setQuantity] = useState<number>(0)
-    const [quantityType, setQuantityType] = useState('g')
+    const dispatch = useDispatch()
+
+    const [quantity, setQuantity] = useState<number>(100)
+    const [baseQuantity, setBaseQuantity] = useState<number>(100)
+    const [quantityType, setQuantityType] = useState<UnitOfMeasurement>('gram')
+
+    const convertQuantity = () => {
+        // if (quantityType == 'gram' || quantityType == 'milliliter') {
+        //     return quantity
+        // }
+        //
+        // if (quantityType == 'kilogram' || quantityType == 'liter') {
+        //     return quantity * 1000
+        // }
+
+        try {
+            //@ts-ignore
+            if (MassMeasurementArray.indexOf(quantityType) > -1) {
+                return math.unit(quantity, quantityType).toNumeric('grams')
+            } else {
+                return math
+                    .unit(quantity, quantityType)
+                    .toNumeric('milliliters')
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        return 0
+    }
 
     useEffect(() => {
-        console.log(quantity)
-    }, [quantity])
+        if (quantityType && quantity) {
+            setBaseQuantity(math.number(convertQuantity()))
+        }
+    }, [quantity, quantityType])
+
+    const onSubmit = () => {
+        dispatch(addFood(meal, foodItem, quantity, baseQuantity, quantityType))
+        afterSubmit?.()
+    }
 
     return (
         <Layout style={gstyle.ScrollContainerParent}>
             <ScrollView style={gstyle.ScrollContainer}>
-                <Layout style={gstyle.Header}>
+                <Layout style={gstyle.SpaceBetween}>
                     <Text category={'h5'}>Add Food</Text>
                     <Text>{foodItem?.name}</Text>
                 </Layout>
                 <Spacer height={32} />
-                <Layout style={gstyle.Header}>
+                <Layout style={gstyle.SpaceBetween}>
                     <Input
+                        size={'large'}
                         placeholder={'Quantity'}
                         style={{ flexGrow: 1 }}
                         keyboardType={'number-pad'}
-                        defaultValue={quantity.toFixed(2)}
+                        defaultValue={quantity.toString()}
                         onEndEditing={(e) => {
                             if (!e.nativeEvent.text) {
                                 setQuantity(0.0)
@@ -51,13 +95,45 @@ function AddFoodScreen({
                         }}
                     />
                     <Select
-                        data={['g', 'Kg']}
-                        onSelect={() => {}}
-                        defaultValueByIndex={0}
+                        data={unitOfMeasurementArray}
+                        defaultValue={quantityType}
+                        onSelect={(selectedItem) => {
+                            setQuantityType(selectedItem)
+                        }}
                     />
                 </Layout>
+
                 <Spacer height={32} />
-                <Layout style={gstyle.Header}>
+
+                <Layout>
+                    <Table
+                        labels={[
+                            'Kilocalories',
+                            'Empty Calories',
+                            'Carbohydrates',
+                            'Fats',
+                            'Protein',
+                        ]}
+                        data={[
+                            ((foodItem.calories * baseQuantity) / 100).toFixed(
+                                2
+                            ),
+                            (
+                                (foodItem.empty_calories * baseQuantity) /
+                                100
+                            ).toFixed(2),
+                            ((foodItem.carbs * baseQuantity) / 100).toFixed(2),
+                            ((foodItem.fats * baseQuantity) / 100).toFixed(2),
+                            ((foodItem.proteins * baseQuantity) / 100).toFixed(
+                                2
+                            ),
+                        ]}
+                    />
+                </Layout>
+
+                <Spacer height={32} />
+
+                <Layout style={gstyle.SpaceBetween}>
                     <Button
                         onPress={() => {
                             onBack?.()
@@ -65,12 +141,8 @@ function AddFoodScreen({
                     >
                         <Text>Cancel</Text>
                     </Button>
-                    <Button
-                        onPress={() => {
-                            afterSubmit?.()
-                        }}
-                    >
-                        <Text>Done</Text>
+                    <Button onPress={onSubmit}>
+                        <Text>Add</Text>
                     </Button>
                 </Layout>
             </ScrollView>

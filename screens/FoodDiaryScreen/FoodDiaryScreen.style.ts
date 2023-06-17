@@ -59,8 +59,6 @@ export default StyleSheet.create({
         width: '100%',
         height: 'auto',
 
-        padding: 8,
-
         borderRadius: 16,
 
         display: 'flex',

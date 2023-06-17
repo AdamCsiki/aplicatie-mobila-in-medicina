@@ -6,7 +6,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    Header: {
+    SpaceBetween: {
         width: '100%',
     },
     Content: {

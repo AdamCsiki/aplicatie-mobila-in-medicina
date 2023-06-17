@@ -2,12 +2,11 @@ import {
     LOGIN_FAIL,
     LOGIN_SUCCESS,
     LOGOUT,
-    REFRESH_SUCCESS,
     OFFLINE_LOGGED_IN,
     OFFLINE_LOGGED_OUT,
+    REFRESH_SUCCESS,
 } from '../types/types'
 import { AuthStateModel } from '../../models/AuthStateModel'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const initialState: AuthStateModel = {
     isLoggedIn: false,
@@ -21,10 +20,6 @@ function authReducer(
     action: { type: string; payload: any }
 ) {
     const { type, payload } = action
-
-    console.log('STATE: ', state)
-    console.log('TYPE: ', type)
-    console.log('PAYLOAD: ', payload)
 
     switch (type) {
         case OFFLINE_LOGGED_IN:

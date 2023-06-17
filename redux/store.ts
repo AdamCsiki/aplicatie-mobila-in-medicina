@@ -1,6 +1,7 @@
-import { applyMiddleware, configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import thunk from 'redux-thunk'
 import rootReducer from './reducers'
+import { reduxLogger } from './logger'
 
 const middleware = [thunk]
 
@@ -10,7 +11,7 @@ const store = configureStore({
         getDefaultMiddleware({
             immutableCheck: false,
             serializableCheck: false,
-        }),
+        }).concat(reduxLogger),
 })
 
 function select(state: RootState) {

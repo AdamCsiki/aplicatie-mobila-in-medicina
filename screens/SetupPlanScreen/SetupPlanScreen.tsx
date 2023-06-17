@@ -3,14 +3,17 @@ import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import Spacer from '../../components/Spacer/Spacer'
 import Select from '../../components/Select/Select'
 import {
-    MODERATELY_ACTIVE,
-    EXERCISE_ACTIVITY_TYPE,
-    VERY_ACTIVE,
     ACTIVE,
+    EXERCISE_ACTIVITY_TYPE,
     LIGHTLY_ACTIVE,
+    MODERATELY_ACTIVE,
     SEDENTARY,
+    VERY_ACTIVE,
 } from '../../misc/MacroTypes'
-import { setCurrentActivity } from '../../redux/actions/bodyActions'
+import {
+    setCurrentActivity,
+    setCurrentWeightPlan,
+} from '../../redux/actions/bodyActions'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
@@ -20,7 +23,6 @@ import {
     WEIGHT_LOSS,
     WEIGHT_PLAN_TYPES,
 } from '../../redux/types/types'
-import { setCurrentWeightPlan } from '../../redux/actions/bodyActions'
 
 function SetupPlanScreen(props: any) {
     const body = useSelector((state: RootState) => state.body)
@@ -50,7 +52,7 @@ function SetupPlanScreen(props: any) {
 
     return (
         <Layout style={gstyle.Container}>
-            <Layout style={gstyle.Header}>
+            <Layout style={gstyle.SpaceBetween}>
                 <Text category={'h6'}>Activity: </Text>
                 <Select
                     defaultValue={body.activity}
@@ -69,7 +71,7 @@ function SetupPlanScreen(props: any) {
 
             <Spacer />
 
-            <Layout style={gstyle.Header}>
+            <Layout style={gstyle.SpaceBetween}>
                 <Text category={'h6'}>Plan:</Text>
                 <Select
                     defaultValue={body.weightPlanType}
@@ -83,7 +85,7 @@ function SetupPlanScreen(props: any) {
             {weightPlan != MAINTAIN_WEIGHT && (
                 <>
                     <Spacer />
-                    <Layout style={gstyle.Header}>
+                    <Layout style={gstyle.SpaceBetween}>
                         <Layout>
                             <Text category={'h6'}>
                                 {(weightPlan == WEIGHT_GAIN ? 'Gain' : 'Loss') +
@@ -104,7 +106,7 @@ function SetupPlanScreen(props: any) {
 
             <Spacer height={32} />
 
-            <Layout style={gstyle.Header}>
+            <Layout style={gstyle.SpaceBetween}>
                 <Button onPress={props.onCancel}>Cancel</Button>
                 <Button onPress={onSubmit}>Done</Button>
             </Layout>

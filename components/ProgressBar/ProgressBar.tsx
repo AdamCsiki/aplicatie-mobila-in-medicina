@@ -1,5 +1,7 @@
 import style from './ProgressBar.style'
 import { Layout, Text, useTheme } from '@ui-kitten/components'
+import React from 'react'
+import Spacer from '../Spacer/Spacer'
 
 function ProgressBar({
     current = 0,
@@ -18,7 +20,7 @@ function ProgressBar({
         <Layout style={style.ProgressBarContainer}>
             <Layout style={style.ProgressBarTextContainer}>
                 <Text
-                    category="h6"
+                    category="c1"
                     status={current > max ? 'danger' : 'basic'}
                     style={{
                         ...style.ProgressBarText,
@@ -27,6 +29,8 @@ function ProgressBar({
                     {`${current} / ${max}${sign}`}
                 </Text>
             </Layout>
+
+            <Spacer height={4} />
 
             <Layout style={style.ProgressBarBackground} level="4">
                 <Layout

@@ -13,7 +13,7 @@ export default StyleSheet.create({
         display: 'flex',
     },
     FSModalContainer: {
-        borderRadius: 16,
+        borderRadius: 4,
         padding: 16,
     },
 })

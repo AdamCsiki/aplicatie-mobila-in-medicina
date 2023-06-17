@@ -4,6 +4,7 @@ import padding from '../../misc/padding'
 export default StyleSheet.create({
     SetupBodyScreen: {
         ...padding(16),
+        flexGrow: 1,
     },
     ContainerHeader: {
         display: 'flex',
@@ -16,5 +17,8 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+    },
+    Input: {
+        width: '30%',
     },
 })

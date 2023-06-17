@@ -1,8 +1,9 @@
 import FoodModel from './FoodModel'
 
 interface UserFoodModel {
-    id: number
     quantity: number
+    baseQuantity: number
+    quantityType: string
     food: FoodModel
 }
 

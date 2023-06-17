@@ -17,9 +17,10 @@ function PlanScreen(props: any) {
     return (
         <Layout style={style.PlanScreen} level={'4'}>
             <Layout style={gstyle.Container}>
-                <Layout style={gstyle.Header}>
-                    <Text category={'h4'}>Plan</Text>
+                <Layout style={gstyle.SpaceBetween}>
+                    <Text category={'h5'}>Plan</Text>
                     <Button
+                        size={'small'}
                         onPress={() => {
                             setEditVisible(true)
                         }}

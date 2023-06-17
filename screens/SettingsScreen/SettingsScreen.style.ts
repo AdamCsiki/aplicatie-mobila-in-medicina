@@ -1,9 +1,12 @@
 import { StyleSheet } from 'react-native'
+import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SettingsScreen: {
         width: '100%',
         height: '100%',
+
+        ...padding(0, 16, 16, 16),
 
         display: 'flex',
         flexDirection: 'column',

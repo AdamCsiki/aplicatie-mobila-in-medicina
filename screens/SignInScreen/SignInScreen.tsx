@@ -2,11 +2,13 @@ import style from './SignInScreen.style'
 import { useState } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import LinkButton from '../../components/LinkButton/LinkButton'
-import { Layout, Button, Text, Input, useTheme } from '@ui-kitten/components'
+import { Button, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import { LoginModel } from '../../models/LoginModel'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { signIn } from '../../redux/actions/authActions'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
+import globalStyle from '../../styles/global-style'
+import Spacer from '../../components/Spacer/Spacer'
 
 function SignInScreen({ navigation }: { navigation: any }) {
     const dispatch = useDispatch()
@@ -92,7 +94,29 @@ function SignInScreen({ navigation }: { navigation: any }) {
                 visible={customError != undefined}
                 onBackdropPress={() => setCustomError(undefined)}
             >
+                <Layout style={globalStyle.SpaceBetween}>
+                    <Text>Error</Text>
+                    <Button
+                        onPress={() => {
+                            setCustomError(undefined)
+                        }}
+                    >
+                        <Text>x</Text>
+                    </Button>
+                </Layout>
+                <Spacer height={32} />
                 <Text>{customError}</Text>
+                <Spacer height={32} />
+                <Layout
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    Ok
+                </Layout>
             </FullScreenModal>
         </KeyboardAwareScrollView>
     )

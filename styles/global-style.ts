@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import padding from '../misc/padding'
 
 export default StyleSheet.create({
     ScrollContainerParent: {
@@ -9,9 +8,9 @@ export default StyleSheet.create({
         display: 'flex',
         flexGrow: 1,
 
-        ...padding(8),
+        padding: 8,
     },
-    Header: {
+    SpaceBetween: {
         width: '100%',
 
         display: 'flex',
@@ -19,8 +18,16 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    Center: {
+        width: '100%',
+
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     Container: {
-        borderRadius: 16,
+        borderRadius: 4,
 
         padding: 16,
 

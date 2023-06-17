@@ -2,7 +2,7 @@ import SelectDropdown, {
     SelectDropdownProps,
 } from 'react-native-select-dropdown'
 import style from './Select.style'
-import { Text, useTheme } from '@ui-kitten/components'
+import { useTheme } from '@ui-kitten/components'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 function Select(props: SelectDropdownProps) {
@@ -33,9 +33,6 @@ function Select(props: SelectDropdownProps) {
             rowStyle={{ ...style.Row }}
             rowTextStyle={{
                 color: theme['text-basic-color'],
-            }}
-            onSelect={(selectedItem, index) => {
-                props.onSelect(selectedItem, index)
             }}
         />
     )

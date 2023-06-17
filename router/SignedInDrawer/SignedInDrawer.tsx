@@ -5,7 +5,6 @@ import {
     DrawerItem,
     IndexPath,
     Layout,
-    Text,
     useTheme,
 } from '@ui-kitten/components'
 import HomeTab from '../HomeTab/HomeTab'
@@ -14,16 +13,14 @@ import React, { useEffect, useState } from 'react'
 import { signOut } from '../../redux/actions/authActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import {
-    getMaxMacros,
-    isSetupDone,
-    setupIsDone,
-} from '../../redux/actions/dietActions'
+import { getMaxMacros } from '../../redux/actions/dietActions'
 import SplashScreen from '../../screens/SplashScreen/SplashScreen'
 import SetupStack from '../SetupStack/SetupStack'
 import { getBodyInfo } from '../../redux/actions/bodyActions'
 import { SETUP_IS_DONE } from '../../redux/types/types'
 import { StatusBar } from 'react-native'
+import { isSetupDone } from '../../redux/actions/setupActions'
+import { getStoredMealsToState } from '../../redux/actions/foodActions'
 
 const { Navigator, Screen } = createDrawerNavigator()
 
@@ -95,6 +92,9 @@ function SignedInDrawer() {
                             .then(() => {
                                 setIsLoading(false)
                             })
+                        getStoredMealsToState().then((action) => {
+                            dispatch(action)
+                        })
                     })
             } else {
                 setIsLoading(false)
@@ -114,7 +114,6 @@ function SignedInDrawer() {
         <Navigator
             initialRouteName={'Home'}
             screenOptions={{
-                // drawerPosition: 'right',
                 headerStyle: {
                     backgroundColor: theme['background-basic-color-1'],
                 },
@@ -127,11 +126,7 @@ function SignedInDrawer() {
                 component={HomeTab}
                 options={{ headerTitle: () => null }}
             />
-            <Screen
-                name="Settings"
-                component={SettingsStack}
-                options={{ headerShown: true }}
-            />
+            <Screen name="Settings" component={SettingsStack} />
         </Navigator>
     )
 }

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     Login: {
@@ -35,6 +34,7 @@ export default StyleSheet.create({
         flexGrow: 1,
     },
     loginInput: {
+        width: '85%',
         marginBottom: 32,
     },
     loginButtonContainer: {

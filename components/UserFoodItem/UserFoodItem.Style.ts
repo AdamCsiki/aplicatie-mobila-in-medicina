@@ -1,13 +1,10 @@
 import { StyleSheet } from 'react-native'
-import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     UserFoodItem: {
-        height: 75,
         width: '100%',
 
         padding: 0,
-        marginBottom: 8,
 
         borderRadius: 16,
 
@@ -19,24 +16,11 @@ export default StyleSheet.create({
     FoodImageContainer: {
         flexGrow: 1,
     },
-    FoodItemImage: {
-        minWidth: 50,
-        minHeight: 50,
-
-        width: 60,
-        height: 60,
-
-        borderRadius: 16,
-    },
     FoodItemMainContainer: {
-        maxWidth: '65%',
-
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'flex-start',
-
-        flexGrow: 1,
     },
     FoodItemHeader: {
         width: '100%',
@@ -67,8 +51,6 @@ export default StyleSheet.create({
     },
     Button: {
         borderRadius: 16,
-        // borderWidth: 1,
-        // borderColor: '#000000',
 
         height: 30,
         width: 40,

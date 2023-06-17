@@ -5,7 +5,6 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderRadius: 4,
 
-        height: 50,
         width: '50%',
 
         padding: 0,
@@ -26,7 +25,6 @@ export default StyleSheet.create({
         borderRadius: 4,
     },
     Row: {
-        height: 40,
         top: 0,
         bottom: 0,
     },

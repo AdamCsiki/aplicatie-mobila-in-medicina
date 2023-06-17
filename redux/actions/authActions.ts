@@ -1,17 +1,14 @@
 import AuthService from '../../services/AuthService'
 import {
     LOGIN_FAIL,
-    LOGIN_SUCCESS,
     LOGOUT,
     OFFLINE,
     OFFLINE_LOGGED_IN,
-    OFFLINE_LOGGED_OUT,
     REFRESH_SUCCESS,
 } from '../types/types'
 import { LoginModel } from '../../models/LoginModel'
 import * as SecureStore from 'expo-secure-store'
 import { SignUpModel } from '../../models/SignUpModel'
-import axios from '../../api/axios'
 
 function failAction(error: any) {
     if (error.message === 'timeout of 3000ms exceeded') {

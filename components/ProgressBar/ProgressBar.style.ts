@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     ProgressBarContainer: {
@@ -10,7 +9,7 @@ export default StyleSheet.create({
         flexDirection: 'column',
     },
     ProgressBarBackground: {
-        maxHeight: 16,
+        maxHeight: 12,
         width: '100%',
         position: 'relative',
 

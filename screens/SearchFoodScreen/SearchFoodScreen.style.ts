@@ -11,27 +11,19 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
 
-        flexBasis: 0,
-
         flex: 1,
     },
     DietAddScreenSearchContainer: {
         width: '100%',
         maxWidth: '100%',
 
-        minHeight: 125,
+        ...padding(16),
 
-        ...padding(8),
-
-        borderRadius: 8,
+        borderRadius: 4,
 
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-
-        flexBasis: 0,
-
-        overflow: 'hidden',
     },
     DietAddScreenSearchDiv: {
         width: '100%',
@@ -39,10 +31,7 @@ export default StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        alignItems: 'center',
-
-        flexBasis: 0,
-        flexGrow: 1,
+        alignItems: 'flex-start',
     },
     DietAddScreenListContainer: {
         width: '100%',
@@ -54,7 +43,7 @@ export default StyleSheet.create({
 
         ...padding(8),
 
-        borderRadius: 16,
+        borderRadius: 4,
 
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
@@ -66,7 +55,7 @@ export default StyleSheet.create({
     DietAddScreenListHeader: {
         width: '100%',
 
-        padding: 8,
+        ...padding(8, 8, 0, 8),
 
         display: 'flex',
         flexDirection: 'row',

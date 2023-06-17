@@ -2,8 +2,9 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
     DividedBar: {
-        height: 8,
-        width: '100%',
+        maxHeight: 4,
+
+        flexGrow: 1,
 
         borderRadius: 16,
 

@@ -2,8 +2,11 @@ import 'react-native-gesture-handler'
 
 import { useFonts } from 'expo-font'
 import * as eva from '@eva-design/eva'
-import { ApplicationProvider, Layout } from '@ui-kitten/components'
-import { IconRegistry } from '@ui-kitten/components'
+import {
+    ApplicationProvider,
+    IconRegistry,
+    Layout,
+} from '@ui-kitten/components'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
 
 import style from './App.style'
@@ -14,9 +17,10 @@ import { default as mapping } from './themes/mapping.json'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 import SplashScreen from './screens/SplashScreen/SplashScreen'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ThemeContext } from './themes/ThemeContext'
+import * as math from 'mathjs'
 
 function App() {
     const [loaded] = useFonts({
@@ -42,6 +46,18 @@ function App() {
             setTheme(nextTheme)
         })
     }
+
+    useEffect(() => {
+        if (!math.isUnit('pound')) {
+            math.createUnit('pound', '453.59237 gram', { override: true })
+        }
+
+        if (!math.isUnit('liquidOunce')) {
+            math.createUnit('liquidOunce', '29.5735296 milliliters', {
+                override: true,
+            })
+        }
+    }, [])
 
     if (!loaded) {
         return <SplashScreen />

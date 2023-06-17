@@ -1,6 +1,7 @@
 interface FoodModel {
     id: number
     name: string
+    producer?: string
     image_path: string
     calories: number
     empty_calories: number

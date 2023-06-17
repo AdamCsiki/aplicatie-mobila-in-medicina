@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native'
-import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     CreateFoodScreen: {
@@ -12,7 +11,7 @@ export default StyleSheet.create({
         flexGrow: 1,
         padding: 16,
     },
-    Header: {
+    SpaceBetween: {
         width: '100%',
 
         display: 'flex',
@@ -39,7 +38,7 @@ export default StyleSheet.create({
         height: 200,
     },
     ImageContainer: {
-        borderRadius: 16,
+        borderRadius: 4,
 
         width: 100,
         height: 100,

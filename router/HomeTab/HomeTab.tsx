@@ -1,12 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-    BottomNavigation,
-    BottomNavigationTab,
-    useTheme,
-} from '@ui-kitten/components'
+import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components'
 import BodyScreen from '../../screens/BodyScreen/BodyScreen'
 import DietStack from '../DietStack/DietStack'
-import WeeklyStack from '../WeeklyStack/WeeklyStack'
 import PlanScreen from '../../screens/PlanScreen/PlanScreen'
 
 const Tab = createBottomTabNavigator()
@@ -17,9 +12,9 @@ function BottomTabBar({ navigation, state }: { navigation: any; state: any }) {
             selectedIndex={state.index}
             onSelect={(index) => navigation.navigate(state.routeNames[index])}
         >
-            <BottomNavigationTab title="BODY" />
-            <BottomNavigationTab title="PLAN" />
-            <BottomNavigationTab title="DIET" />
+            <BottomNavigationTab title="Body Info" />
+            <BottomNavigationTab title="Plan" />
+            <BottomNavigationTab title="Meal Diary" />
         </BottomNavigation>
     )
 }
@@ -35,7 +30,7 @@ function HomeTab() {
         >
             <Tab.Screen name={'Body'} component={BodyScreen} />
             <Tab.Screen name={'Plan'} component={PlanScreen} />
-            <Tab.Screen name={'Diet'} component={DietStack} />
+            <Tab.Screen name={'Diary'} component={DietStack} />
         </Tab.Navigator>
     )
 }

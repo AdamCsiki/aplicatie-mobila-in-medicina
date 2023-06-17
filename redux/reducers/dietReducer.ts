@@ -1,16 +1,15 @@
 import { DietModel } from '../../models/DietModel'
 import { ActionModel } from '../../models/ActionModel'
 import {
+    ADD_CURRENT_MACROS,
     AUTO_MACRO_RATIOS,
     DEFAULT_MACROS,
     DEFAULT_MAX_MACROS,
-    UPDATE_CURRENT_MACROS,
-    ADD_CURRENT_MACROS,
-    UPDATE_MAX_MACROS,
-    SET_BODY_INFO,
     SET_MACRO_RATIOS,
     SETUP_IS_DONE,
     SETUP_IS_NOT_DONE,
+    UPDATE_CURRENT_MACROS,
+    UPDATE_MAX_MACROS,
 } from '../types/types'
 
 const initialState: DietModel = {
@@ -32,9 +31,6 @@ function dietReducer(
     action: ActionModel<DietModel>
 ): DietModel {
     const { type, payload } = action
-
-    console.log('TYPE: ', type)
-    console.log('PAYLOAD: ', payload)
 
     switch (type) {
         case SET_MACRO_RATIOS:

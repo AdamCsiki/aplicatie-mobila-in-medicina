@@ -5,36 +5,56 @@ import { Animated } from 'react-native'
 import AnimatedValue = Animated.AnimatedValue
 import Value = Animated.Value
 
+interface CustomSliderProps extends SliderProps {
+    sign?: string
+}
+
 export function SliderThumb({
     index,
+    disabled,
+    sign,
 }: {
     index: AnimatedValue | Value | Number | Number[] | undefined
+    disabled?: boolean
+    sign?: string
 }) {
     const theme = useTheme()
     return (
         <Layout
             style={{
                 ...style.Thumb,
-                backgroundColor: theme['color-basic-700'],
+                backgroundColor: disabled
+                    ? '#00000000'
+                    : theme['color-basic-700'],
                 borderWidth: 1,
-                borderColor: theme['border-basic-color-2'],
+                borderColor: disabled
+                    ? '#00000000'
+                    : theme['border-basic-color-2'],
             }}
         >
-            <Text style={style.ThumbText} category={'c2'}>
+            {/*@ts-ignore*/}
+            <Text style={style.ThumbText} category={'c1'}>
                 {index}
+                {sign}
             </Text>
         </Layout>
     )
 }
 
-export default (props?: SliderProps) => {
+export default (props?: CustomSliderProps) => {
     const theme = useTheme()
 
     return (
         <Slider
             animateTransitions={true}
             {...props}
-            renderThumbComponent={() => <SliderThumb index={props?.value} />}
+            renderThumbComponent={() => (
+                <SliderThumb
+                    index={props?.value}
+                    disabled={props?.disabled}
+                    sign={props?.sign}
+                />
+            )}
             containerStyle={{
                 ...props?.containerStyle,
                 ...style.Container,

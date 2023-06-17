@@ -11,17 +11,10 @@ import {
     setCurrentBMR,
     setCurrentRMR,
 } from '../../redux/actions/bodyActions'
-import {
-    calculateBMR,
-    calculateRMR,
-    HARRIS_BMR,
-    HarrisBMR,
-    MIFFLIN_BMR,
-    MifflinBMR,
-} from '../../misc/Equations'
+import { calculateBMR, calculateRMR } from '../../misc/Equations'
 import { SEX_TYPE_FEMALE, SEX_TYPE_MALE } from '../../misc/MacroTypes'
 import gstyle from '../../styles/global-style'
-import { HARRIS_EQUATION, MIFFLIN_EQUATION } from '../../redux/types/types'
+import globalStyle from '../../styles/global-style'
 
 function SetupBodyScreen({
     navigation,
@@ -73,25 +66,25 @@ function SetupBodyScreen({
 
                 updatedUserBody.BMR = bmr
 
-                setCurrentRMR(updatedUserBody.RMR_equation, rmr).then(
-                    (action) => {
-                        dispatch(action)
-                    }
-                )
-
-                return setCurrentBMR(updatedUserBody.BMR_equation, bmr)
+                return setCurrentRMR(updatedUserBody.RMR_equation, rmr)
                     .then((action) => {
                         dispatch(action)
                     })
                     .finally(() => {
-                        afterSubmit?.()
+                        return setCurrentBMR(updatedUserBody.BMR_equation, bmr)
+                            .then((action) => {
+                                dispatch(action)
+                            })
+                            .finally(() => {
+                                afterSubmit?.()
+                            })
                     })
             })
     }
 
     return (
         <Layout style={style.SetupBodyScreen}>
-            <Layout style={gstyle.Header}>
+            <Layout style={gstyle.SpaceBetween}>
                 <Text category={'h6'}>Sex</Text>
                 <Select
                     data={bodyTypes}
@@ -105,10 +98,10 @@ function SetupBodyScreen({
                 />
             </Layout>
             <Spacer />
-            <Layout style={style.Container}>
+            <Layout style={globalStyle.SpaceBetween}>
                 <Text category={'h6'}>Age</Text>
-                <Spacer />
                 <Input
+                    style={style.Input}
                     defaultValue={`${body.age}`}
                     onChangeText={(text) =>
                         onChange('age', Number.parseFloat(text))
@@ -116,10 +109,10 @@ function SetupBodyScreen({
                 />
             </Layout>
             <Spacer />
-            <Layout style={style.Container}>
-                <Text category={'h6'}>Height</Text>
-                <Spacer />
+            <Layout style={globalStyle.SpaceBetween}>
+                <Text category={'h6'}>Height (cm) </Text>
                 <Input
+                    style={style.Input}
                     defaultValue={`${body.height}`}
                     onChangeText={(text) =>
                         onChange('height', Number.parseFloat(text))
@@ -127,10 +120,10 @@ function SetupBodyScreen({
                 />
             </Layout>
             <Spacer />
-            <Layout style={style.Container}>
-                <Text category={'h6'}>Weight</Text>
-                <Spacer />
+            <Layout style={globalStyle.SpaceBetween}>
+                <Text category={'h6'}>Weight (kilograms)</Text>
                 <Input
+                    style={style.Input}
                     defaultValue={`${body.weight}`}
                     onChangeText={(text) =>
                         onChange('weight', Number.parseFloat(text))

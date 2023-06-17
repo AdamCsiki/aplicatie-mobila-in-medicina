@@ -1,12 +1,12 @@
 import { ScrollView } from 'react-native'
-import { Layout, Text, Button } from '@ui-kitten/components'
+import { Button, Layout, Text } from '@ui-kitten/components'
 import style from './BodyScreen.style'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import Spacer from '../../components/Spacer/Spacer'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupBodyScreen from '../SetupBodyScreen/SetupBodyScreen'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { bodyFatPercentage, calculateBMI } from '../../misc/Equations'
 import gstyle from '../../styles/global-style'
 import DataTable from '../../components/Table/Table'
@@ -26,9 +26,12 @@ function BodyScreen({ navigation }: { navigation: any }) {
                 showsVerticalScrollIndicator
             >
                 <Layout style={gstyle.Container} level="1">
-                    <Layout style={gstyle.Header}>
-                        <Text category={'h4'}>Body</Text>
-                        <Button onPress={() => setBodyEditVisible(true)}>
+                    <Layout style={gstyle.SpaceBetween}>
+                        <Text category={'h6'}>Body</Text>
+                        <Button
+                            size={'small'}
+                            onPress={() => setBodyEditVisible(true)}
+                        >
                             Edit
                         </Button>
                     </Layout>
@@ -44,8 +47,8 @@ function BodyScreen({ navigation }: { navigation: any }) {
                 <Spacer />
 
                 <Layout style={gstyle.Container}>
-                    <Layout style={gstyle.Header}>
-                        <Text category={'h5'}>Body mass index (BMI)</Text>
+                    <Layout style={gstyle.SpaceBetween}>
+                        <Text category={'h6'}>Body mass index (BMI)</Text>
                     </Layout>
 
                     <Spacer />
@@ -67,13 +70,13 @@ function BodyScreen({ navigation }: { navigation: any }) {
                 <Spacer />
 
                 <Layout style={gstyle.Container}>
-                    <Layout style={gstyle.Header}>
-                        <Text category={'h5'} style={{ textAlign: 'left' }}>
+                    <Layout style={gstyle.SpaceBetween}>
+                        <Text category={'h6'} style={{ textAlign: 'left' }}>
                             Basal metabolic rate (BMR)
                         </Text>
                     </Layout>
 
-                    <Spacer height={32} />
+                    <Spacer />
 
                     <DataTable
                         labels={['Equation used', 'BMR']}
@@ -84,13 +87,13 @@ function BodyScreen({ navigation }: { navigation: any }) {
                 <Spacer />
 
                 <Layout style={gstyle.Container}>
-                    <Layout style={gstyle.Header}>
-                        <Text category={'h5'} style={{ textAlign: 'left' }}>
+                    <Layout style={gstyle.SpaceBetween}>
+                        <Text category={'h6'} style={{ textAlign: 'left' }}>
                             Resting metabolic rate (RMR)
                         </Text>
                     </Layout>
 
-                    <Spacer height={32} />
+                    <Spacer />
 
                     <DataTable
                         labels={['Equation used', 'RMR']}
