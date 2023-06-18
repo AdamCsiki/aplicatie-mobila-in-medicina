@@ -4,16 +4,36 @@ import {
     SET_BODY_INFO,
     SET_CURRENT_ACTIVITY,
     SET_CURRENT_BMR,
+    SET_CURRENT_RMR,
     SET_CURRENT_WEIGHT_PLAN,
     WEIGHT_PLAN_TYPES,
-    SET_CURRENT_RMR,
 } from '../redux/types/types'
 import { BodyModel } from '../models/BodyModel'
 import { EXERCISE_ACTIVITY_TYPE } from '../misc/MacroTypes'
-import { BMR_TYPES, RMR_TYPES } from '../misc/Equations'
+import {
+    BMR_TYPES,
+    calculateBMR,
+    calculateRMR,
+    RMR_TYPES,
+} from '../misc/Equations'
 
 class BodyService {
     setBodyInfo(bodyInfo: BodyModel) {
+        bodyInfo.BMR = calculateBMR(
+            bodyInfo.BMR_equation,
+            bodyInfo.weight,
+            bodyInfo.height,
+            bodyInfo.age,
+            bodyInfo.sex
+        )
+        bodyInfo.RMR = calculateRMR(
+            bodyInfo.RMR_equation,
+            bodyInfo.weight,
+            bodyInfo.height,
+            bodyInfo.age,
+            bodyInfo.sex
+        )
+
         return AsyncStorage.setItem('userBodyInfo', JSON.stringify(bodyInfo))
             .then(() => {
                 return {

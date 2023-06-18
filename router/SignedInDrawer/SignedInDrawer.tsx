@@ -10,7 +10,7 @@ import {
 import HomeTab from '../HomeTab/HomeTab'
 import SettingsStack from '../SettingsStack/SettingsStack'
 import React, { useEffect, useState } from 'react'
-import { signOut } from '../../redux/actions/authActions'
+import { getStoredUser, signOut } from '../../redux/actions/authActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { getMaxMacros } from '../../redux/actions/dietActions'
@@ -80,6 +80,13 @@ function SignedInDrawer() {
         isSetupDone().then((action) => {
             dispatch(action)
             if (action.type == SETUP_IS_DONE) {
+                getStoredUser()
+                    .then((action) => {
+                        dispatch(action)
+                    })
+                    .finally(() => {
+                        console.log('User gotten.')
+                    })
                 getMaxMacros()
                     .then((action) => {
                         dispatch(action)

@@ -36,6 +36,7 @@ class FoodService {
         })
     }
     putFood(foodItem: FoodModel) {
+        console.log(foodItem)
         return axios.put(basePath + '/food', foodItem)
     }
     // !

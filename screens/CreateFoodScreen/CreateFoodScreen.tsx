@@ -2,12 +2,27 @@ import { Button, Input, Layout, Text, useTheme } from '@ui-kitten/components'
 import style from './CreateFoodScreen.style'
 import Spacer from '../../components/Spacer/Spacer'
 import globalStyle from '../../styles/global-style'
-import { useState } from 'react'
-import FoodModel from '../../models/FoodModel'
+import { useEffect, useState } from 'react'
 import { Image, TouchableOpacity } from 'react-native'
 import { launchImageLibraryAsync } from 'expo-image-picker'
-import FoodService from '../../services/FoodService'
 import Select from '../../components/Select/Select'
+import {
+    UnitOfMeasurement,
+    unitOfMeasurementArray,
+} from '../../models/MeasurmentModel'
+import * as math from 'mathjs'
+import { convertMacros, convertQuantity } from '../../misc/generateUnits'
+import FoodModel from '../../models/FoodModel'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import { putFood } from '../../redux/actions/foodActions'
+
+interface foodForm {
+    cals: number
+    carbs: number
+    fats: number
+    proteins: number
+}
 
 function CreateFoodScreen({
     navigation,
@@ -19,23 +34,25 @@ function CreateFoodScreen({
     afterSubmit?: () => void
 }) {
     const theme = useTheme()
+    const auth = useSelector((state: RootState) => state.auth)
 
-    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [name, setName] = useState<string>('')
+    const [description, setDescription] = useState<string>('')
 
-    const [createdFood, setCreatedFood] = useState<FoodModel>({} as FoodModel)
-    const [weight, setWeight] = useState(0)
-    const [weightType, setWeightType] = useState('g')
+    const [foodForm, setFoodForm] = useState<foodForm>({
+        cals: 0,
+        carbs: 0,
+        fats: 0,
+        proteins: 0,
+    })
+
+    const [quantity, setQuantity] = useState<number>(100)
+    const [baseQuantity, setBaseQuantity] = useState<number>(100)
+    const [quantityType, setQuantityType] = useState<UnitOfMeasurement>('gram')
 
     const [foodImageUri, setFoodImageUri] = useState<string | undefined>(
         undefined
     )
-
-    const uploadImage = () => {
-        if (!foodImageUri) {
-            return
-        }
-        return FoodService.putFoodImage(foodImageUri, createdFood.id)
-    }
 
     const onAddImage = () => {
         launchImageLibraryAsync({
@@ -57,12 +74,65 @@ function CreateFoodScreen({
             })
     }
 
-    const onSubmit = () => {
-        afterSubmit?.()
-        if (navigation) {
-            navigation.goBack()
-        }
+    const updateForm = (name: string, text: string) => {
+        setFoodForm((state) => ({
+            ...state,
+            [name]: Number.parseFloat(Number.parseFloat(text).toFixed(2)),
+        }))
     }
+
+    const createFood = () => {
+        let { cals, carbs, fats, proteins } = convertMacros(
+            baseQuantity,
+            quantityType,
+            foodForm.cals,
+            foodForm.carbs,
+            foodForm.fats,
+            foodForm.proteins
+        )
+
+        let newFood: FoodModel = {
+            id: 0,
+            user_id: auth.user,
+            image_path: '',
+            name: name,
+            calories: cals,
+            empty_calories: 0,
+            carbs: carbs,
+            fats: fats,
+            proteins: proteins,
+        }
+
+        return newFood
+    }
+
+    const onSubmit = () => {
+        putFood(createFood())
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((err) => {
+                console.log('ERROR: ', err.message)
+            })
+            .finally(() => {
+                afterSubmit?.()
+                if (navigation) {
+                    navigation.goBack()
+                }
+            })
+    }
+
+    useEffect(() => {
+        if (quantityType && quantity) {
+            setBaseQuantity(
+                math.number(convertQuantity(quantity, quantityType))
+            )
+        }
+    }, [quantity, quantityType])
+
+    useEffect(() => {
+        console.log(foodForm)
+    }, [foodForm])
 
     return (
         <Layout style={style.CreateFoodScreen} level={'4'}>
@@ -71,7 +141,12 @@ function CreateFoodScreen({
                     <Layout style={{ flex: 1, paddingRight: 16 }}>
                         <Text category={'h5'}>Create</Text>
                         <Spacer />
-                        <Input placeholder={'Name'} />
+                        <Input
+                            placeholder={'Name'}
+                            onEndEditing={(e) => {
+                                setName(e.nativeEvent.text)
+                            }}
+                        />
                     </Layout>
 
                     <TouchableOpacity
@@ -81,7 +156,7 @@ function CreateFoodScreen({
                         }}
                         onPress={onAddImage}
                     >
-                        {foodImageUri != undefined && (
+                        {foodImageUri != undefined ? (
                             <Image
                                 source={{ uri: foodImageUri }}
                                 style={{
@@ -90,6 +165,8 @@ function CreateFoodScreen({
                                     backgroundColor: 'white',
                                 }}
                             />
+                        ) : (
+                            <Text category={'h1'}>+</Text>
                         )}
                     </TouchableOpacity>
                 </Layout>
@@ -97,40 +174,39 @@ function CreateFoodScreen({
                 <Spacer />
 
                 <Layout style={globalStyle.BasicContainer}>
-                    <Input placeholder={'Description'} multiline />
+                    <Input
+                        placeholder={'Description'}
+                        multiline
+                        onEndEditing={(e) => {
+                            setDescription(e.nativeEvent.text)
+                        }}
+                    />
                 </Layout>
 
                 <Spacer />
 
-                <Layout
-                    style={{
-                        ...globalStyle.SpaceBetween,
-                        justifyContent: 'space-between',
-                    }}
-                >
+                <Layout style={globalStyle.SpaceBetween}>
                     <Input
                         size={'large'}
                         placeholder={'Quantity'}
-                        style={{
-                            flexGrow: 1,
-                        }}
+                        style={{ flexGrow: 1 }}
                         keyboardType={'number-pad'}
-                        defaultValue={weight.toFixed(2)}
+                        defaultValue={quantity.toString()}
                         onEndEditing={(e) => {
                             if (!e.nativeEvent.text) {
-                                setWeight(0.0)
+                                setQuantity(0.0)
                                 return
                             }
 
-                            setWeight(Number.parseFloat(e.nativeEvent.text))
+                            setQuantity(Number.parseFloat(e.nativeEvent.text))
                         }}
                     />
                     <Select
-                        data={['g', 'Kg']}
-                        onSelect={(selectedItem, index) => {
-                            setWeightType(selectedItem)
+                        data={unitOfMeasurementArray}
+                        defaultValue={quantityType}
+                        onSelect={(selectedItem) => {
+                            setQuantityType(selectedItem)
                         }}
-                        defaultValueByIndex={0}
                     />
                 </Layout>
                 <Spacer />
@@ -139,13 +215,41 @@ function CreateFoodScreen({
                         <Text category={'h6'}>Macronutrients</Text>
                     </Layout>
                     <Spacer />
-                    <Input placeholder={'Calories'}></Input>
+                    <Input
+                        placeholder={'Calories'}
+                        keyboardType={'numeric'}
+                        defaultValue={foodForm.cals.toFixed(2)}
+                        onEndEditing={(e) => {
+                            updateForm('cals', e.nativeEvent.text)
+                        }}
+                    ></Input>
                     <Spacer />
-                    <Input placeholder={'Carbohydrates'}></Input>
+                    <Input
+                        placeholder={'Carbohydrates'}
+                        defaultValue={foodForm.carbs.toFixed(2)}
+                        keyboardType={'numeric'}
+                        onEndEditing={(e) => {
+                            updateForm('carbs', e.nativeEvent.text)
+                        }}
+                    ></Input>
                     <Spacer />
-                    <Input placeholder={'Fats'}></Input>
+                    <Input
+                        placeholder={'Fats'}
+                        defaultValue={foodForm.fats.toFixed(2)}
+                        keyboardType={'numeric'}
+                        onEndEditing={(e) => {
+                            updateForm('fats', e.nativeEvent.text)
+                        }}
+                    ></Input>
                     <Spacer />
-                    <Input placeholder={'Proteins'}></Input>
+                    <Input
+                        placeholder={'Proteins'}
+                        defaultValue={foodForm.proteins.toFixed(2)}
+                        keyboardType={'numeric'}
+                        onEndEditing={(e) => {
+                            updateForm('proteins', e.nativeEvent.text)
+                        }}
+                    ></Input>
                 </Layout>
                 <Spacer height={32} />
                 <Layout

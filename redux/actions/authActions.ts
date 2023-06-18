@@ -82,3 +82,8 @@ export const refresh = () => {
             return failAction(err)
         })
 }
+
+export const getStoredUser = () => {
+    console.log('action: GET STORED USER')
+    return AuthService.getStoredUser()
+}

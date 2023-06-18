@@ -9,12 +9,12 @@ import { MEAL_TYPES } from '../../redux/types/types'
 import { addFood } from '../../redux/actions/foodActions'
 import { useDispatch } from 'react-redux'
 import {
-    MassMeasurementArray,
     UnitOfMeasurement,
     unitOfMeasurementArray,
 } from '../../models/MeasurmentModel'
 import Table from '../../components/Table/Table'
 import * as math from 'mathjs'
+import { convertQuantity } from '../../misc/generateUnits'
 
 function AddFoodScreen({
     meal,
@@ -35,40 +35,18 @@ function AddFoodScreen({
     const [baseQuantity, setBaseQuantity] = useState<number>(100)
     const [quantityType, setQuantityType] = useState<UnitOfMeasurement>('gram')
 
-    const convertQuantity = () => {
-        // if (quantityType == 'gram' || quantityType == 'milliliter') {
-        //     return quantity
-        // }
-        //
-        // if (quantityType == 'kilogram' || quantityType == 'liter') {
-        //     return quantity * 1000
-        // }
-
-        try {
-            //@ts-ignore
-            if (MassMeasurementArray.indexOf(quantityType) > -1) {
-                return math.unit(quantity, quantityType).toNumeric('grams')
-            } else {
-                return math
-                    .unit(quantity, quantityType)
-                    .toNumeric('milliliters')
-            }
-        } catch (err) {
-            console.log(err)
-        }
-        return 0
-    }
-
-    useEffect(() => {
-        if (quantityType && quantity) {
-            setBaseQuantity(math.number(convertQuantity()))
-        }
-    }, [quantity, quantityType])
-
     const onSubmit = () => {
         dispatch(addFood(meal, foodItem, quantity, baseQuantity, quantityType))
         afterSubmit?.()
     }
+
+    useEffect(() => {
+        if (quantityType && quantity) {
+            setBaseQuantity(
+                math.number(convertQuantity(quantity, quantityType))
+            )
+        }
+    }, [quantity, quantityType])
 
     return (
         <Layout style={gstyle.ScrollContainerParent}>

@@ -118,13 +118,16 @@ function FoodDiaryScreen({ navigation }: any) {
                                 <Layout style={globalStyle.Center}>
                                     <Text>
                                         Total: {/*@ts-ignore*/}
-                                        {addedFoods[meal].reduce(
-                                            (acc, cur) =>
-                                                acc +
-                                                cur.quantity *
-                                                    cur.food.calories,
-                                            0
-                                        )}{' '}
+                                        {addedFoods[meal]
+                                            .reduce(
+                                                (acc, cur) =>
+                                                    acc +
+                                                    (cur.baseQuantity *
+                                                        cur.food.calories) /
+                                                        100,
+                                                0
+                                            )
+                                            .toFixed(2)}{' '}
                                         Kcal
                                     </Text>
                                 </Layout>
@@ -162,6 +165,9 @@ function FoodDiaryScreen({ navigation }: any) {
                                                             }
                                                             quantity={
                                                                 userFood.quantity
+                                                            }
+                                                            baseQuantity={
+                                                                userFood.baseQuantity
                                                             }
                                                             quantityType={
                                                                 userFood.quantityType

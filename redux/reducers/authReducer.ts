@@ -5,6 +5,7 @@ import {
     OFFLINE_LOGGED_IN,
     OFFLINE_LOGGED_OUT,
     REFRESH_SUCCESS,
+    SET_USER,
 } from '../types/types'
 import { AuthStateModel } from '../../models/AuthStateModel'
 
@@ -63,6 +64,11 @@ function authReducer(
                 error: null,
             }
         }
+        case SET_USER:
+            return {
+                ...state,
+                user: payload.user,
+            }
         default:
             return state
     }

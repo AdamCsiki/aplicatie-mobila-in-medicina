@@ -1,14 +1,15 @@
 import * as SecureStore from 'expo-secure-store'
-import axios, { jar } from '../api/axios'
+import axios from '../api/axios'
 import { LoginModel } from '../models/LoginModel'
 import { Cookie } from 'tough-cookie'
-import getHttpOnlyToken from '../misc/getHttpOnlyToken'
 import { AxiosResponse } from 'axios'
 import { SignUpModel } from '../models/SignUpModel'
-import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from '../redux/types/types'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { ActionModel } from '../models/ActionModel'
-import { AuthStateModel } from '../models/AuthStateModel'
+import {
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    LOGOUT,
+    SET_USER,
+} from '../redux/types/types'
 
 function setTokens(res: AxiosResponse) {
     if (!res.data.token) {
@@ -64,6 +65,12 @@ class AuthService {
             .then((res) => {
                 const { accessToken, user } = setTokens(res)
 
+                SecureStore.setItemAsync('user', JSON.stringify(user))
+                SecureStore.setItemAsync(
+                    'accessToken',
+                    JSON.stringify(accessToken)
+                )
+
                 return {
                     type: LOGIN_SUCCESS,
                     payload: {
@@ -109,6 +116,34 @@ class AuthService {
         return axios.get('/auth/refresh').then((res) => {
             return setTokens(res)
         })
+    }
+    getStoredUser() {
+        return SecureStore.getItemAsync('user')
+            .then((user) => {
+                if (!user) {
+                    return {
+                        type: SET_USER,
+                        payload: {
+                            user: undefined,
+                        },
+                    }
+                }
+
+                return {
+                    type: SET_USER,
+                    payload: {
+                        user: JSON.parse(user),
+                    },
+                }
+            })
+            .catch((err) => {
+                return {
+                    type: SET_USER,
+                    payload: {
+                        user: undefined,
+                    },
+                }
+            })
     }
 }
 

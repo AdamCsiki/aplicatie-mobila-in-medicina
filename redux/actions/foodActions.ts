@@ -20,8 +20,8 @@ export const addFood = (
     )
 }
 
-const putFood = (foodItem: FoodModel) => {
-    // TODO !!!!!!
+export const putFood = (foodItem: FoodModel) => {
+    return FoodService.putFood(foodItem)
 }
 
 export const removeOneFoodFromStorage = (

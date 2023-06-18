@@ -5,6 +5,7 @@ import { ListItemProps } from '@ui-kitten/components/ui/list/listItem.component'
 
 interface CustomListItemProps extends ListItemProps {
     quantity: number
+    baseQuantity: number
     quantityType: string
     item: FoodModel
     onPress: () => void
@@ -20,7 +21,10 @@ function UserFoodItem(props: CustomListItemProps) {
                 <Text category="p1">{props.item.name}</Text>
                 <Text category="c1">
                     {props.quantity} {props.quantityType} /{' '}
-                    {props.item.calories * props.quantity} Kcal
+                    {((props.item.calories * props.baseQuantity) / 100).toFixed(
+                        2
+                    )}{' '}
+                    Kcal
                 </Text>
             </Layout>
         </Layout>
