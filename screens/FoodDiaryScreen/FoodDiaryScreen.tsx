@@ -7,22 +7,36 @@ import Spacer from '../../components/Spacer/Spacer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import UserFoodModel from '../../models/UserFoodModel'
-import { useIsFocused } from '@react-navigation/native'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupMacroScreen from '../SetupMacroScreen/SetupMacroScreen'
 import UserFoodItem from '../../components/UserFoodItem/UserFoodItem'
 import MealModel, { MealArray } from '../../models/MealModel'
 import { TouchableOpacity } from 'react-native'
 import globalStyle from '../../styles/global-style'
-import { setStoredMeals } from '../../redux/actions/foodActions'
-import { calculateMacros } from '../../redux/actions/dietActions'
+import { getStoredMeals, setStoredMeals } from '../../redux/actions/foodActions'
+import {
+    calculateMacros,
+    setStoredMacros,
+} from '../../redux/actions/dietActions'
+import DateSelector from '../../components/DateSelector/DateSelector'
+import {
+    getFormattedDate,
+    getNextDay,
+    getPrevDay,
+} from '../../misc/dateFormatting'
 
 function FoodDiaryScreen({ navigation }: any) {
+    const theme = useTheme()
+
+    const [editingDisabled, setEditingDisabled] = useState(false)
+
     const diet = useSelector((state: RootState) => state.diet)
     const foodDiary = useSelector((state: RootState) => state.foodDiary)
 
     const dispatch = useDispatch()
-    const isFocused = useIsFocused()
+
+    const [currentDate, setCurrentDate] = useState<Date>(new Date())
+    const [selectedDate, setSelectedDate] = useState<Date>(currentDate)
 
     const [statsEditVisible, setStatsEditVisible] = useState(false)
 
@@ -33,16 +47,33 @@ function FoodDiaryScreen({ navigation }: any) {
         Snack: [],
     })
 
-    const theme = useTheme()
+    useEffect(() => {
+        if (selectedDate.toDateString() == currentDate.toDateString()) {
+            console.log('I HAVE SAVED THE MEALS')
+            setStoredMeals(foodDiary.meals)
+            setStoredMacros({
+                cals: diet.currentCals,
+                carbs: diet.currentCarbs,
+                fats: diet.currentFats,
+                protein: diet.currentProteins,
+            })
+        }
+    }, [foodDiary.meals, selectedDate])
 
     useEffect(() => {
-        console.log(foodDiary)
-        console.log(foodDiary.meals)
+        if (selectedDate.toDateString() != currentDate.toDateString()) {
+            setEditingDisabled(true)
+        } else {
+            setEditingDisabled(false)
+        }
+        getStoredMeals(getFormattedDate(selectedDate)).then((foods) => {
+            setAddedFoods(foods)
+        })
+    }, [selectedDate])
 
-        setAddedFoods(foodDiary.meals)
-        setStoredMeals(foodDiary.meals)
-        dispatch(calculateMacros(foodDiary.meals))
-    }, [foodDiary.meals])
+    useEffect(() => {
+        dispatch(calculateMacros(addedFoods))
+    }, [addedFoods])
 
     return (
         <Layout style={{ flex: 1 }} level="4">
@@ -52,6 +83,24 @@ function FoodDiaryScreen({ navigation }: any) {
                 showsVerticalScrollIndicator
                 nestedScrollEnabled
             >
+                <DateSelector
+                    selectedDay={selectedDate}
+                    onNextDay={() => {
+                        console.log(getNextDay(selectedDate))
+                        setSelectedDate(getNextDay(selectedDate))
+                    }}
+                    onNextLong={() => setSelectedDate(currentDate)}
+                    onPrevDay={() => {
+                        console.log(getPrevDay(selectedDate))
+                        setSelectedDate(getPrevDay(selectedDate))
+                    }}
+                    nextDisabled={
+                        selectedDate.toDateString() ==
+                        currentDate.toDateString()
+                    }
+                    prevDisabled={false}
+                />
+                <Spacer />
                 <Layout style={globalStyle.Container} level="1">
                     <Layout style={globalStyle.SpaceBetween}>
                         <Text category="h6">Stats</Text>
@@ -133,15 +182,18 @@ function FoodDiaryScreen({ navigation }: any) {
                                 </Layout>
                                 <Layout style={globalStyle.SpaceBetween}>
                                     <Text category="h6">{meal}</Text>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.navigate('Foods', {
-                                                meal: meal,
-                                            })
-                                        }}
-                                    >
-                                        <Text category={'h3'}>+</Text>
-                                    </TouchableOpacity>
+                                    {!editingDisabled && (
+                                        <TouchableOpacity
+                                            disabled={editingDisabled}
+                                            onPress={() => {
+                                                navigation.navigate('Foods', {
+                                                    meal: meal,
+                                                })
+                                            }}
+                                        >
+                                            <Text category={'h3'}>+</Text>
+                                        </TouchableOpacity>
+                                    )}
                                 </Layout>
 
                                 <Spacer />

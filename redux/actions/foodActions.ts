@@ -37,6 +37,11 @@ export const getStoredMealsToState = (date?: string) => {
     return FoodService.getStoredMealsToState(date)
 }
 
+export const getStoredMeals = (date?: string) => {
+    console.log('action: GET STORED FOODS TO STATE')
+    return FoodService.getStoredMeals(date)
+}
+
 export const removeAllFoods = () => {
     console.log('action: REMOVE ALL FOODS')
     return FoodService.removeAllFoods()

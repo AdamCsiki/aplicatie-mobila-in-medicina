@@ -7,7 +7,7 @@ import CreateFoodScreen from '../../screens/CreateFoodScreen/CreateFoodScreen'
 
 const { Navigator, Screen } = createStackNavigator()
 
-function DietStack() {
+function DiaryStack() {
     const theme = useTheme()
 
     return (
@@ -21,7 +21,7 @@ function DietStack() {
             }}
         >
             <Screen
-                name="DietScreen"
+                name="Meal Diary"
                 component={FoodDiaryScreen}
                 options={{ headerShown: false }}
             />
@@ -45,4 +45,4 @@ function DietStack() {
     )
 }
 
-export default DietStack
+export default DiaryStack

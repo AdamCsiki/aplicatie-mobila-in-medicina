@@ -9,6 +9,8 @@ import {
 import UserMacrosModel from '../models/UserMacrosModel'
 import { MacroRatioModel } from '../models/MacroRatioModel'
 import MealModel, { MealArray } from '../models/MealModel'
+import { getCurrentDate } from '../misc/dateFormatting'
+import MacroModel from '../models/MacroModel'
 
 class DietService {
     calculateMacros(meals: MealModel) {
@@ -33,13 +35,6 @@ class DietService {
             })
         })
 
-        console.log({
-            currentCals: macros.calories.toFixed(2),
-            currentCarbs: macros.carbs.toFixed(2),
-            currentFats: macros.fats.toFixed(2),
-            currentProteins: macros.proteins.toFixed(2),
-        })
-
         return {
             type: UPDATE_CURRENT_MACROS,
             payload: {
@@ -57,7 +52,7 @@ class DietService {
         userMaxMacros.maxProteins = Math.ceil(userMaxMacros.maxProteins)
 
         return AsyncStorage.setItem(
-            'userMacros',
+            'userMaxMacros',
             JSON.stringify(userMaxMacros)
         ).then(() => {
             return {
@@ -73,7 +68,7 @@ class DietService {
     }
 
     getMaxMacros() {
-        return AsyncStorage.getItem('userMacros').then((userMacros) => {
+        return AsyncStorage.getItem('userMaxMacros').then((userMacros) => {
             if (!userMacros) {
                 return {
                     type: DEFAULT_MAX_MACROS,
@@ -105,6 +100,41 @@ class DietService {
                 }
             }
         )
+    }
+
+    setStoredMacros(macros: MacroModel) {
+        return AsyncStorage.setItem(
+            'userMacros_' + getCurrentDate(),
+            JSON.stringify(macros)
+        )
+    }
+
+    getStoredMacros(date: string) {
+        return AsyncStorage.getItem('userMacros_' + date).then((macros) => {
+            if (!macros) {
+                return {
+                    type: UPDATE_CURRENT_MACROS,
+                    payload: {
+                        currentCals: 0,
+                        currentCarbs: 0,
+                        currentFats: 0,
+                        currentProteins: 0,
+                    },
+                }
+            }
+
+            let currentMacros: MacroModel = JSON.parse(macros)
+
+            return {
+                type: UPDATE_CURRENT_MACROS,
+                payload: {
+                    currentCals: currentMacros.cals,
+                    currentCarbs: currentMacros.carbs,
+                    currentFats: currentMacros.fats,
+                    currentProteins: currentMacros.protein,
+                },
+            }
+        })
     }
 }
 

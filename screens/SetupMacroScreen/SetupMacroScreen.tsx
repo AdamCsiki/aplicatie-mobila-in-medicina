@@ -105,8 +105,10 @@ function SetupMacroScreen({
             }}
         >
             <Layout style={style.Container}>
+                <Text>Recommended: {body.maxCalsByBody} Kcal</Text>
+                <Spacer />
                 <Layout style={style.ContainerHeader}>
-                    <Text category={'h6'}>Calories</Text>
+                    <Text category={'h6'}>Kilocalories</Text>
                     <Input
                         size={'small'}
                         value={`${maxCals}`}
@@ -132,7 +134,7 @@ function SetupMacroScreen({
             </Layout>
             <Spacer height={32} />
             <Layout style={style.RatioContainer}>
-                <Text style={{ paddingRight: 8 }}>Auto by ratios</Text>
+                <Text style={{ paddingRight: 8 }}>Auto</Text>
                 <CheckBox value={auto} onValueChange={setAuto} />
             </Layout>
             <Spacer />

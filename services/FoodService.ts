@@ -43,6 +43,7 @@ class FoodService {
     // ! STORED FOODS HERE
     // !
     getStoredMeals(date?: string) {
+        console.log('MEAL DATE: ', date)
         if (!date) {
             date = getCurrentDate()
         }
@@ -56,29 +57,38 @@ class FoodService {
                     [SNACK]: [],
                 }
             }
-            console.log('GET STORED FOODS: ', userFoods)
             return JSON.parse(userFoods) as MealModel
         })
     }
     getStoredMealsToState(date?: string) {
-        if (!date) {
-            date = getCurrentDate()
+        let currentDate = date
+
+        if (!currentDate) {
+            console.log('NO DATE')
+            currentDate = getCurrentDate()
         }
 
-        return AsyncStorage.getItem('meals_' + date).then((userFoods) => {
-            if (!userFoods) {
+        return AsyncStorage.getItem('meals_' + currentDate)
+            .then((userFoods) => {
+                if (!userFoods) {
+                    return {
+                        type: 'Default',
+                    }
+                }
+                console.log('GET STORED FOODS: ', userFoods)
+                return {
+                    type: SET_MEALS,
+                    payload: {
+                        meals: JSON.parse(userFoods),
+                    },
+                }
+            })
+            .catch((err) => {
+                console.log(err)
                 return {
                     type: 'Default',
                 }
-            }
-            console.log('GET STORED FOODS: ', userFoods)
-            return {
-                type: SET_MEALS,
-                payload: {
-                    meals: JSON.parse(userFoods),
-                },
-            }
-        })
+            })
     }
 
     setStoredMeals(userMeals: MealModel) {
