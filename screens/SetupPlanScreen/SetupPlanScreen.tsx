@@ -11,10 +11,12 @@ import {
     VERY_ACTIVE,
 } from '../../misc/MacroTypes'
 import {
+    getBodyInfo,
     setCurrentActivity,
     setCurrentWeightPlan,
+    setRecommendedMacros,
 } from '../../redux/actions/bodyActions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import {
@@ -23,8 +25,17 @@ import {
     WEIGHT_LOSS,
     WEIGHT_PLAN_TYPES,
 } from '../../redux/types/types'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 
-function SetupPlanScreen(props: any) {
+function SetupPlanScreen({
+    navigation,
+    onBack,
+    afterSubmit,
+}: {
+    navigation?: NavigationProp<ParamListBase>
+    onBack?: () => void
+    afterSubmit?: () => void
+}) {
     const body = useSelector((state: RootState) => state.body)
     const dispatch = useDispatch()
 
@@ -39,19 +50,30 @@ function SetupPlanScreen(props: any) {
     )
 
     const onSubmit = () => {
-        setCurrentWeightPlan(weightPlan, weightAmount)
+        return setCurrentWeightPlan(weightPlan, weightAmount)
             .then((action) => dispatch(action))
             .finally(() => {
                 setCurrentActivity(activity)
                     .then((action) => {
                         dispatch(action)
                     })
-                    .finally(props.onDone)
+                    .finally(() => {
+                        setRecommendedMacros().then((action) => {
+                            dispatch(action)
+                        })
+                        afterSubmit?.()
+                    })
             })
     }
 
+    useEffect(() => {
+        getBodyInfo().then((action) => {
+            dispatch(action)
+        })
+    }, [])
+
     return (
-        <Layout style={gstyle.Container}>
+        <Layout style={{ ...gstyle.Container, flexGrow: 1 }}>
             <Layout style={gstyle.SpaceBetween}>
                 <Text category={'h6'}>Activity: </Text>
                 <Select
@@ -96,6 +118,7 @@ function SetupPlanScreen(props: any) {
                         <Input
                             style={{ ...gstyle.Input }}
                             defaultValue={`${body.weightPlanValue}`}
+                            keyboardType={'numeric'}
                             onChangeText={(text) => {
                                 setWeightAmount(Number.parseFloat(text) || 0)
                             }}
@@ -107,8 +130,31 @@ function SetupPlanScreen(props: any) {
             <Spacer height={32} />
 
             <Layout style={gstyle.SpaceBetween}>
-                <Button onPress={props.onCancel}>Cancel</Button>
-                <Button onPress={onSubmit}>Done</Button>
+                <Button
+                    onPress={() => {
+                        onBack?.()
+                        if (navigation) {
+                            navigation.navigate('SetupBody')
+                        }
+                    }}
+                >
+                    {navigation ? 'Back' : 'Cancel'}
+                </Button>
+                <Button
+                    onPress={() => {
+                        onSubmit()
+                            .then(() => {
+                                if (navigation) {
+                                    navigation.navigate('SetupMacro')
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    }}
+                >
+                    {navigation ? 'Next' : 'Done'}
+                </Button>
             </Layout>
         </Layout>
     )

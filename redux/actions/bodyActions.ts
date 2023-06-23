@@ -1,5 +1,5 @@
 import { BodyModel } from '../../models/BodyModel'
-import { MAINTAIN_WEIGHT, WEIGHT_PLAN_TYPES } from '../types/types'
+import { WEIGHT_PLAN_TYPES } from '../types/types'
 import { EXERCISE_ACTIVITY_TYPE } from '../../misc/MacroTypes'
 import { BMR_TYPES, RMR_TYPES } from '../../misc/Equations'
 import BodyService from '../../services/BodyService'
@@ -27,10 +27,11 @@ export const setCurrentWeightPlan = (
     weightPlanType: WEIGHT_PLAN_TYPES,
     weightPlanValue: number = 0
 ) => {
-    if (weightPlanType == MAINTAIN_WEIGHT) {
-        return BodyService.setCurrentWeightPlan(weightPlanType, 0)
-    }
     return BodyService.setCurrentWeightPlan(weightPlanType, weightPlanValue)
+}
+
+export const setRecommendedMacros = () => {
+    return BodyService.setRecommendedMacros()
 }
 
 export const setCurrentActivity = (activity: EXERCISE_ACTIVITY_TYPE) => {

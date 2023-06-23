@@ -66,4 +66,15 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    AddButton: {
+        width: '17.5%',
+        height: 'auto',
+
+        padding: 8,
+
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })

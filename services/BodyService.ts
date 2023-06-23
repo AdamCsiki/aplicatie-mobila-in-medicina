@@ -6,6 +6,7 @@ import {
     SET_CURRENT_BMR,
     SET_CURRENT_RMR,
     SET_CURRENT_WEIGHT_PLAN,
+    SET_RECOMMENDED_CALORIES,
     WEIGHT_PLAN_TYPES,
 } from '../redux/types/types'
 import { BodyModel } from '../models/BodyModel'
@@ -13,6 +14,7 @@ import { EXERCISE_ACTIVITY_TYPE } from '../misc/MacroTypes'
 import {
     BMR_TYPES,
     calculateBMR,
+    calculateCaloriesWithBMR,
     calculateRMR,
     RMR_TYPES,
 } from '../misc/Equations'
@@ -157,6 +159,47 @@ class BodyService {
         weightPlanType: WEIGHT_PLAN_TYPES,
         weightPlanValue: number
     ) {
+        return AsyncStorage.getItem('userBodyInfo')
+            .then((userBodyInfo) => {
+                if (!userBodyInfo) {
+                    return {
+                        type: DEFAULT_BODY_INFO,
+                    }
+                }
+
+                const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+                bodyInfo.weightPlanType = weightPlanType
+                bodyInfo.weightPlanValue = weightPlanValue
+
+                return AsyncStorage.setItem(
+                    'userBodyInfo',
+                    JSON.stringify(bodyInfo)
+                )
+                    .then(() => {
+                        return {
+                            type: SET_CURRENT_WEIGHT_PLAN,
+                            payload: {
+                                weightPlanType: weightPlanType,
+                                weightPlanValue: weightPlanValue,
+                            },
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        return {
+                            type: 'default',
+                        }
+                    })
+            })
+            .catch((err) => {
+                console.log(err)
+                return {
+                    type: 'default',
+                }
+            })
+    }
+
+    setRecommendedMacros() {
         return AsyncStorage.getItem('userBodyInfo').then((userBodyInfo) => {
             if (!userBodyInfo) {
                 return {
@@ -165,18 +208,26 @@ class BodyService {
             }
 
             const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
-            bodyInfo.weightPlanType = weightPlanType
-            bodyInfo.weightPlanValue = weightPlanValue
+
+            const recommendedCalories = Number.parseFloat(
+                calculateCaloriesWithBMR(
+                    bodyInfo.BMR,
+                    bodyInfo.activity,
+                    bodyInfo.weightPlanType,
+                    bodyInfo.weightPlanValue
+                ).toFixed(0)
+            )
+
+            bodyInfo.recommendedCalories = recommendedCalories
 
             return AsyncStorage.setItem(
                 'userBodyInfo',
                 JSON.stringify(bodyInfo)
             ).then(() => {
                 return {
-                    type: SET_CURRENT_WEIGHT_PLAN,
+                    type: SET_RECOMMENDED_CALORIES,
                     payload: {
-                        weightPlanType: weightPlanType,
-                        weightPlanValue: weightPlanValue,
+                        recommendedCalories: recommendedCalories,
                     },
                 }
             })

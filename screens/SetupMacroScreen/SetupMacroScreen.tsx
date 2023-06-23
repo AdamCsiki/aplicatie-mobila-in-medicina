@@ -14,6 +14,7 @@ import {
     calculateGramsOfFatByCalories,
     calculateGramsOfProteinByCalories,
 } from '../../misc/macronutrientCalories'
+import { getBodyInfo } from '../../redux/actions/bodyActions'
 
 function SetupMacroScreen({
     navigation,
@@ -33,7 +34,7 @@ function SetupMacroScreen({
     const sliderDelay = 100
     const inputDelay = 500
 
-    const [auto, setAuto] = useState(false)
+    const [auto, setAuto] = useState(true)
 
     const [maxCals, setMaxCals] = useState<number>(diet.maxCals)
     const [maxCarbs, setMaxCarbs] = useState<number>(diet.maxCarbs)
@@ -98,6 +99,18 @@ function SetupMacroScreen({
         onAutoChange()
     }, [maxCals, auto])
 
+    useEffect(() => {
+        getBodyInfo()
+            .then((action) => {
+                dispatch(action)
+            })
+            .finally(() => {
+                if (diet.maxCals <= 0) {
+                    setMaxCals(body.recommendedCalories)
+                }
+            })
+    }, [])
+
     return (
         <Layout
             style={{
@@ -105,7 +118,7 @@ function SetupMacroScreen({
             }}
         >
             <Layout style={style.Container}>
-                <Text>Recommended: {body.maxCalsByBody} Kcal</Text>
+                <Text>Recommended: {body.recommendedCalories} Kcal</Text>
                 <Spacer />
                 <Layout style={style.ContainerHeader}>
                     <Text category={'h6'}>Kilocalories</Text>
@@ -239,7 +252,7 @@ function SetupMacroScreen({
                     onPress={() => {
                         onBack?.()
                         if (navigation) {
-                            navigation.navigate('SetupBody')
+                            navigation.navigate('SetupPlan')
                         }
                     }}
                 >

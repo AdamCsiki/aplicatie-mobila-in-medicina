@@ -3,19 +3,14 @@ import { ActionModel } from '../../models/ActionModel'
 import {
     DEFAULT_BODY_INFO,
     MAINTAIN_WEIGHT,
-    MIFFLIN_EQUATION,
-    SET_BMR,
     SET_BODY_INFO,
     SET_CURRENT_ACTIVITY,
     SET_CURRENT_BMR,
     SET_CURRENT_RMR,
     SET_CURRENT_WEIGHT_PLAN,
+    SET_RECOMMENDED_CALORIES,
 } from '../types/types'
-import {
-    EXERCISE_ACTIVITY_TYPE,
-    SEDENTARY,
-    SEX_TYPE_FEMALE,
-} from '../../misc/MacroTypes'
+import { SEDENTARY, SEX_TYPE_FEMALE } from '../../misc/MacroTypes'
 import { MIFFLIN_BMR, MIFFLIN_RMR } from '../../misc/Equations'
 
 const initialState: BodyModel = {
@@ -23,10 +18,7 @@ const initialState: BodyModel = {
     age: 0,
     weight: 0,
     height: 0,
-    maxCalsByBody: 0,
-    maxCarbsByBody: 0,
-    maxFatsByBody: 0,
-    maxProteinsByBody: 0,
+    recommendedCalories: 0,
     BMR_equation: MIFFLIN_BMR,
     BMR: 0,
     RMR_equation: MIFFLIN_RMR,
@@ -67,6 +59,11 @@ function bodyReducer(
                 ...state,
                 weightPlanType: payload.weightPlanType,
                 weightPlanValue: payload.weightPlanValue,
+            }
+        case SET_RECOMMENDED_CALORIES:
+            return {
+                ...state,
+                recommendedCalories: payload.recommendedCalories,
             }
         case DEFAULT_BODY_INFO:
             return {

@@ -52,9 +52,8 @@ function PlanScreen(props: any) {
                 onBackdropPress={() => setEditVisible(false)}
             >
                 <SetupPlanScreen
-                    onClose={() => setEditVisible(false)}
-                    onCancel={() => setEditVisible(false)}
-                    onDone={() => setEditVisible(false)}
+                    onBack={() => setEditVisible(false)}
+                    afterSubmit={() => setEditVisible(false)}
                 />
             </FullScreenModal>
         </Layout>

@@ -1,5 +1,5 @@
-import {StyleSheet} from "react-native";
-import padding from "../../misc/padding";
+import { StyleSheet } from 'react-native'
+import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SearchItem: {
@@ -58,7 +58,7 @@ export default StyleSheet.create({
         ...padding(2, 8),
 
         display: 'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'flex-end',
     },
 })

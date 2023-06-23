@@ -1,27 +1,23 @@
 import { Button, Input, Layout, Text } from '@ui-kitten/components'
 import style from './SetupBodyScreen.style'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BodyModel } from '../../models/BodyModel'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import Select from '../../components/Select/Select'
 import Spacer from '../../components/Spacer/Spacer'
-import {
-    setBodyInfo,
-    setCurrentBMR,
-    setCurrentRMR,
-} from '../../redux/actions/bodyActions'
-import { calculateBMR, calculateRMR } from '../../misc/Equations'
+import { getBodyInfo, setBodyInfo } from '../../redux/actions/bodyActions'
 import { SEX_TYPE_FEMALE, SEX_TYPE_MALE } from '../../misc/MacroTypes'
 import gstyle from '../../styles/global-style'
 import globalStyle from '../../styles/global-style'
+import { NavigationProp, ParamListBase } from '@react-navigation/native'
 
 function SetupBodyScreen({
     navigation,
     onBack,
     afterSubmit,
 }: {
-    navigation?: any
+    navigation?: NavigationProp<ParamListBase>
     onBack?: () => void
     afterSubmit?: () => void
 }) {
@@ -44,43 +40,16 @@ function SetupBodyScreen({
             ...userBody,
         }
 
-        setBodyInfo(updatedUserBody)
-            .then((action) => {
-                dispatch(action)
-            })
-            .finally(() => {
-                let bmr = calculateBMR(
-                    updatedUserBody.BMR_equation,
-                    updatedUserBody.weight,
-                    updatedUserBody.height,
-                    updatedUserBody.age,
-                    updatedUserBody.sex
-                )
-                let rmr = calculateRMR(
-                    updatedUserBody.RMR_equation,
-                    updatedUserBody.weight,
-                    updatedUserBody.height,
-                    updatedUserBody.age,
-                    updatedUserBody.sex
-                )
-
-                updatedUserBody.BMR = bmr
-
-                return setCurrentRMR(updatedUserBody.RMR_equation, rmr)
-                    .then((action) => {
-                        dispatch(action)
-                    })
-                    .finally(() => {
-                        return setCurrentBMR(updatedUserBody.BMR_equation, bmr)
-                            .then((action) => {
-                                dispatch(action)
-                            })
-                            .finally(() => {
-                                afterSubmit?.()
-                            })
-                    })
-            })
+        return setBodyInfo(updatedUserBody).then((action) => {
+            dispatch(action)
+        })
     }
+
+    useEffect(() => {
+        getBodyInfo().then((action) => {
+            dispatch(action)
+        })
+    }, [])
 
     return (
         <Layout style={style.SetupBodyScreen}>
@@ -143,10 +112,11 @@ function SetupBodyScreen({
                 )}
                 <Button
                     onPress={() => {
-                        if (navigation) {
-                            navigation.navigate('SetupMacro')
-                        }
-                        onSubmit()
+                        onSubmit().then(() => {
+                            if (navigation) {
+                                navigation.navigate('SetupPlan')
+                            }
+                        })
                     }}
                 >
                     {navigation ? 'Next' : 'Done'}

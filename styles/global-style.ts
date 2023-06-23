@@ -18,6 +18,14 @@ export default StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    SpaceBetweenReverse: {
+        width: '100%',
+
+        display: 'flex',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     Center: {
         width: '100%',
 

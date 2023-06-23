@@ -24,6 +24,8 @@ import {
     getNextDay,
     getPrevDay,
 } from '../../misc/dateFormatting'
+import ViewMealScreen from '../ViewMealScreen/ViewMealScreen'
+import { MEAL_TYPES } from '../../redux/types/types'
 
 function FoodDiaryScreen({ navigation }: any) {
     const theme = useTheme()
@@ -39,6 +41,7 @@ function FoodDiaryScreen({ navigation }: any) {
     const [selectedDate, setSelectedDate] = useState<Date>(currentDate)
 
     const [statsEditVisible, setStatsEditVisible] = useState(false)
+    const [mealScreenVisible, setMealScreenVisible] = useState(false)
 
     const [addedFoods, setAddedFoods] = useState<MealModel>({
         Breakfast: [],
@@ -46,6 +49,7 @@ function FoodDiaryScreen({ navigation }: any) {
         Dinner: [],
         Snack: [],
     })
+    const [selectedMeal, setSelectedMeal] = useState<MEAL_TYPES>('Breakfast')
 
     useEffect(() => {
         if (selectedDate.toDateString() == currentDate.toDateString()) {
@@ -58,6 +62,10 @@ function FoodDiaryScreen({ navigation }: any) {
                 protein: diet.currentProteins,
             })
         }
+
+        getStoredMeals(getFormattedDate(selectedDate)).then((meals) => {
+            setAddedFoods(meals)
+        })
     }, [foodDiary.meals, selectedDate])
 
     useEffect(() => {
@@ -163,76 +171,91 @@ function FoodDiaryScreen({ navigation }: any) {
                     return (
                         <React.Fragment key={index}>
                             <Layout style={globalStyle.Container} level="1">
-                                {/*@ts-ignore*/}
-                                <Layout style={globalStyle.Center}>
-                                    <Text>
-                                        Total: {/*@ts-ignore*/}
-                                        {addedFoods[meal]
-                                            .reduce(
-                                                (acc, cur) =>
-                                                    acc +
-                                                    (cur.baseQuantity *
-                                                        cur.food.calories) /
-                                                        100,
-                                                0
-                                            )
-                                            .toFixed(2)}{' '}
-                                        Kcal
-                                    </Text>
-                                </Layout>
-                                <Layout style={globalStyle.SpaceBetween}>
-                                    <Text category="h6">{meal}</Text>
-                                    {!editingDisabled && (
-                                        <TouchableOpacity
-                                            disabled={editingDisabled}
-                                            onPress={() => {
-                                                navigation.navigate('Foods', {
-                                                    meal: meal,
-                                                })
-                                            }}
-                                        >
-                                            <Text category={'h3'}>+</Text>
-                                        </TouchableOpacity>
-                                    )}
-                                </Layout>
-
-                                <Spacer />
-
-                                <Layout
-                                    level={'1'}
-                                    style={{
-                                        ...style.ItemContainer,
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setSelectedMeal(meal)
+                                        setMealScreenVisible(true)
                                     }}
                                 >
-                                    {addedFoods[meal].length > 0 && (
-                                        <>
-                                            {addedFoods[meal].map(
-                                                (userFood: UserFoodModel) => {
-                                                    return (
-                                                        <UserFoodItem
-                                                            key={
-                                                                new Date().getMonth() +
-                                                                Math.random() *
-                                                                    100000
-                                                            }
-                                                            quantity={
-                                                                userFood.quantity
-                                                            }
-                                                            baseQuantity={
-                                                                userFood.baseQuantity
-                                                            }
-                                                            quantityType={
-                                                                userFood.quantityType
-                                                            }
-                                                            item={userFood.food}
-                                                            onPress={() => {}}
-                                                        />
+                                    {/*@ts-ignore*/}
+                                    <Layout style={globalStyle.Center}>
+                                        <Text>
+                                            Total: {/*@ts-ignore*/}
+                                            {addedFoods[meal]
+                                                .reduce(
+                                                    (acc, cur) =>
+                                                        acc +
+                                                        (cur.baseQuantity *
+                                                            cur.food.calories) /
+                                                            100,
+                                                    0
+                                                )
+                                                .toFixed(2)}{' '}
+                                            Kcal
+                                        </Text>
+                                    </Layout>
+                                    <Layout style={globalStyle.SpaceBetween}>
+                                        <Text category="h6">{meal}</Text>
+                                        {!editingDisabled && (
+                                            <TouchableOpacity
+                                                style={style.AddButton}
+                                                disabled={editingDisabled}
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        'Foods',
+                                                        {
+                                                            meal: meal,
+                                                        }
                                                     )
-                                                }
-                                            )}
-                                        </>
-                                    )}
-                                </Layout>
+                                                }}
+                                            >
+                                                <Text category={'h1'}>+</Text>
+                                            </TouchableOpacity>
+                                        )}
+                                    </Layout>
+
+                                    <Spacer />
+
+                                    <Layout
+                                        level={'1'}
+                                        style={{
+                                            ...style.ItemContainer,
+                                        }}
+                                    >
+                                        {addedFoods[meal].length > 0 && (
+                                            <>
+                                                {addedFoods[meal].map(
+                                                    (
+                                                        userFood: UserFoodModel
+                                                    ) => {
+                                                        return (
+                                                            <UserFoodItem
+                                                                key={
+                                                                    new Date().getMonth() +
+                                                                    Math.random() *
+                                                                        100000
+                                                                }
+                                                                quantity={
+                                                                    userFood.quantity
+                                                                }
+                                                                baseQuantity={
+                                                                    userFood.baseQuantity
+                                                                }
+                                                                quantityType={
+                                                                    userFood.quantityType
+                                                                }
+                                                                item={
+                                                                    userFood.food
+                                                                }
+                                                                onPress={() => {}}
+                                                            />
+                                                        )
+                                                    }
+                                                )}
+                                            </>
+                                        )}
+                                    </Layout>
+                                </TouchableOpacity>
                             </Layout>
                             <Spacer />
                         </React.Fragment>
@@ -246,6 +269,17 @@ function FoodDiaryScreen({ navigation }: any) {
                 <SetupMacroScreen
                     onBack={() => setStatsEditVisible(false)}
                     afterSubmit={() => setStatsEditVisible(false)}
+                />
+            </FullScreenModal>
+            <FullScreenModal
+                visible={mealScreenVisible}
+                onBackdropPress={() => setMealScreenVisible(false)}
+            >
+                <ViewMealScreen
+                    afterSubmit={() => setMealScreenVisible(false)}
+                    onBack={() => setMealScreenVisible(false)}
+                    meals={addedFoods}
+                    currentMeal={selectedMeal}
                 />
             </FullScreenModal>
         </Layout>
