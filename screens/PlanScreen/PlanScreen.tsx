@@ -8,7 +8,7 @@ import { RootState } from '../../redux/store'
 import DataTable from '../../components/Table/Table'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import SetupPlanScreen from '../SetupPlanScreen/SetupPlanScreen'
-import { WEIGHT_LOSS } from '../../redux/types/types'
+import { MAINTAIN_WEIGHT, WEIGHT_LOSS } from '../../redux/types/types'
 
 function PlanScreen(props: any) {
     const body = useSelector((state: RootState) => state.body)
@@ -37,15 +37,21 @@ function PlanScreen(props: any) {
                         labels={[
                             'Physical Activity: ',
                             'Current Plan: ',
-                            'Weight: ',
-                        ]}
+                            body.weightPlanType !== MAINTAIN_WEIGHT
+                                ? 'Weight: '
+                                : null,
+                        ].filter((element) => element != null)}
                         data={[
                             body.activity,
                             body.weightPlanType,
-                            (body.weightPlanType == WEIGHT_LOSS ? '-' : '+') +
-                                body.weightPlanValue +
-                                ' Kg / Week',
-                        ]}
+                            body.weightPlanType !== MAINTAIN_WEIGHT
+                                ? (body.weightPlanType === WEIGHT_LOSS
+                                      ? '-'
+                                      : '+') +
+                                  body.weightPlanValue +
+                                  ' Kg / Week'
+                                : null,
+                        ].filter((element) => element != null)}
                     />
                 </Layout>
             </Layout>

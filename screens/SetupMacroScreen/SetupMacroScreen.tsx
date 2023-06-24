@@ -105,7 +105,7 @@ function SetupMacroScreen({
                 dispatch(action)
             })
             .finally(() => {
-                if (diet.maxCals <= 0) {
+                if (diet.maxCals <= 0 || diet.maxCals == undefined) {
                     setMaxCals(body.recommendedCalories)
                 }
             })

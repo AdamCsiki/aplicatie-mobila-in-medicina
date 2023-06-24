@@ -141,8 +141,8 @@ function FoodDiaryScreen({
 
                     <Text category="p1">Calories</Text>
                     <ProgressBar
-                        current={diet.currentCals}
-                        max={diet.maxCals}
+                        current={Math.ceil(diet.currentCals)}
+                        max={Math.ceil(diet.maxCals)}
                         sign={'Kcal'}
                         color={theme['color-primary-300']}
                     />

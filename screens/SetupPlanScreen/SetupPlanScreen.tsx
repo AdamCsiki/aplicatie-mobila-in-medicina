@@ -58,10 +58,13 @@ function SetupPlanScreen({
                         dispatch(action)
                     })
                     .finally(() => {
-                        setRecommendedMacros().then((action) => {
-                            dispatch(action)
-                        })
-                        afterSubmit?.()
+                        setRecommendedMacros()
+                            .then((action) => {
+                                dispatch(action)
+                            })
+                            .finally(() => {
+                                afterSubmit?.()
+                            })
                     })
             })
     }

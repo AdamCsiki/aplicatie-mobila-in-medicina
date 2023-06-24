@@ -3,7 +3,7 @@ import style from './CreateFoodScreen.style'
 import Spacer from '../../components/Spacer/Spacer'
 import globalStyle from '../../styles/global-style'
 import { useEffect, useState } from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { Image, Keyboard, TouchableOpacity } from 'react-native'
 import { launchImageLibraryAsync } from 'expo-image-picker'
 import Select from '../../components/Select/Select'
 import {
@@ -16,6 +16,7 @@ import FoodModel from '../../models/FoodModel'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 import { putFood } from '../../redux/actions/foodActions'
+import debounce from '../../misc/debouncer'
 
 interface foodForm {
     cals: number
@@ -35,6 +36,8 @@ function CreateFoodScreen({
 }) {
     const theme = useTheme()
     const auth = useSelector((state: RootState) => state.auth)
+
+    const [isEditing, setIsEditing] = useState(false)
 
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
@@ -79,6 +82,16 @@ function CreateFoodScreen({
             ...state,
             [name]: Number.parseFloat(Number.parseFloat(text).toFixed(2)),
         }))
+
+        if (foodForm.cals == 0) {
+            setFoodForm((state) => ({
+                ...state,
+                cals:
+                    foodForm.fats * 9 +
+                    foodForm.carbs * 4 +
+                    foodForm.proteins * 4,
+            }))
+        }
     }
 
     const createFood = () => {
@@ -107,6 +120,7 @@ function CreateFoodScreen({
     }
 
     const onSubmit = () => {
+        Keyboard.dismiss()
         putFood(createFood())
             .then((res) => {
                 console.log(res)
@@ -171,17 +185,17 @@ function CreateFoodScreen({
                     </TouchableOpacity>
                 </Layout>
 
-                <Spacer />
+                {/*<Spacer />*/}
 
-                <Layout style={globalStyle.BasicContainer}>
-                    <Input
-                        placeholder={'Description'}
-                        multiline
-                        onEndEditing={(e) => {
-                            setDescription(e.nativeEvent.text)
-                        }}
-                    />
-                </Layout>
+                {/*<Layout style={globalStyle.BasicContainer}>*/}
+                {/*    <Input*/}
+                {/*        placeholder={'Description'}*/}
+                {/*        multiline*/}
+                {/*        onEndEditing={(e) => {*/}
+                {/*            setDescription(e.nativeEvent.text)*/}
+                {/*        }}*/}
+                {/*    />*/}
+                {/*</Layout>*/}
 
                 <Spacer />
 
@@ -215,41 +229,57 @@ function CreateFoodScreen({
                         <Text category={'h6'}>Macronutrients</Text>
                     </Layout>
                     <Spacer />
-                    <Input
-                        placeholder={'Calories'}
-                        keyboardType={'numeric'}
-                        defaultValue={foodForm.cals.toFixed(2)}
-                        onEndEditing={(e) => {
-                            updateForm('cals', e.nativeEvent.text)
-                        }}
-                    ></Input>
+                    <Layout style={globalStyle.SpaceBetween}>
+                        <Text>Calories</Text>
+                        <Input
+                            style={{ width: '50%' }}
+                            placeholder={'Calories'}
+                            keyboardType={'numeric'}
+                            defaultValue={foodForm.cals.toFixed(2)}
+                            onEndEditing={(e) => {
+                                updateForm('cals', e.nativeEvent.text)
+                            }}
+                        ></Input>
+                    </Layout>
                     <Spacer />
-                    <Input
-                        placeholder={'Carbohydrates'}
-                        defaultValue={foodForm.carbs.toFixed(2)}
-                        keyboardType={'numeric'}
-                        onEndEditing={(e) => {
-                            updateForm('carbs', e.nativeEvent.text)
-                        }}
-                    ></Input>
+                    <Layout style={globalStyle.SpaceBetween}>
+                        <Text>Carbs</Text>
+                        <Input
+                            style={{ width: '50%' }}
+                            placeholder={'Carbohydrates'}
+                            defaultValue={foodForm.carbs.toFixed(2)}
+                            keyboardType={'numeric'}
+                            onEndEditing={(e) => {
+                                updateForm('carbs', e.nativeEvent.text)
+                            }}
+                        ></Input>
+                    </Layout>
                     <Spacer />
-                    <Input
-                        placeholder={'Fats'}
-                        defaultValue={foodForm.fats.toFixed(2)}
-                        keyboardType={'numeric'}
-                        onEndEditing={(e) => {
-                            updateForm('fats', e.nativeEvent.text)
-                        }}
-                    ></Input>
+                    <Layout style={globalStyle.SpaceBetween}>
+                        <Text>Fats</Text>
+                        <Input
+                            style={{ width: '50%' }}
+                            placeholder={'Fats'}
+                            defaultValue={foodForm.fats.toFixed(2)}
+                            keyboardType={'numeric'}
+                            onEndEditing={(e) => {
+                                updateForm('fats', e.nativeEvent.text)
+                            }}
+                        ></Input>
+                    </Layout>
                     <Spacer />
-                    <Input
-                        placeholder={'Proteins'}
-                        defaultValue={foodForm.proteins.toFixed(2)}
-                        keyboardType={'numeric'}
-                        onEndEditing={(e) => {
-                            updateForm('proteins', e.nativeEvent.text)
-                        }}
-                    ></Input>
+                    <Layout style={globalStyle.SpaceBetween}>
+                        <Text>Proteins</Text>
+                        <Input
+                            style={{ width: '50%' }}
+                            placeholder={'Proteins'}
+                            defaultValue={foodForm.proteins.toFixed(2)}
+                            keyboardType={'numeric'}
+                            onEndEditing={(e) => {
+                                updateForm('proteins', e.nativeEvent.text)
+                            }}
+                        ></Input>
+                    </Layout>
                 </Layout>
                 <Spacer height={32} />
                 <Layout
@@ -269,9 +299,9 @@ function CreateFoodScreen({
                         Cancel
                     </Button>
                     <Button
-                        onPress={() => {
+                        onPress={debounce(() => {
                             onSubmit()
-                        }}
+                        }, 500)}
                     >
                         Done
                     </Button>
