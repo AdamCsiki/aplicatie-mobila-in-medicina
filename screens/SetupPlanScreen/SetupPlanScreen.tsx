@@ -120,7 +120,9 @@ function SetupPlanScreen({
                             defaultValue={`${body.weightPlanValue}`}
                             keyboardType={'numeric'}
                             onChangeText={(text) => {
-                                setWeightAmount(Number.parseFloat(text) || 0)
+                                setWeightAmount(
+                                    Math.abs(Number.parseFloat(text)) || 0
+                                )
                             }}
                         />
                     </Layout>

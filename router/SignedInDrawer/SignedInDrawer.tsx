@@ -45,6 +45,7 @@ const DrawerContent = ({ navigation, state }: any) => {
                     }}
                 >
                     <Button
+                        size={'small'}
                         onPress={() => {
                             signOut().then((action) => {
                                 dispatch(action)
@@ -123,6 +124,7 @@ function SignedInDrawer() {
             screenOptions={{
                 headerStyle: {
                     backgroundColor: theme['background-basic-color-1'],
+                    borderBottomWidth: 1,
                 },
                 headerTintColor: theme['text-basic-color'],
             }}

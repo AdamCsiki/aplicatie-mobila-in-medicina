@@ -1,9 +1,10 @@
 import FoodModel from './FoodModel'
+import { UnitOfMeasurement } from './MeasurmentModel'
 
 interface UserFoodModel {
     quantity: number
     baseQuantity: number
-    quantityType: string
+    quantityType: UnitOfMeasurement
     food: FoodModel
 }
 

@@ -79,8 +79,8 @@ function BodyScreen({ navigation }: { navigation: any }) {
                     <Spacer />
 
                     <DataTable
-                        labels={['Equation used', 'BMR']}
-                        data={[body.BMR_equation, body.BMR + ' Kcal/day']}
+                        labels={['BMR']}
+                        data={[body.BMR + ' Kcal/day']}
                     />
                 </Layout>
 
@@ -96,8 +96,8 @@ function BodyScreen({ navigation }: { navigation: any }) {
                     <Spacer />
 
                     <DataTable
-                        labels={['Equation used', 'RMR']}
-                        data={[body.RMR_equation, body.RMR + ' Kcal/day']}
+                        labels={['RMR']}
+                        data={[body.RMR + ' Kcal/day']}
                     />
                 </Layout>
 

@@ -5,10 +5,12 @@ import Spacer from '../Spacer/Spacer'
 import UserFoodModel from '../../models/UserFoodModel'
 
 function SearchFoodItemDetailed({
+    editable = true,
     item,
     onPress,
     onPressAdd = () => {},
 }: {
+    editable: boolean
     item: UserFoodModel
     onPress: () => void
     onPressAdd?: () => void
@@ -32,18 +34,23 @@ function SearchFoodItemDetailed({
                     </Text>
                 </Text>
                 <Spacer height={4} />
-                <Text category={'c1'}>Kcal: {item.food.calories}</Text>
+                <Text category={'c1'}>
+                    Kcal:{' '}
+                    {Math.ceil((item.food.calories * item.baseQuantity) / 100)}
+                </Text>
             </Layout>
             <Layout style={style.ButtonContainer}>
-                <TouchableOpacity
-                    style={{
-                        ...style.Button,
-                        backgroundColor: theme['background-basic-color-2'],
-                    }}
-                    onPress={onPressAdd}
-                >
-                    <Text category={'c1'}>Edit</Text>
-                </TouchableOpacity>
+                {editable && (
+                    <TouchableOpacity
+                        style={{
+                            ...style.Button,
+                            backgroundColor: theme['background-basic-color-2'],
+                        }}
+                        onPress={onPressAdd}
+                    >
+                        <Text category={'c1'}>Edit</Text>
+                    </TouchableOpacity>
+                )}
             </Layout>
         </ListItem>
     )

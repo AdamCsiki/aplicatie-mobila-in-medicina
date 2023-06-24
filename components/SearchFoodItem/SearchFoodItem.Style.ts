@@ -1,5 +1,5 @@
-import {StyleSheet} from "react-native";
-import padding from "../../misc/padding";
+import { StyleSheet } from 'react-native'
+import padding from '../../misc/padding'
 
 export default StyleSheet.create({
     SearchItem: {

@@ -20,6 +20,10 @@ export const addFood = (
     )
 }
 
+export const setMeals = (meals: MealModel) => {
+    return FoodService.setMeals(meals)
+}
+
 export const putFood = (foodItem: FoodModel) => {
     return FoodService.putFood(foodItem)
 }

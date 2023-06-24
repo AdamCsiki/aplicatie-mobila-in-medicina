@@ -21,19 +21,23 @@ import {
 
 class BodyService {
     setBodyInfo(bodyInfo: BodyModel) {
-        bodyInfo.BMR = calculateBMR(
-            bodyInfo.BMR_equation,
-            bodyInfo.weight,
-            bodyInfo.height,
-            bodyInfo.age,
-            bodyInfo.sex
+        bodyInfo.BMR = Math.ceil(
+            calculateBMR(
+                bodyInfo.BMR_equation,
+                bodyInfo.weight,
+                bodyInfo.height,
+                bodyInfo.age,
+                bodyInfo.sex
+            )
         )
-        bodyInfo.RMR = calculateRMR(
-            bodyInfo.RMR_equation,
-            bodyInfo.weight,
-            bodyInfo.height,
-            bodyInfo.age,
-            bodyInfo.sex
+        bodyInfo.RMR = Math.ceil(
+            calculateRMR(
+                bodyInfo.RMR_equation,
+                bodyInfo.weight,
+                bodyInfo.height,
+                bodyInfo.age,
+                bodyInfo.sex
+            )
         )
 
         return AsyncStorage.setItem('userBodyInfo', JSON.stringify(bodyInfo))
@@ -80,9 +84,10 @@ class BodyService {
                 }
             }
 
-            bmr = Number.parseFloat(bmr.toFixed(2))
+            bmr = Math.ceil(bmr)
 
             const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
+
             bodyInfo.BMR_equation = bmr_equation
             bodyInfo.BMR = bmr
 
@@ -109,7 +114,7 @@ class BodyService {
                 }
             }
 
-            rmr = Number.parseFloat(rmr.toFixed(2))
+            rmr = Math.ceil(rmr)
 
             const bodyInfo: BodyModel = JSON.parse(userBodyInfo)
             bodyInfo.RMR_equation = rmr_equation

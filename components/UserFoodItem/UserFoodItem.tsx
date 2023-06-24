@@ -20,11 +20,10 @@ function UserFoodItem(props: CustomListItemProps) {
             <Layout style={style.FoodItemHeader}>
                 <Text category="p1">{props.item.name}</Text>
                 <Text category="c1">
-                    {props.quantity} {props.quantityType} /{' '}
-                    {((props.item.calories * props.baseQuantity) / 100).toFixed(
-                        2
+                    {Math.ceil(
+                        (props.item.calories * props.baseQuantity) / 100
                     )}{' '}
-                    Kcal
+                    Kcal / {props.quantity} {props.quantityType}
                 </Text>
             </Layout>
         </Layout>

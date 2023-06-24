@@ -1,5 +1,5 @@
 import { Button, Layout, Text, useTheme } from '@ui-kitten/components'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ProgressBar from '../../components/ProgressBar/ProgressBar'
 import style from './FoodDiaryScreen.style'
 import { ScrollView } from 'react-native-virtualized-view'
@@ -24,11 +24,24 @@ import {
     getNextDay,
     getPrevDay,
 } from '../../misc/dateFormatting'
-import ViewMealScreen from '../ViewMealScreen/ViewMealScreen'
 import { MEAL_TYPES } from '../../redux/types/types'
+import {
+    NavigationProp,
+    ParamListBase,
+    RouteProp,
+} from '@react-navigation/native'
+import { NavbarContext } from '../../context/NavbarContext'
 
-function FoodDiaryScreen({ navigation }: any) {
+function FoodDiaryScreen({
+    route,
+    navigation,
+}: {
+    route: RouteProp<any>
+    navigation: NavigationProp<ParamListBase>
+}) {
     const theme = useTheme()
+
+    const { setTitle, setRightItem } = useContext(NavbarContext)
 
     const [editingDisabled, setEditingDisabled] = useState(false)
 
@@ -54,7 +67,9 @@ function FoodDiaryScreen({ navigation }: any) {
     useEffect(() => {
         if (selectedDate.toDateString() == currentDate.toDateString()) {
             console.log('I HAVE SAVED THE MEALS')
-            setStoredMeals(foodDiary.meals)
+            setStoredMeals(foodDiary.meals).then((action) => {
+                dispatch(action)
+            })
             setStoredMacros({
                 cals: diet.currentCals,
                 carbs: diet.currentCarbs,
@@ -173,16 +188,20 @@ function FoodDiaryScreen({ navigation }: any) {
                             <Layout style={globalStyle.Container} level="1">
                                 <TouchableOpacity
                                     onPress={() => {
-                                        setSelectedMeal(meal)
-                                        setMealScreenVisible(true)
+                                        navigation.navigate('Meal', {
+                                            currentMeal: meal,
+                                            selectedDate:
+                                                selectedDate.toString(),
+                                            currentDate: currentDate.toString(),
+                                        })
                                     }}
                                 >
                                     {/*@ts-ignore*/}
                                     <Layout style={globalStyle.Center}>
                                         <Text>
                                             Total: {/*@ts-ignore*/}
-                                            {addedFoods[meal]
-                                                .reduce(
+                                            {Math.ceil(
+                                                addedFoods[meal].reduce(
                                                     (acc, cur) =>
                                                         acc +
                                                         (cur.baseQuantity *
@@ -190,7 +209,7 @@ function FoodDiaryScreen({ navigation }: any) {
                                                             100,
                                                     0
                                                 )
-                                                .toFixed(2)}{' '}
+                                            )}{' '}
                                             Kcal
                                         </Text>
                                     </Layout>
@@ -202,7 +221,7 @@ function FoodDiaryScreen({ navigation }: any) {
                                                 disabled={editingDisabled}
                                                 onPress={() => {
                                                     navigation.navigate(
-                                                        'Foods',
+                                                        'Search',
                                                         {
                                                             meal: meal,
                                                         }
@@ -269,17 +288,6 @@ function FoodDiaryScreen({ navigation }: any) {
                 <SetupMacroScreen
                     onBack={() => setStatsEditVisible(false)}
                     afterSubmit={() => setStatsEditVisible(false)}
-                />
-            </FullScreenModal>
-            <FullScreenModal
-                visible={mealScreenVisible}
-                onBackdropPress={() => setMealScreenVisible(false)}
-            >
-                <ViewMealScreen
-                    afterSubmit={() => setMealScreenVisible(false)}
-                    onBack={() => setMealScreenVisible(false)}
-                    meals={addedFoods}
-                    currentMeal={selectedMeal}
                 />
             </FullScreenModal>
         </Layout>

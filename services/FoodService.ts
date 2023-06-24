@@ -92,7 +92,7 @@ class FoodService {
     }
 
     setStoredMeals(userMeals: MealModel) {
-        AsyncStorage.setItem(
+        return AsyncStorage.setItem(
             'meals_' + getCurrentDate(),
             JSON.stringify(userMeals)
         )
@@ -101,6 +101,12 @@ class FoodService {
             })
             .catch((err) => {
                 console.log(err)
+            })
+            .then(() => {
+                return {
+                    type: SET_MEALS,
+                    payload: { meals: userMeals },
+                }
             })
     }
     removeAllFoods() {
@@ -159,6 +165,14 @@ class FoodService {
 
             return this.setStoredMeals(userFoods)
         })
+    }
+
+    setMeals(meals: MealModel) {
+        if (!meals) {
+            return { type: 'default' }
+        }
+
+        return { type: SET_MEALS, payload: { meals: meals } }
     }
 }
 

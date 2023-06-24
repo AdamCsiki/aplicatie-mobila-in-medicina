@@ -3,18 +3,21 @@ import style from './SearchFoodScreen.style'
 import SearchInput from '../../components/SearchInput/SearchInput'
 import SearchList from '../../components/SearchList/SearchList'
 import Spacer from '../../components/Spacer/Spacer'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import FoodModel from '../../models/FoodModel'
 import SearchFoodItem from '../../components/SearchFoodItem/SearchFoodItem'
 import FullScreenModal from '../../components/FullScreenModal/FullScreenModal'
 import { getAllFoods, searchFoods } from '../../redux/actions/searchActions'
 import AddFoodScreen from '../AddFoodScreen/AddFoodScreen'
 import FoodScreen from '../FoodScreen/FoodScreen'
+import { NavbarContext } from '../../context/NavbarContext'
+import { RefreshControl } from 'react-native'
 
 function SearchFoodScreen({ route, navigation }: any) {
     const { meal } = route.params
 
-    let dateTimestamp = new Date().toDateString()
+    const { setTitle, setRightItem } = useContext(NavbarContext)
+    const [isRefreshing, setIsRefreshing] = useState(false)
 
     const [addFoodVisible, setAddFoodVisible] = useState(false)
     const [foodDetailsVisible, setFoodDetailsVisible] = useState(false)
@@ -25,6 +28,7 @@ function SearchFoodScreen({ route, navigation }: any) {
     const [searchQuery, setSearchQuery] = useState<string>('')
 
     const onSearch = () => {
+        setIsRefreshing(true)
         setFoodList([])
         if (!searchQuery.trim()) {
             return getAllFoods()
@@ -41,6 +45,18 @@ function SearchFoodScreen({ route, navigation }: any) {
     }
 
     useEffect(() => {
+        setTitle(meal)
+        setRightItem(
+            <Button
+                size={'small'}
+                onPress={() => {
+                    navigation.navigate('Create')
+                }}
+            >
+                <Text>Create</Text>
+            </Button>
+        )
+
         getAllFoods()
             .then((foods) => {
                 setFoodList(foods)
@@ -51,33 +67,32 @@ function SearchFoodScreen({ route, navigation }: any) {
     }, [])
 
     return (
-        <Layout style={style.DietAddScreen} level="4">
-            <Layout style={style.DietAddScreenSearchContainer}>
-                <Layout style={style.DietAddScreenSearchDiv}>
-                    <SearchInput
-                        onChangeText={(text) => setSearchQuery(text)}
-                        onSubmitEditing={(event) => {
-                            setSearchQuery(event.nativeEvent.text)
-                        }}
-                    />
-                    <Button onPress={() => onSearch()}>
-                        <Text>Search</Text>
-                    </Button>
-                </Layout>
+        <Layout style={style.DietAddScreen}>
+            <Layout style={style.DietAddScreenSearchDiv}>
+                <SearchInput
+                    onChangeText={(text) => setSearchQuery(text)}
+                    onSubmitEditing={(event) => {
+                        setSearchQuery(event.nativeEvent.text)
+                    }}
+                />
+                <Button
+                    onPress={() =>
+                        onSearch().finally(() => {
+                            setIsRefreshing(false)
+                        })
+                    }
+                >
+                    <Text>Search</Text>
+                </Button>
             </Layout>
             <Spacer />
             <Layout style={style.DietAddScreenListContainer}>
                 <Layout style={style.DietAddScreenListHeader}>
                     <Button
                         onPress={() => {
-                            navigation.navigate('Create')
-                        }}
-                    >
-                        <Text>Create</Text>
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            onSearch()
+                            onSearch().finally(() => {
+                                setIsRefreshing(false)
+                            })
                         }}
                     >
                         <Text>Refresh</Text>
@@ -88,11 +103,16 @@ function SearchFoodScreen({ route, navigation }: any) {
 
                 <SearchList
                     data={foodList}
+                    refreshControl={
+                        <RefreshControl
+                            onRefresh={onSearch}
+                            refreshing={isRefreshing}
+                        />
+                    }
                     renderItem={({ item }) => {
                         return (
                             <SearchFoodItem
                                 item={item}
-                                reloadImage={dateTimestamp}
                                 onPress={() => {
                                     setPickedFood(item)
                                     setFoodDetailsVisible(true)

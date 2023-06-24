@@ -6,12 +6,10 @@ import Spacer from '../Spacer/Spacer'
 
 function SearchFoodItem({
     item,
-    reloadImage,
     onPress,
     onPressAdd = () => {},
 }: {
     item: FoodModel
-    reloadImage?: string
     onPress: () => void
     onPressAdd?: () => void
 }) {

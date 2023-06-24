@@ -40,9 +40,13 @@ function SetupBodyScreen({
             ...userBody,
         }
 
-        return setBodyInfo(updatedUserBody).then((action) => {
-            dispatch(action)
-        })
+        return setBodyInfo(updatedUserBody)
+            .then((action) => {
+                dispatch(action)
+            })
+            .finally(() => {
+                afterSubmit?.()
+            })
     }
 
     useEffect(() => {
