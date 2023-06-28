@@ -3,7 +3,7 @@ import style from './CreateFoodScreen.style'
 import Spacer from '../../components/Spacer/Spacer'
 import globalStyle from '../../styles/global-style'
 import { useEffect, useState } from 'react'
-import { Image, Keyboard, TouchableOpacity } from 'react-native'
+import { Keyboard } from 'react-native'
 import { launchImageLibraryAsync } from 'expo-image-picker'
 import Select from '../../components/Select/Select'
 import {
@@ -15,8 +15,8 @@ import { convertMacros, convertQuantity } from '../../misc/generateUnits'
 import FoodModel from '../../models/FoodModel'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { putFood } from '../../redux/actions/foodActions'
 import debounce from '../../misc/debouncer'
+import { putFood } from '../../redux/actions/foodActions'
 
 interface foodForm {
     cals: number
@@ -56,12 +56,15 @@ function CreateFoodScreen({
     const [foodImageUri, setFoodImageUri] = useState<string | undefined>(
         undefined
     )
+    const [imageType, setImageType] = useState<string>()
+    const [imageName, setImageName] = useState<string | null>()
 
     const onAddImage = () => {
         launchImageLibraryAsync({
             allowsEditing: true,
             aspect: [4, 4],
             quality: 1,
+            base64: true,
         })
             .then((res) => {
                 if (!res.assets) {
@@ -70,7 +73,10 @@ function CreateFoodScreen({
                 if (res.assets.length < 0) {
                     return
                 }
+
                 setFoodImageUri(res.assets[0].uri)
+                setImageType(res.assets[0].type)
+                setImageName(res.assets[0].fileName)
             })
             .catch((err) => {
                 console.log(err)
@@ -121,6 +127,7 @@ function CreateFoodScreen({
 
     const onSubmit = () => {
         Keyboard.dismiss()
+
         putFood(createFood())
             .then((res) => {
                 console.log(res)
@@ -163,26 +170,26 @@ function CreateFoodScreen({
                         />
                     </Layout>
 
-                    <TouchableOpacity
-                        style={{
-                            ...style.ImageContainer,
-                            backgroundColor: theme['background-basic-color-2'],
-                        }}
-                        onPress={onAddImage}
-                    >
-                        {foodImageUri != undefined ? (
-                            <Image
-                                source={{ uri: foodImageUri }}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundColor: 'white',
-                                }}
-                            />
-                        ) : (
-                            <Text category={'h1'}>+</Text>
-                        )}
-                    </TouchableOpacity>
+                    {/*<TouchableOpacity*/}
+                    {/*    style={{*/}
+                    {/*        ...style.ImageContainer,*/}
+                    {/*        backgroundColor: theme['background-basic-color-2'],*/}
+                    {/*    }}*/}
+                    {/*    onPress={onAddImage}*/}
+                    {/*>*/}
+                    {/*    {foodImageUri != undefined ? (*/}
+                    {/*        <Image*/}
+                    {/*            source={{ uri: foodImageUri }}*/}
+                    {/*            style={{*/}
+                    {/*                width: '100%',*/}
+                    {/*                height: '100%',*/}
+                    {/*                backgroundColor: 'white',*/}
+                    {/*            }}*/}
+                    {/*        />*/}
+                    {/*    ) : (*/}
+                    {/*        <Text category={'h1'}>+</Text>*/}
+                    {/*    )}*/}
+                    {/*</TouchableOpacity>*/}
                 </Layout>
 
                 {/*<Spacer />*/}

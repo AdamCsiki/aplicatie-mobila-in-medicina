@@ -27,6 +27,13 @@ function failAction(error: any) {
 
 export const signIn = ({ email, password }: LoginModel) => {
     console.log('action: SIGN IN')
+    if (!email || !password) {
+        return new Promise(() => {}).then(() => {
+            return {
+                type: LOGIN_FAIL,
+            }
+        })
+    }
     return AuthService.signIn({ email, password })
 }
 
