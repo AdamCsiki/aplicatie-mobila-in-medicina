@@ -27,8 +27,8 @@ Pentru a descarca aplicatia se poate realiza din repo-ul acesta din fisierul "re
 ## Imagini
 
 <p align="center">
-  <img align="left" width="300" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/42d7c780-51e4-43b2-abcc-fb632ca3aeff">
-  <img align="center" width="300" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/b42c93da-7e50-4c2f-bd75-05de980682ec">
-  <img align="right" width="300" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/4f4b6afc-e662-49f9-ad97-c15d6b81d39d">
+  <img align="left" width="250" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/42d7c780-51e4-43b2-abcc-fb632ca3aeff">
+  <img align="center" width="250" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/b42c93da-7e50-4c2f-bd75-05de980682ec">
+  <img align="right" width="250" height="auto" src="https://github.com/AdamCsiki/aplicatie-mobila-in-medicina/assets/112400969/4f4b6afc-e662-49f9-ad97-c15d6b81d39d">
 </p>
 
